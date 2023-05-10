@@ -43,14 +43,14 @@
       <id>wthrajat</id>
       <name>Rajat Khanduri</name>
     </developer>
+      <developer>
+      <id>michitux</id>
+      <name>Michael Hamann</name>
+    </developer>
+  </developers>
     <developer>
       <id>slauriere</id>
       <name>Stéphane Laurière</name>
-    </developer>
-  </developers>
-  <developer>
-      <id>michitux</id>
-      <name>Michael Hamann</name>
     </developer>
   </developers>
   <modules>
