@@ -31,7 +31,8 @@
   <version>1.0</version>
   <name>Interactive Link Visualizer - Parent POM</name>
   <packaging>pom</packaging>
-  <description>Visualize pages present in a wiki in the form of a network-graph consisting of many nodes and edges</description>
+  <inceptionYear>2023</inceptionYear>
+  <description>Visualize pages present in a wiki in the form of a network-graph consisting of many interconnected nodes and edges.</description>
   <scm>
     <connection>scm:git:git://github.com/xwiki-contrib/application-interactive-link-visualizer.git</connection>
     <developerConnection>scm:git:git@github.com:xwiki-contrib/application-interactive-link-visualizer.git</developerConnection>
@@ -43,11 +44,10 @@
       <id>wthrajat</id>
       <name>Rajat Khanduri</name>
     </developer>
-      <developer>
+    <developer>
       <id>michitux</id>
       <name>Michael Hamann</name>
     </developer>
-  </developers>
     <developer>
       <id>slauriere</id>
       <name>Stéphane Laurière</name>
@@ -56,17 +56,10 @@
   <modules>
     <module>application-interactive-link-visualizer-demo</module>
     <module>application-interactive-link-visualizer-ui</module>
+    <module>application-interactive-link-visualizer-webjar</module>
   </modules>
   <properties>
     <xwiki.issueManagement.jira.id>INTLV</xwiki.issueManagement.jira.id>
     <xwiki.release.jira.skip>false</xwiki.release.jira.skip>
   </properties>
-  <profiles>
-    <profile>
-      <id>integration-tests</id>
-      <modules>
-        <module>application-interactive-link-visualizer-test</module>
-      </modules>
-    </profile>
-  </profiles>
 </project>
