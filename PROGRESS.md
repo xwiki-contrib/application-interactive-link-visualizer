@@ -28,6 +28,7 @@
 - [ ] Develop the data-source by generating the `data` object from Solr queries
 - [ ] Study XWiki's JavaScript API and the relevant methods like `getURL()` to generate page's URL
 - [ ] Generate required attributes for nodes & edges like wiki page's `URL, size, color` etc.
+- [ ] Provide event handlers to handle click events in the API (eg, to open the page corresponding to the clicked node)
 - [ ] Study about the `Localization Module` in order to generate key-value pairs that will allow the possibility of translation of the application pages
 - [ ] Study and implement macro for the application (take inspiration from XWiki's ChartJS application)
 
