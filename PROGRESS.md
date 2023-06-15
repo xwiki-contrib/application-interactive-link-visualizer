@@ -23,10 +23,13 @@
 - [X] Implemented all layouts `random-layout`, `forceAtlas2-layout` and `circular layout` in the API and provided toggle buttons for each of the 3 layouts
   Note: The demo fork of the implemenation is [here](https://codesandbox.io/s/layout-experiment-vq1xec)
 
+## Week 3 (12 June - 18 June 2023)
+
+
 ## Tasks for coming days...
 
 - [ ] Develop the data-source by generating the `data` object from Solr queries
-- [ ] Study XWiki's JavaScript API and the relevant methods like `getURL()` to generate page's URL
+- [X] Study XWiki's JavaScript API and the relevant methods like `getURL()` to generate page's URL
 - [ ] Generate required attributes for nodes & edges like wiki page's `URL, size, color` etc.
 - [ ] Provide event handlers to handle click events in the API (eg, to open the page corresponding to the clicked node)
 - [ ] Study about the `Localization Module` in order to generate key-value pairs that will allow the possibility of translation of the application pages
@@ -37,14 +40,11 @@
 
 - [ ] Research on testing JS framework & write tests for the application (potential choice: [Jasmine](https://jasmine.github.io/))
 - [ ] Translations for the application
+- [X] Interactive buttons for controls
 - [ ] Provide a way to filter the number of documents in a wiki we wish to visualize
 - [ ] Publish the extension the XWiki Extension Store and write documentations & demo around the extension
 
-<!-- ## Week 3 (12 June - 18 June 2023)
-
-- [X] 
-
- ## Week 4 (19 June - 25 June 2023)
+<!--  ## Week 4 (19 June - 25 June 2023)
 
 - [X]
 
