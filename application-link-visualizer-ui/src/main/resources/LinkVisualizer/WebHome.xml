@@ -1,95 +1,506 @@
-<?xml version="1.1" encoding="UTF-8"?>
-
-<!--
- * See the NOTICE file distributed with this work for additional
- * information regarding copyright ownership.
- *
- * This is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation; either version 2.1 of
- * the License, or (at your option) any later version.
- *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this software; if not, write to the Free
- * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
- * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
--->
-
-<xwikidoc version="1.3" reference="LinkVisualizer.WebHome" locale="">
-  <web>LinkVisualizer</web>
+<?xml version='1.1' encoding='UTF-8'?>
+<xwikidoc version="1.5" reference="Interactive Link Visualizer Application.WebHome" locale="">
+  <web>Interactive Link Visualizer Application</web>
   <name>WebHome</name>
   <language/>
-  <defaultLanguage/>
+  <defaultLanguage>en</defaultLanguage>
   <translation>0</translation>
-  <creator>xwiki:XWiki.Admin</creator>
+  <creator>XWiki.Admin</creator>
+  <creationDate>1686909852000</creationDate>
   <parent>Main.WebHome</parent>
-  <author>xwiki:XWiki.Admin</author>
-  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
-  <version>1.0</version>
-  <title>Interactive Link Visualizer</title>
-  <minorEdit>false</minorEdit>
+  <author>XWiki.Admin</author>
+  <originalMetadataAuthor>XWiki.Admin</originalMetadataAuthor>
+  <contentAuthor>XWiki.Admin</contentAuthor>
+  <date>1686916364000</date>
+  <contentUpdateDate>1686916254000</contentUpdateDate>
+  <version>12.2</version>
+  <title>Interactive Link Visualizer Application</title>
+  <comment/>
+  <minorEdit>true</minorEdit>
   <syntaxId>xwiki/2.1</syntaxId>
   <hidden>false</hidden>
-  <content>{{velocity}}</content>
+  <content>{{html}}
+&lt;div id="sigma-container">&lt;/div>
+    &lt;div id="buttons">
+      &lt;button id="circular">
+        &lt;span>
+          &lt;svg id="xwikibuttons" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">&lt;circle cx="12" cy="20" r="2">&lt;/circle>&lt;circle cx="12" cy="4" r="2">&lt;/circle>&lt;circle cx="6.343" cy="17.657" r="2">&lt;/circle>&lt;circle cx="17.657" cy="6.343" r="2">&lt;/circle>&lt;circle cx="4" cy="12" r="2.001">&lt;/circle>&lt;circle cx="20" cy="12" r="2">&lt;/circle>&lt;circle cx="6.343" cy="6.344" r="2">&lt;/circle>&lt;circle cx="17.657" cy="17.658" r="2">&lt;/circle>&lt;/svg>Circular Layout&lt;/span>
+      &lt;/button>
+      &lt;button id="forceatlas2">
+        &lt;span>
+          &lt;img id="forceatlas2-start-label" src="{{velocity}}[[attach:BiPlay.svg]]{{/velocity}}" />
+          &lt;img
+            id="forceatlas2-stop-label"
+            style="display: none;"
+            src="{{velocity}}[[attach:BiPlay.svg]]{{/velocity}}"
+          />
+          Force Atlas 2 Layout
+        &lt;/span>
+        &lt;button id="random">
+          &lt;span
+            >&lt;img src="./GiPerspectiveDiceSixFaces.svg" />Random Layout&lt;/span
+          >
+        &lt;/button>
+      &lt;/button>
+    &lt;/div>
+    &lt;div id="search">
+      &lt;input
+        type="search"
+        id="search-input"
+        list="suggestions"
+        placeholder="Search for nodes..."
+      />
+      &lt;datalist id="suggestions">&lt;/datalist>
+    &lt;/div>
 
-
+    &lt;div id="controls">
+      &lt;div class="input">
+        &lt;label for="zoom-in">Zoom In&lt;/label
+        >&lt;button id="zoom-in">
+          &lt;span>&lt;img src="./zoomInButton.svg" />&lt;/span>
+        &lt;/button>
+      &lt;/div>
+      &lt;div class="input">
+        &lt;label for="zoom-out">Zoom Out&lt;/label
+        >&lt;button id="zoom-out">
+          &lt;span>&lt;img src="./zoomOutButton.svg" />&lt;/span>
+        &lt;/button>
+      &lt;/div>
+      &lt;div class="input">
+        &lt;label for="zoom-reset">Reset Zoom&lt;/label
+        >&lt;button id="zoom-reset">
+          &lt;span>&lt;img src="./resetZoomButton.svg" />&lt;/span>
+        &lt;/button>
+      &lt;/div>
+      &lt;div class="input">
+        &lt;label for="labels-threshold">Labels threshold&lt;/label>
+        &lt;input id="labels-threshold" type="range" min="0" max="15" step="0.5" />
+      &lt;/div>
+    &lt;/div>
+{{/html}}</content>
+  <attachment>
+    <filename>BiPlay.svg</filename>
+    <mimetype>image/svg+xml</mimetype>
+    <charset>UTF-8</charset>
+    <author>XWiki.Admin</author>
+    <date>1686915856000</date>
+    <version>1.1</version>
+    <comment/>
+    <content>PHN2ZyBzdHJva2U9ImN1cnJlbnRDb2xvciIgZmlsbD0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjAiIHZpZXdCb3g9IjAgMCAyNCAyNCIgaGVpZ2h0PSIxZW0iIHdpZHRoPSIxZW0iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTcgNnYxMmwxMC02eiI+PC9wYXRoPjwvc3ZnPgo=</content>
+    <filesize>182</filesize>
+  </attachment>
   <object>
-    <name>LinkVisualizer.WebHome</name>
+    <name>Interactive Link Visualizer Application.WebHome</name>
     <number>0</number>
-    <className>XWiki.UIExtensionClass</className>
-    <guid></guid>
+    <className>XWiki.JavaScriptExtension</className>
+    <guid>33cdd287-9ca3-4303-a349-6e5d9afd4aba</guid>
     <class>
-      
-      <scope>
+      <name>XWiki.JavaScriptExtension</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <cache>
         <cache>0</cache>
+        <defaultValue>long</defaultValue>
         <disabled>0</disabled>
         <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
         <multiSelect>0</multiSelect>
-        <name>scope</name>
-        <number>8</number>
-        <prettyName>Extension Scope</prettyName>
+        <name>cache</name>
+        <number>5</number>
+        <prettyName>Caching policy</prettyName>
         <relationalStorage>0</relationalStorage>
         <separator> </separator>
         <separators>|, </separators>
         <size>1</size>
         <unmodifiable>0</unmodifiable>
-        <values>wiki=Current Wiki|user=Current User|global=Global</values>
+        <values>long|short|default|forbid</values>
         <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
-      </scope>
+      </cache>
+      <code>
+        <contenttype>PureText</contenttype>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>code</name>
+        <number>2</number>
+        <prettyName>Code</prettyName>
+        <restricted>0</restricted>
+        <rows>20</rows>
+        <size>50</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </code>
+      <name>
+        <disabled>0</disabled>
+        <name>name</name>
+        <number>1</number>
+        <prettyName>Name</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </name>
+      <parse>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType>yesno</displayType>
+        <name>parse</name>
+        <number>4</number>
+        <prettyName>Parse content</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </parse>
+      <use>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>use</name>
+        <number>3</number>
+        <prettyName>Use this extension</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>currentPage|onDemand|always</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </use>
     </class>
     <property>
-      <async_cached>0</async_cached>
+      <cache>default</cache>
     </property>
     <property>
-    <property>
-      <async_context>
-        <value>doc.reference</value>
-      </async_context>
+      <code>require(['jquery'], function($) {
+  var solrServiceURL = new XWiki.Document('SuggestSolrService', 'XWiki').getURL('get');
+  var data = null;
+  var nodeKeyCounter = 1;
+  var edgeKeyCounter = 1;
+
+  $.post(solrServiceURL, {
+    outputSyntax: 'plain',
+    nb: 100,
+    media: 'json',
+    query: [
+      'q=*:*',
+      'q.op=AND',
+      'fq=type:DOCUMENT',
+      'fl=title_,reference,links'
+    ].join('\n'),
+    input: " "
+  }, function(response) {
+    data = response;
+
+    var nodes = data.map(function(obj) {
+      var referenceArray = XWiki.Model.resolve(obj.reference);
+      var url = new XWiki.Document(referenceArray).getURL();
+
+      var node = {
+        key: obj.reference,
+        attributes: {
+          label: obj.title_,
+          color: getRandomColor(),
+          reference: obj.reference,
+          PageURL: url
+        }
+      };
+      return node;
+    });
+
+    var edges = data
+      .filter(function(obj) {
+        return obj.links &amp;&amp; obj.links.length > 0;
+      })
+      .map(function(obj) {
+        var edge = {
+          key: edgeKeyCounter.toString(),
+          target: obj.links.map(function(link) {
+            return link.replace(/^entity:/, '');
+          }),
+          source: obj.reference
+        };
+        edgeKeyCounter++;
+        return edge;
+      });
+
+    var output = {
+      nodes: nodes,
+      edges: edges
+    };
+
+    // Function to generate a random hex color code
+    function getRandomColor() {
+      var letters = '0123456789ABCDEF';
+      var color = '#';
+      for (var i = 0; i &lt; 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+
+    console.log("This is the modified data:", output);
+
+    // Convert the output to a JSON string
+    var jsonData = JSON.stringify(output, null, 2);
+
+    // Create a Blob object from the JSON string
+    var blob = new Blob([jsonData], { type: 'application/json' });
+
+    // Create a URL for the Blob object
+    var urlBlob = URL.createObjectURL(blob);
+
+    // Open the URL in a new tab/window
+    window.open(urlBlob);
+  });
+});
+</code>
     </property>
     <property>
-      <async_enabled>0</async_enabled>
+      <name>API</name>
     </property>
     <property>
-      <content/>
+      <parse>1</parse>
     </property>
     <property>
-      <extensionPointId></extensionPointId>
+      <use>currentPage</use>
+    </property>
+  </object>
+  <object>
+    <name>Interactive Link Visualizer Application.WebHome</name>
+    <number>0</number>
+    <className>XWiki.StyleSheetExtension</className>
+    <guid>bf6a169a-1a47-4665-99ee-1d43dd757b6a</guid>
+    <class>
+      <name>XWiki.StyleSheetExtension</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <cache>
+        <cache>0</cache>
+        <defaultValue>long</defaultValue>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>cache</name>
+        <number>5</number>
+        <prettyName>Caching policy</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>long|short|default|forbid</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </cache>
+      <code>
+        <contenttype>PureText</contenttype>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>code</name>
+        <number>2</number>
+        <prettyName>Code</prettyName>
+        <restricted>0</restricted>
+        <rows>20</rows>
+        <size>50</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </code>
+      <contentType>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>contentType</name>
+        <number>6</number>
+        <prettyName>Content Type</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>CSS|LESS</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </contentType>
+      <name>
+        <disabled>0</disabled>
+        <name>name</name>
+        <number>1</number>
+        <prettyName>Name</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </name>
+      <parse>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType>yesno</displayType>
+        <name>parse</name>
+        <number>4</number>
+        <prettyName>Parse content</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </parse>
+      <use>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>use</name>
+        <number>3</number>
+        <prettyName>Use this extension</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>currentPage|onDemand|always</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </use>
+    </class>
+    <property>
+      <cache>long</cache>
     </property>
     <property>
-      <name></name>
+      <code>#sigma-container {
+        width: 1200px;
+        height: 1000px;
+        margin-top: 1em;
+        padding: 0;
+        overflow: hidden;
+      }
+      #buttons {
+        position: absolute;
+        right: 1em;
+        top: 1em;
+        display: flex;
+      }
+
+      #buttons > button {
+        margin-right: 2em;
+        display: inline-block;
+        text-align: center;
+        background: white;
+        outline: none;
+        border: 1px solid dimgrey;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: transform 0.2s;
+      }
+      #buttons > button:active {
+        transform: scale(0.95);
+      }
+      #buttons > button img {
+        height: 2em;
+        margin-right: 0.1em;
+        margin-top: 0.2em;
+        margin-bottom: 0.1em;
+      }
+      #buttons > button > span {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        margin-right: 0.5em;
+        margin-bottom: 0.1em;
+      }
+      #buttons > button:last-child {
+        margin-right: 0;
+      }
+      #buttons > button:hover {
+        background-color: rgb(230, 247, 231);
+      }
+
+      #search {
+        position: absolute;
+        left: 1em;
+        top: 1em;
+      }
+      #search-input {
+        height: 2.4em;
+        border: 1px solid dimgrey;
+        border-radius: 5px;
+        padding: 12px 12px;
+        text-align: left;
+        transition: box-shadow 0.3s;
+      }
+
+      #search-input:focus {
+        outline: none;
+        box-shadow: 0px 0 8px rgb(230, 247, 231);
+      }
+
+      #controls {
+        position: absolute;
+        right: 1em;
+        bottom: 2em;
+      }
+      .input {
+        position: relative;
+        display: inline-block;
+        vertical-align: middle;
+      }
+      .input:not(:hover) label {
+        display: none;
+      }
+      .input label {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: black;
+        color: white;
+        padding: 0.2em;
+        border-radius: 2px;
+        margin-top: 0.3em;
+        font-size: 0.8em;
+        white-space: nowrap;
+      }
+      .input button {
+        width: 3em;
+        height: 3em;
+        display: inline-block;
+        text-align: center;
+        background: white;
+        outline: none;
+        border: 1px solid dimgrey;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+#xwikibuttons {
+        height: 2em;
+        margin-right: 0.1em;
+        margin-top: 0.2em;
+        margin-bottom: 0.1em;
+      .input button:hover {
+        background: rgb(230, 247, 231);
+      }</code>
     </property>
     <property>
-      <parameters>label=Interactive Link Visualizer
-target=LinkVisualizer.WebHome
-icon=icon:somethingCool</parameters>
+      <contentType>CSS</contentType>
     </property>
     <property>
-      <scope>wiki</scope>
+      <name>Stylesheet CSS</name>
+    </property>
+    <property>
+      <parse>1</parse>
+    </property>
+    <property>
+      <use>currentPage</use>
     </property>
   </object>
 </xwikidoc>
