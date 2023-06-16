@@ -41,7 +41,7 @@
 - [ ] Research on testing JS framework & write tests for the application (potential choice: [Jasmine](https://jasmine.github.io/))
 - [ ] Translations for the application
 - [X] Interactive buttons for controls
-- [ ] Provide a way to filter the number of documents in a wiki we wish to visualize (basically to change the value of the `nb: value-here` parameter. The default is 100 for now)
+- [ ] Provide a way to filter the number of documents in a wiki we wish to visualize (basically to change the `value` of the `nb: value` parameter. The default is 100 for now)
 - [ ] Publish the extension the XWiki Extension Store and write documentations & demo around the extension
 
 <!--  ## Week 4 (19 June - 25 June 2023)
