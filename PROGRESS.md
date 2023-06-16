@@ -21,16 +21,16 @@
 - [X] Implemented the `Search in nodes...` feature in the API
 - [X] Implemented the `Search suggestions` feature that suggests the available nodes for searching
 - [X] Implemented all layouts `random-layout`, `forceAtlas2-layout` and `circular layout` in the API and provided toggle buttons for each of the 3 layouts
-  Note: The demo fork of the implemenation is [here](https://codesandbox.io/s/layout-experiment-vq1xec)
+  Note: The demo fork of the implemenation is [here](https://codesandbox.io/s/myself-layout-experiment-mxkq36)
 
 ## Week 3 (12 June - 18 June 2023)
 
+- [X] Study XWiki's JavaScript API and the relevant methods like `getURL()` to generate page's URL
+- [X] Generate required attributes for nodes & edges like wiki page's `URL, size, color` etc.
+- [X] Develop the data-source by generating the `data` object from Solr queries
 
 ## Tasks for coming days...
 
-- [ ] Develop the data-source by generating the `data` object from Solr queries
-- [X] Study XWiki's JavaScript API and the relevant methods like `getURL()` to generate page's URL
-- [ ] Generate required attributes for nodes & edges like wiki page's `URL, size, color` etc.
 - [ ] Provide event handlers to handle click events in the API (eg, to open the page corresponding to the clicked node)
 - [ ] Study about the `Localization Module` in order to generate key-value pairs that will allow the possibility of translation of the application pages
 - [ ] Study and implement macro for the application (take inspiration from XWiki's ChartJS application)
@@ -41,7 +41,7 @@
 - [ ] Research on testing JS framework & write tests for the application (potential choice: [Jasmine](https://jasmine.github.io/))
 - [ ] Translations for the application
 - [X] Interactive buttons for controls
-- [ ] Provide a way to filter the number of documents in a wiki we wish to visualize
+- [ ] Provide a way to filter the number of documents in a wiki we wish to visualize (basically to change the value of the `nb: value-here` parameter. The default is 100 for now)
 - [ ] Publish the extension the XWiki Extension Store and write documentations & demo around the extension
 
 <!--  ## Week 4 (19 June - 25 June 2023)
