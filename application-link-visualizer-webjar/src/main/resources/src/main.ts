@@ -28,353 +28,239 @@ import {
   NodeDisplayData
 } from "sigma/types";
 import { animateNodes } from "sigma/utils/animate";
-import data from "./data.json";
 import FA2Layout from "graphology-layout-forceatlas2/worker";
 import forceAtlas2 from "graphology-layout-forceatlas2";
+import myPersonalData from "./data.json";
 
-const graph = new Graph();
-graph.import(data);
+class GraphVisualizer {
+  private graph: Graph;
+  private fa2Layout: FA2Layout | null;
+  private cancelCurrentAnimation: (() => void) | null;
 
-// -----------------------------------------------------------------
-// INIT GRAPH ATTRIBUTES
-const radius = 200; // Radius of the shape
-const centerX = 300; // X-coordinate of the center of the shape
-const centerY = 300; // Y-coordinate of the center of the shape
-const angleIncrement = (2 * Math.PI) / graph.order; // Angle increment for each node
-const maxPerturbation = 20; // Maximum perturbation from the calculated position
+  constructor(data: any) {
+    this.graph = new Graph();
+    this.graph.import(data);
+    this.fa2Layout = null;
+    this.cancelCurrentAnimation = null;
 
-let i = 0;
-let occupiedAngles = new Set();
+    // Initialize the graph attributes
+    const radius = 200;
+    const centerX = 300;
+    const centerY = 300;
+    const angleIncrement = (2 * Math.PI) / this.graph.order;
+    const maxPerturbation = 20;
+    let i = 0;
+    let occupiedAngles = new Set();
 
-graph.forEachNode((node) => {
-  let angle = i * angleIncrement; // Calculate the angle for the current node
+    this.graph.forEachNode((node) => {
+      let angle = i * angleIncrement;
 
-  // Adjust the angle if it overlaps with existing nodes
-  while (occupiedAngles.has(angle)) {
-    angle += angleIncrement;
+      while (occupiedAngles.has(angle)) {
+        angle += angleIncrement;
+      }
+
+      const perturbation =
+        Math.random() * maxPerturbation - maxPerturbation / 2;
+      const x = centerX + (radius + perturbation) * Math.cos(angle);
+      const y = centerY + (radius + perturbation) * Math.sin(angle);
+
+      this.graph.setNodeAttribute(node, "x", x);
+      this.graph.setNodeAttribute(node, "y", y);
+
+      occupiedAngles.add(angle);
+      i++;
+    });
+
+    let j = 0;
+    this.graph.forEachNode((node) => {
+      this.graph.setNodeAttribute(node, "size", 10);
+      j++;
+    });
+
+    let k = 0;
+    this.graph.forEachEdge((edge) => {
+      this.graph.setEdgeAttribute(edge, "size", 4);
+      k++;
+    });
+
+    const sensibleSettings = forceAtlas2.inferSettings(this.graph);
+    this.fa2Layout = new FA2Layout(this.graph, {
+      iterations: 5,
+      settings: sensibleSettings
+    });
   }
 
-  // Add random perturbation to the position
-  const perturbation = Math.random() * maxPerturbation - maxPerturbation / 2;
-  const x = centerX + (radius + perturbation) * Math.cos(angle); // Calculate x-coordinate with perturbation
-  const y = centerY + (radius + perturbation) * Math.sin(angle); // Calculate y-coordinate with perturbation
-
-  graph.setNodeAttribute(node, "x", x);
-  graph.setNodeAttribute(node, "y", y);
-
-  occupiedAngles.add(angle);
-  i++;
-});
-
-// Initialise size
-let j = 0;
-graph.forEachNode((node) => {
-  graph.setNodeAttribute(node, "size", 10);
-  j++;
-});
-
-let k = 0;
-graph.forEachEdge((edge) => {
-  graph.setEdgeAttribute(edge, "size", 4);
-  j++;
-});
-
-// -----------------------------------------------------------------
-
-// DOM ELEMENTS
-const container = document.getElementById("sigma-container") as HTMLElement;
-const FA2Button = document.getElementById("forceatlas2") as HTMLElement;
-const FA2StopLabel = document.getElementById(
-  "forceatlas2-stop-label"
-) as HTMLElement;
-const FA2StartLabel = document.getElementById(
-  "forceatlas2-start-label"
-) as HTMLElement;
-const randomButton = document.getElementById("random") as HTMLElement;
-const circularButton = document.getElementById("circular") as HTMLElement;
-const searchInput = document.getElementById("search-input") as HTMLInputElement;
-const searchSuggestions = document.getElementById(
-  "suggestions"
-) as HTMLDataListElement;
-const zoomInBtn = document.getElementById("zoom-in") as HTMLButtonElement;
-const zoomOutBtn = document.getElementById("zoom-out") as HTMLButtonElement;
-const zoomResetBtn = document.getElementById("zoom-reset") as HTMLButtonElement;
-const labelsThresholdRange = document.getElementById(
-  "labels-threshold"
-) as HTMLInputElement;
-
-// A variable is used to toggle state between start and stop
-let cancelCurrentAnimation: (() => void) | null = null;
-
-// FA2 Layout
-const sensibleSettings = forceAtlas2.inferSettings(graph);
-const fa2Layout = new FA2Layout(graph, {
-  iterations: 5,
-  settings: sensibleSettings
-});
-
-// A button to trigger the layout start/stop actions
-
-// correlate start/stop actions with state management
-function stopFA2() {
-  fa2Layout.stop();
-  FA2StartLabel.style.display = "flex";
-  FA2StopLabel.style.display = "none";
-}
-function startFA2() {
-  if (cancelCurrentAnimation) cancelCurrentAnimation();
-  fa2Layout.start();
-  FA2StartLabel.style.display = "none";
-  FA2StopLabel.style.display = "flex";
-}
-
-// the main toggle function
-function toggleFA2Layout() {
-  if (fa2Layout.isRunning()) {
-    stopFA2();
-  } else {
-    startFA2();
+  private stopFA2(): void {
+    if (this.fa2Layout) {
+      this.fa2Layout.stop();
+    }
   }
-}
-// bind method to the forceatlas2 button
-FA2Button.addEventListener("click", toggleFA2Layout);
 
-// RANDOM LAYOUT
-function randomLayout() {
-  // stop fa2 if running
-  if (fa2Layout.isRunning()) stopFA2();
-  if (cancelCurrentAnimation) cancelCurrentAnimation();
+  private startFA2(): void {
+    if (this.cancelCurrentAnimation) {
+      this.cancelCurrentAnimation();
+    }
 
-  // to keep positions scale uniform between layouts, we first calculate positions extents
-  const xExtents = { min: 0, max: 0 };
-  const yExtents = { min: 0, max: 0 };
-  graph.forEachNode((node, attributes) => {
-    xExtents.min = Math.min(attributes.x, xExtents.min);
-    xExtents.max = Math.max(attributes.x, xExtents.max);
-    yExtents.min = Math.min(attributes.y, yExtents.min);
-    yExtents.max = Math.max(attributes.y, yExtents.max);
-  });
-  const randomPositions: PlainObject<PlainObject<number>> = {};
-  graph.forEachNode((node) => {
-    // create random positions respecting position extents
-    randomPositions[node] = {
-      x: Math.random() * (xExtents.max - xExtents.min),
-      y: Math.random() * (yExtents.max - yExtents.min)
+    if (this.fa2Layout) {
+      this.fa2Layout.start();
+    }
+  }
+
+  toggleFA2Layout(): void {
+    if (this.fa2Layout) {
+      if (this.fa2Layout.isRunning()) {
+        this.stopFA2();
+      } else {
+        this.startFA2();
+      }
+    }
+  }
+
+  randomLayout(): void {
+    if (this.fa2Layout && this.fa2Layout.isRunning()) {
+      this.stopFA2();
+    }
+
+    if (this.cancelCurrentAnimation) {
+      this.cancelCurrentAnimation();
+    }
+
+    const xExtents = { min: 0, max: 0 };
+    const yExtents = { min: 0, max: 0 };
+    this.graph.forEachNode((node, attributes) => {
+      xExtents.min = Math.min(attributes.x, xExtents.min);
+      xExtents.max = Math.max(attributes.x, xExtents.max);
+      yExtents.min = Math.min(attributes.y, yExtents.min);
+      yExtents.max = Math.max(attributes.y, yExtents.max);
+    });
+
+    const currentCenterX = (xExtents.min + xExtents.max) / 2;
+    const currentCenterY = (yExtents.min + yExtents.max) / 2;
+
+    const radius = Math.max(
+      Math.abs(xExtents.max - currentCenterX),
+      Math.abs(xExtents.min - currentCenterX),
+      Math.abs(yExtents.max - currentCenterY),
+      Math.abs(yExtents.min - currentCenterY)
+    );
+
+    const maxPerturbation = radius / 10;
+
+    this.graph.forEachNode((node) => {
+      const perturbationX =
+        Math.random() * maxPerturbation * 2 - maxPerturbation;
+      const perturbationY =
+        Math.random() * maxPerturbation * 2 - maxPerturbation;
+
+      const x = currentCenterX + perturbationX;
+      const y = currentCenterY + perturbationY;
+
+      this.graph.setNodeAttribute(node, "x", x);
+      this.graph.setNodeAttribute(node, "y", y);
+    });
+
+    const settings = forceAtlas2.inferSettings(this.graph);
+    this.fa2Layout = new FA2Layout(this.graph, {
+      iterations: 5,
+      settings
+    });
+
+    this.startFA2();
+  }
+
+  animateNode(nodeId: string, targetCoordinates: Coordinates): Promise<void> {
+    return new Promise((resolve) => {
+      if (this.fa2Layout && this.fa2Layout.isRunning()) {
+        this.stopFA2();
+      }
+
+      if (this.cancelCurrentAnimation) {
+        this.cancelCurrentAnimation();
+      }
+
+      const duration = 500;
+      const easing = "quadraticInOut";
+
+      const startCoordinates = this.graph.getNodeAttributes(nodeId);
+
+      this.cancelCurrentAnimation = animateNodes(
+        this.graph,
+        [{ key: nodeId, target: targetCoordinates }],
+        {
+          easing,
+          duration,
+          onComplete: () => {
+            this.cancelCurrentAnimation = null;
+            resolve();
+          },
+          renderFrame: () => {
+            this.sigma.refresh();
+          }
+        }
+      );
+    });
+  }
+
+  private createSigmaInstance(container: HTMLElement): Sigma {
+    return new Sigma(this.graph, container, {
+      minCameraRatio: 0.1,
+      maxCameraRatio: 10
+    });
+  }
+
+  private getNodeDisplayData(node: NodeDisplayData): PlainObject {
+    const { x, y, size, color } = node;
+
+    return {
+      x,
+      y,
+      size,
+      color,
+      label: "",
+      type: "circle",
+      zIndex: 1
     };
-  });
-  // use sigma animation to update new positions
-  cancelCurrentAnimation = animateNodes(graph, randomPositions, {
-    duration: 2500
-  });
+  }
+
+  private getEdgeDisplayData(edge: EdgeDisplayData): PlainObject {
+    const { size, color, source, target } = edge;
+
+    return {
+      size,
+      color,
+      source,
+      target,
+      zIndex: 0
+    };
+  }
+
+  visualize(container: HTMLElement): void {
+    this.sigma = this.createSigmaInstance(container);
+
+    const nodes = this.graph.nodes();
+    const edges = this.graph.edges();
+
+    const nodeDisplayData = nodes.reduce(
+      (data: PlainObject, node: string) => ({
+        ...data,
+        [node]: this.getNodeDisplayData(this.graph.getNodeAttributes(node))
+      }),
+      {}
+    );
+
+    const edgeDisplayData = edges.reduce(
+      (data: PlainObject, edge: string) => ({
+        ...data,
+        [edge]: this.getEdgeDisplayData(this.graph.getEdgeAttributes(edge))
+      }),
+      {}
+    );
+
+    this.sigma.refresh();
+  }
 }
 
-// bind method to the random button
-randomButton.addEventListener("click", randomLayout);
-
-/** CIRCULAR LAYOUT **/
-function circularLayout() {
-  // stop fa2 if running
-  if (fa2Layout.isRunning()) stopFA2();
-  if (cancelCurrentAnimation) cancelCurrentAnimation();
-
-  //since we want to use animations we need to process positions before applying them through animateNodes
-  const circularPositions = circular(graph, { scale: 100 });
-  //In other context, it's possible to apply the position directly we : circular.assign(graph, {scale:100})
-  cancelCurrentAnimation = animateNodes(graph, circularPositions, {
-    duration: 2000,
-    easing: "linear"
-  });
-}
-
-// bind method to the random button
-circularButton.addEventListener("click", circularLayout);
-
-const renderer = new Sigma(graph, container, {
-  minCameraRatio: 0.1,
-  maxCameraRatio: 10
-});
-
-// -----------------------------------------------------
-// SEARCH FUNCTION
-// Type and declare internal state:
-interface State {
-  hoveredNode?: string;
-  searchQuery: string;
-
-  // State derived from query:
-  selectedNode?: string;
-  suggestions?: Set<string>;
-
-  // State derived from hovered node:
-  hoveredNeighbors?: Set<string>;
-}
-const state: State = { searchQuery: "" };
-
-// Feed the datalist autocomplete values:
-searchSuggestions.innerHTML = graph
-  .nodes()
-  .map(
-    (node) =>
-      `<option value="${graph.getNodeAttribute(node, "label")}"></option>`
-  )
-  .join("\n");
-
-// Actions:
-function setSearchQuery(query: string) {
-  state.searchQuery = query;
-
-  if (searchInput.value !== query) searchInput.value = query;
-
-  if (query) {
-    const lcQuery = query.toLowerCase();
-    const suggestions = graph
-      .nodes()
-      .map((n) => ({
-        id: n,
-        label: graph.getNodeAttribute(n, "label") as string
-      }))
-      .filter(({ label }) => label.toLowerCase().includes(lcQuery));
-
-    // If we have a single perfect match, them we remove the suggestions, and
-    // we consider the user has selected a node through the datalist
-    // autocomplete:
-    if (suggestions.length === 1 && suggestions[0].label === query) {
-      state.selectedNode = suggestions[0].id;
-      state.suggestions = undefined;
-
-      // Move the camera to center it on the selected node:
-      const nodePosition = renderer.getNodeDisplayData(
-        state.selectedNode
-      ) as Coordinates;
-      renderer.getCamera().animate(nodePosition, {
-        duration: 2000
-      });
-    }
-    // Else, we display the suggestions list:
-    else {
-      state.selectedNode = undefined;
-      state.suggestions = new Set(suggestions.map(({ id }) => id));
-    }
-  }
-  // If the query is empty, then we reset the selectedNode / suggestions state:
-  else {
-    state.selectedNode = undefined;
-    state.suggestions = undefined;
-  }
-
-  // Refresh rendering:
-  renderer.refresh();
-}
-function setHoveredNode(node?: string) {
-  if (node) {
-    state.hoveredNode = node;
-    state.hoveredNeighbors = new Set(graph.neighbors(node));
-  } else {
-    state.hoveredNode = undefined;
-    state.hoveredNeighbors = undefined;
-  }
-
-  // Refresh rendering:
-  renderer.refresh();
-}
-
-// Bind search input interactions:
-searchInput.addEventListener("input", () => {
-  setSearchQuery(searchInput.value || "");
-});
-searchInput.addEventListener("blur", () => {
-  setSearchQuery("");
-});
-
-// Bind graph interactions:
-renderer.on("enterNode", ({ node }) => {
-  setHoveredNode(node);
-});
-renderer.on("leaveNode", () => {
-  setHoveredNode(undefined);
-});
-
-// Render nodes accordingly to the internal state:
-// 1. If a node is selected, it is highlighted
-// 2. If there is query, all non-matching nodes are greyed
-// 3. If there is a hovered node, all non-neighbor nodes are greyed
-renderer.setSetting("nodeReducer", (node, data) => {
-  const res: Partial<NodeDisplayData> = { ...data };
-
-  if (
-    state.hoveredNeighbors &&
-    !state.hoveredNeighbors.has(node) &&
-    state.hoveredNode !== node
-  ) {
-    res.label = "";
-    res.color = "#f6f6f6";
-  }
-
-  if (state.selectedNode === node) {
-    res.highlighted = true;
-  } else if (state.suggestions && !state.suggestions.has(node)) {
-    res.label = "";
-    res.color = "#f6f6f6";
-  }
-
-  return res;
-});
-
-// Render edges accordingly to the internal state:
-// 1. If a node is hovered, the edge is hidden if it is not connected to the
-//    node
-// 2. If there is a query, the edge is only visible if it connects two
-//    suggestions
-renderer.setSetting("edgeReducer", (edge, data) => {
-  const res: Partial<EdgeDisplayData> = { ...data };
-
-  if (state.hoveredNode && !graph.hasExtremity(edge, state.hoveredNode)) {
-    res.hidden = true;
-  }
-
-  if (
-    state.suggestions &&
-    (!state.suggestions.has(graph.source(edge)) ||
-      !state.suggestions.has(graph.target(edge)))
-  ) {
-    res.hidden = true;
-  }
-
-  return res;
-});
-
-// ---------------------------------------------------------
-
-// Interactive Buttons
-const camera = renderer.getCamera();
-
-// Bind zoom manipulation buttons
-zoomInBtn.addEventListener("click", () => {
-  camera.animatedZoom({ duration: 800 });
-});
-zoomOutBtn.addEventListener("click", () => {
-  camera.animatedUnzoom({ duration: 800 });
-});
-zoomResetBtn.addEventListener("click", () => {
-  camera.animatedReset({ duration: 800 });
-});
-
-// Bind labels threshold to range input
-labelsThresholdRange.addEventListener("input", () => {
-  renderer.setSetting(
-    "labelRenderedSizeThreshold",
-    +labelsThresholdRange.value
-  );
-});
-
-// Set proper range initial value:
-labelsThresholdRange.value =
-  renderer.getSetting("labelRenderedSizeThreshold") + "";
-
-// ---------- CLICK EVENTS ----------------------------------
-
-
-
-export function test() {
-  console.log("Export method!")
-} 
+export default GraphVisualizer;
+const container = document.getElementById("sigma-container");
+const graphVisualizer = new GraphVisualizer(myPersonalData);
+graphVisualizer.visualize(container);
