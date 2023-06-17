@@ -54,9 +54,8 @@
     </developer>
   </developers>
   <modules>
-    <module>application-interactive-link-visualizer-demo</module>
-    <module>application-interactive-link-visualizer-ui</module>
-    <module>application-interactive-link-visualizer-webjar</module>
+    <module>application-link-visualizer-ui</module>
+    <module>application-link-visualizer-webjar</module>
   </modules>
   <properties>
     <xwiki.issueManagement.jira.id>INTLV</xwiki.issueManagement.jira.id>
