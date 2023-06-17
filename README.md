@@ -3,7 +3,7 @@
 Visualize pages present in a wiki in the form of a network-graph consisting of many nodes and edges. 
 
 * Project Lead: [Rajat Khanduri](https://www.xwiki.org/xwiki/bin/view/XWiki/rajat)
-* Documentation & Download: [coming soon...]
+* Documentation & Download: `coming soon...`
 * Issue Tracker: [JIRA](https://jira.xwiki.org/projects/INTLV)
 * Communication: [Mailing List](http://dev.xwiki.org/xwiki/bin/view/Community/MailingLists), [IRC](http://dev.xwiki.org/xwiki/bin/view/Community/IRC)
 * [Development Practices](http://dev.xwiki.org)
