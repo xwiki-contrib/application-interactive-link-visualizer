@@ -1,6 +1,6 @@
 {
   "name": "link-visualizer-api-webjar",
-  "version": "1.0.0",
+  "version": "1.0",
   "description": "The Webjar for the Link Visualizer Application's API responsible for the core visualization code",
   "scripts": {
     "exec": "node dist/bundle.js",
