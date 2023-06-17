@@ -1,0 +1,24 @@
+{
+  "name": "link-visualizer-api-webjar",
+  "version": "1.0.0",
+  "description": "The Webjar for the Link Visualizer Application's API responsible for the core visualization code",
+  "scripts": {
+    "exec": "node dist/bundle.js",
+    "build": "npx webpack --mode=production"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "graphology": "^0.23.0",
+    "graphology-layout": "^0.4.1",
+    "graphology-layout-forceatlas2": "^0.8.1",
+    "sigma": "latest"
+  },
+  "devDependencies": {
+    "ts-loader": "9.4.3",
+    "typescript": "5.0.4",
+    "webpack": "5.84.1",
+    "webpack-cli": "5.1.1",
+    "kotatsu": "0.22.3"
+  }
+}
