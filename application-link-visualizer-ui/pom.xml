@@ -51,17 +51,6 @@
       <version>${platform.version}</version>
       <type>xar</type>
     </dependency>
-    <!-- Leaflet dependencies -->
-    <dependency>
-      <groupId>org.webjars.npm</groupId>
-      <artifactId>leaflet</artifactId>
-      <version>1.5.1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.webjars.npm</groupId>
-      <artifactId>github-com-Leaflet-Leaflet-Editable</artifactId>
-      <version>1.1.0</version>
-    </dependency>
   </dependencies>
   <build>
     <!-- Needed to add support for the XAR packaging -->
