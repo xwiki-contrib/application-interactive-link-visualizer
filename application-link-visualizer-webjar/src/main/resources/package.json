@@ -9,10 +9,9 @@
   "author": "Rajat Khanduri",
   "license": "ISC",
   "dependencies": {
-    "graphology": "^0.23.0",
-    "graphology-layout": "^0.4.1",
-    "graphology-layout-forceatlas2": "^0.8.1",
-    "sigma": "latest"
+    "graphology": "0.25.1",
+    "sigma": "3.0.0-alpha3",
+    "graphology-layout-forceatlas2": "0.8.1"
   },
   "devDependencies": {
     "ts-loader": "9.4.3",
