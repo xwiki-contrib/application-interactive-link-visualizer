@@ -24,8 +24,8 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.xwiki.contrib</groupId>
-    <artifactId>parent-platform</artifactId>
-    <version>14.10.10</version>
+    <artifactId>application-interactive-link-visualizer</artifactId>
+    <version>1.0</version>
   </parent>
   <packaging>webjar</packaging>
   <artifactId>interactive-link-visualizer-webjar</artifactId>

@@ -11,38 +11,17 @@
   <author>XWiki.Admin</author>
   <originalMetadataAuthor>XWiki.Admin</originalMetadataAuthor>
   <contentAuthor>XWiki.Admin</contentAuthor>
-  <date>1686916364000</date>
-  <contentUpdateDate>1686916254000</contentUpdateDate>
-  <version>12.2</version>
+  <date>1687356268000</date>
+  <contentUpdateDate>1687356268000</contentUpdateDate>
+  <version>29.1</version>
   <title>Interactive Link Visualizer Application</title>
   <comment/>
-  <minorEdit>true</minorEdit>
+  <minorEdit>false</minorEdit>
   <syntaxId>xwiki/2.1</syntaxId>
   <hidden>false</hidden>
   <content>{{html}}
 &lt;div id="sigma-container">&lt;/div>
-    &lt;div id="buttons">
-      &lt;button id="circular">
-        &lt;span>
-          &lt;svg id="xwikibuttons" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">&lt;circle cx="12" cy="20" r="2">&lt;/circle>&lt;circle cx="12" cy="4" r="2">&lt;/circle>&lt;circle cx="6.343" cy="17.657" r="2">&lt;/circle>&lt;circle cx="17.657" cy="6.343" r="2">&lt;/circle>&lt;circle cx="4" cy="12" r="2.001">&lt;/circle>&lt;circle cx="20" cy="12" r="2">&lt;/circle>&lt;circle cx="6.343" cy="6.344" r="2">&lt;/circle>&lt;circle cx="17.657" cy="17.658" r="2">&lt;/circle>&lt;/svg>Circular Layout&lt;/span>
-      &lt;/button>
-      &lt;button id="forceatlas2">
-        &lt;span>
-          &lt;img id="forceatlas2-start-label" src="{{velocity}}[[attach:BiPlay.svg]]{{/velocity}}" />
-          &lt;img
-            id="forceatlas2-stop-label"
-            style="display: none;"
-            src="{{velocity}}[[attach:BiPlay.svg]]{{/velocity}}"
-          />
-          Force Atlas 2 Layout
-        &lt;/span>
-        &lt;button id="random">
-          &lt;span
-            >&lt;img src="./GiPerspectiveDiceSixFaces.svg" />Random Layout&lt;/span
-          >
-        &lt;/button>
-      &lt;/button>
-    &lt;/div>
+    &lt;div id="buttons">&lt;/div>
     &lt;div id="search">
       &lt;input
         type="search"
@@ -53,7 +32,7 @@
       &lt;datalist id="suggestions">&lt;/datalist>
     &lt;/div>
 
-    &lt;div id="controls">
+    &lt;!-- &lt;div id="controls">
       &lt;div class="input">
         &lt;label for="zoom-in">Zoom In&lt;/label
         >&lt;button id="zoom-in">
@@ -71,13 +50,13 @@
         >&lt;button id="zoom-reset">
           &lt;span>&lt;img src="./resetZoomButton.svg" />&lt;/span>
         &lt;/button>
-      &lt;/div>
+      &lt;/div> -->
       &lt;div class="input">
         &lt;label for="labels-threshold">Labels threshold&lt;/label>
         &lt;input id="labels-threshold" type="range" min="0" max="15" step="0.5" />
       &lt;/div>
     &lt;/div>
-{{/html}}</content>
+    {{/html}}</content>
   <attachment>
     <filename>BiPlay.svg</filename>
     <mimetype>image/svg+xml</mimetype>
@@ -177,7 +156,14 @@
       <cache>default</cache>
     </property>
     <property>
-      <code>require(['jquery'], function($) {
+      <code>require.config({
+  paths: {
+    'bundle': '$services.webjars.url('org.xwiki.contrib:webpack-demo-v8', 'bundle.js')'
+  }
+});
+
+require(['jquery', 'bundle'], function($, bundle) {
+  
   var solrServiceURL = new XWiki.Document('SuggestSolrService', 'XWiki').getURL('get');
   var data = null;
   var nodeKeyCounter = 1;
@@ -213,28 +199,31 @@
       return node;
     });
 
-    var edges = data
-      .filter(function(obj) {
-        return obj.links &amp;&amp; obj.links.length > 0;
-      })
-      .map(function(obj) {
-        var edge = {
-          key: edgeKeyCounter.toString(),
-          target: obj.links.map(function(link) {
-            return link.replace(/^entity:/, '');
-          }),
-          source: obj.reference
-        };
-        edgeKeyCounter++;
-        return edge;
-      });
-
-    var output = {
+    var edges = [];
+    data.forEach(function(obj) {
+      if (obj.links &amp;&amp; obj.links.length > 0) {
+        obj.links.forEach(function(link) {
+          var target = link.replace(/^entity:/, '');
+          var isValid = data.some(function(item) {
+            return item.reference === target;
+          });
+          if (isValid) {
+            edges.push({
+              key: edgeKeyCounter.toString(),
+              target: target,
+              source: obj.reference
+            });
+            edgeKeyCounter++;
+          }
+        });
+      }
+    });
+    var myPersonalData = {
       nodes: nodes,
       edges: edges
     };
-
-    // Function to generate a random hex color code
+    
+  // Function to generate a random hex color code
     function getRandomColor() {
       var letters = '0123456789ABCDEF';
       var color = '#';
@@ -244,10 +233,13 @@
       return color;
     }
 
-    console.log("This is the modified data:", output);
+    console.log("This is the modified data:", myPersonalData);
+    bundle.visualize(myPersonalData, "sigma-container");
 
+    
+    // THIS IS FOR DEBUGGING PURPOSE, THE JSON FILE IS DIRECTLY OPENED IN THE NEW TAB SO I DONT HAVE TO OPEN CONSOLE AGAIN AND AGAIN
     // Convert the output to a JSON string
-    var jsonData = JSON.stringify(output, null, 2);
+    var jsonData = JSON.stringify(myPersonalData, null, 2);
 
     // Create a Blob object from the JSON string
     var blob = new Blob([jsonData], { type: 'application/json' });
@@ -377,7 +369,8 @@
       <cache>long</cache>
     </property>
     <property>
-      <code>#sigma-container {
+      <code>
+      #sigma-container {
         width: 1200px;
         height: 1000px;
         margin-top: 1em;
@@ -447,7 +440,7 @@
       #controls {
         position: absolute;
         right: 1em;
-        bottom: 2em;
+        top: 1em;
       }
       .input {
         position: relative;
@@ -481,11 +474,6 @@
         border-radius: 5px;
         cursor: pointer;
       }
-#xwikibuttons {
-        height: 2em;
-        margin-right: 0.1em;
-        margin-top: 0.2em;
-        margin-bottom: 0.1em;
       .input button:hover {
         background: rgb(230, 247, 231);
       }</code>
