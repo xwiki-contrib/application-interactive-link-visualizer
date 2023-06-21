@@ -28,9 +28,19 @@
 - [X] Study XWiki's JavaScript API and the relevant methods like `getURL()` to generate page's URL
 - [X] Generate required attributes for nodes & edges like wiki page's `URL, size, color` etc.
 - [X] Develop the data-source by generating the `data` object from Solr queries
+- [X] Solved the data-source issue of having links that does not point to any reference (it could happen due to some reasons eg, if hidden documents are not being shown to the user). This was resulting in generating an edge for which we have no node. This is fixed now.
+- [X] Solved the issue of having multiple targets `(links)` for a single source `(reference)` by splitting the edges. Now the data-source is acceptable in the API in the as is form.
+
+
+## Week 4 (19 June - 25 June 2023)
+
+- [X] Implemented the functionality to make the graph nodes draggable.
+- [X] Solved the issue of stopping the `FA2Layout` after some time to save the resources (CPU & Memory)
 
 ## Tasks for coming days...
 
+- [ ] Create a UIX entry for the application so that it is visible in the left panel of XWiki.
+- [ ] Provide a better way to implement the color of nodes. Currently we use random color generation for the ndoes
 - [ ] Provide event handlers to handle click events in the API (eg, to open the page corresponding to the clicked node)
 - [ ] Study about the `Localization Module` in order to generate key-value pairs that will allow the possibility of translation of the application pages
 - [ ] Study and implement macro for the application (take inspiration from XWiki's ChartJS application)
