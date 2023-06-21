@@ -292,7 +292,7 @@ export function visualize(data: any, sigmaContainer: string) {
     e.original.stopPropagation();
   });
 
-    // On mouse up, we reset the autoscale and the dragging mode
+    // On mouse up, we reset the autoscaling and the dragging mode
   renderer.getMouseCaptor().on("mouseup", () => {
     if (draggedNode) {
       graph.removeNodeAttribute(draggedNode, "highlighted");
