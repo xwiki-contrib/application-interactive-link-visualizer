@@ -18,393 +18,293 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-import Graph from "graphology";
+import { DirectedGraph } from "graphology";
 import Sigma from "sigma";
-import { circular } from "graphology-layout";
-import {
-  PlainObject,
-  Coordinates,
-  EdgeDisplayData,
-  NodeDisplayData
-} from "sigma/types";
-import { animateNodes } from "sigma/utils/animate";
-import FA2Layout from "graphology-layout-forceatlas2/worker";
+import { Coordinates, EdgeDisplayData, NodeDisplayData } from "sigma/types";
 import forceAtlas2 from "graphology-layout-forceatlas2";
-import myPersonalData from "./data.json";
+import FA2Layout from "graphology-layout-forceatlas2/worker";
 
-class GraphVisualizer {
-  private graph: Graph;
-  private fa2Layout: FA2Layout | null;
-  private cancelCurrentAnimation: (() => void) | null;
+export function visualize(data: any, sigmaContainer: string) {
+  const graph = new DirectedGraph();
+  graph.import(data);
 
-  FA2Button = document.getElementById("forceatlas2") as HTMLElement;
-  FA2StopLabel = document.getElementById(
-    "forceatlas2-stop-label"
-  ) as HTMLElement;
-  FA2StartLabel = document.getElementById(
-    "forceatlas2-start-label"
-  ) as HTMLElement;
-  randomButton = document.getElementById("random") as HTMLElement;
-  circularButton = document.getElementById("circular") as HTMLElement;
-  searchInput = document.getElementById("search-input") as HTMLInputElement;
-  searchSuggestions = document.getElementById(
+  // Initialise x and y coordinates; nodes and edges size
+
+  let i = 0;
+  graph.forEachNode((node) => {
+    graph.setNodeAttribute(node, "x", i++);
+    graph.setNodeAttribute(node, "y", i);
+    i++;
+  });
+  let j = 0;
+  graph.forEachNode((node) => {
+    graph.setNodeAttribute(node, "size", 10);
+    j++;
+  });
+  let k = 0;
+  graph.forEachEdge((edge) => {
+    graph.setEdgeAttribute(edge, "size", 3);
+    k++;
+  });
+
+  // Declare DOM Elements
+  const container = document.getElementById(sigmaContainer) as HTMLElement;
+  const searchInput = document.getElementById(
+    "search-input"
+  ) as HTMLInputElement;
+  const searchSuggestions = document.getElementById(
     "suggestions"
   ) as HTMLDataListElement;
-  zoomInBtn = document.getElementById("zoom-in") as HTMLButtonElement;
-  zoomOutBtn = document.getElementById("zoom-out") as HTMLButtonElement;
-  zoomResetBtn = document.getElementById("zoom-reset") as HTMLButtonElement;
-  labelsThresholdRange = document.getElementById(
+  const zoomInBtn = document.getElementById("zoom-in") as HTMLButtonElement;
+  const zoomOutBtn = document.getElementById("zoom-out") as HTMLButtonElement;
+  const zoomResetBtn = document.getElementById(
+    "zoom-reset"
+  ) as HTMLButtonElement;
+  const labelsThresholdRange = document.getElementById(
     "labels-threshold"
   ) as HTMLInputElement;
 
-  constructor(data: JSON) {
-    this.graph = new Graph();
-    this.graph.import(data);
-    this.fa2Layout = null;
-    this.cancelCurrentAnimation = null;
+  // 2 Options for Settings
+  const sensibleSettings = forceAtlas2.inferSettings(graph);
+  const customSettings = {
+    gravity: 1,
+    adjustSizes: true,
+    barnesHutOptimize: true
+  };
+  const fa2Layout = new FA2Layout(graph, {
+    settings: customSettings
+  });
 
-    // Initialize the graph attributes
-    const radius = 200;
-    const centerX = 300;
-    const centerY = 300;
-    const angleIncrement = (2 * Math.PI) / this.graph.order;
-    const maxPerturbation = 20;
-    let i = 0;
-    let occupiedAngles = new Set();
-
-    this.graph.forEachNode((node) => {
-      let angle = i * angleIncrement;
-
-      while (occupiedAngles.has(angle)) {
-        angle += angleIncrement;
-      }
-
-      const perturbation =
-        Math.random() * maxPerturbation - maxPerturbation / 2;
-      const x = centerX + (radius + perturbation) * Math.cos(angle);
-      const y = centerY + (radius + perturbation) * Math.sin(angle);
-
-      this.graph.setNodeAttribute(node, "x", x);
-      this.graph.setNodeAttribute(node, "y", y);
-
-      occupiedAngles.add(angle);
-      i++;
-    });
-
-    let j = 0;
-    this.graph.forEachNode((node) => {
-      this.graph.setNodeAttribute(node, "size", 10);
-      j++;
-    });
-
-    let k = 0;
-    this.graph.forEachEdge((edge) => {
-      this.graph.setEdgeAttribute(edge, "size", 4);
-      k++;
-    });
-
-    const sensibleSettings = forceAtlas2.inferSettings(this.graph);
-    this.fa2Layout = new FA2Layout(this.graph, {
-      iterations: 5,
-      settings: sensibleSettings
-    });
+  function stopFA2() {
+    fa2Layout.stop();
   }
-
-  private stopFA2(): void {
-    this.fa2Layout.stop();
-    this.FA2StartLabel.style.display = "flex";
-    this.FA2StopLabel.style.display = "none";
+  function startFA2() {
+    fa2Layout.start();
+    setTimeout(stopFA2, 5000); // Stop the layout after 5 seconds
   }
+  startFA2();
 
-  private startFA2(): void {
-    if (this.cancelCurrentAnimation) {
-      this.cancelCurrentAnimation();
-    }
+  const renderer = new Sigma(graph, container);
 
-    this.fa2Layout.start();
-    this.FA2StartLabel.style.display = "none";
-    this.FA2StopLabel.style.display = "flex";
-  }
-
-  toggleFA2Layout(): void {
-    if (this.fa2Layout.isRunning()) {
-      this.stopFA2();
-    } else {
-      this.startFA2();
-    }
-  }
-
-  // bind method to the forceatlas2 button
-
-  // this.FA2Button.addEventListener("click", this.toggleFA2Layout.bind(this));
-
-  randomLayout(): void {
-    if (this.fa2Layout && this.fa2Layout.isRunning()) {
-      this.stopFA2();
-    }
-
-    if (this.cancelCurrentAnimation) {
-      this.cancelCurrentAnimation();
-    }
-
-    const xExtents = { min: 0, max: 0 };
-    const yExtents = { min: 0, max: 0 };
-    this.graph.forEachNode((node, attributes) => {
-      xExtents.min = Math.min(attributes.x, xExtents.min);
-      xExtents.max = Math.max(attributes.x, xExtents.max);
-      yExtents.min = Math.min(attributes.y, yExtents.min);
-      yExtents.max = Math.max(attributes.y, yExtents.max);
-    });
-
-    const randomPositions: PlainObject<PlainObject<number>> = {};
-    this.graph.forEachNode((node) => {
-      // create random positions respecting position extents
-      randomPositions[node] = {
-        x: Math.random() * (xExtents.max - xExtents.min),
-        y: Math.random() * (yExtents.max - yExtents.min)
-      };
-    });
-    // use sigma animation to update new positions
-    this.cancelCurrentAnimation = animateNodes(this.graph, randomPositions, {
-      duration: 2500
-    });
-
-    // bind method to the random button
-    //this.randomButton.addEventListener("click", randomLayout);
-  }
-
-  /** CIRCULAR LAYOUT **/
-  circularLayout(): void {
-    // stop fa2 if running
-    if (this.fa2Layout.isRunning()) this.stopFA2();
-    if (this.cancelCurrentAnimation) this.cancelCurrentAnimation();
-
-    //since we want to use animations we need to process positions before applying them through animateNodes
-    const circularPositions = circular(this.graph, { scale: 100 });
-    //In other context, it's possible to apply the position directly we : circular.assign(graph, {scale:100})
-    this.cancelCurrentAnimation = animateNodes(this.graph, circularPositions, {
-      duration: 2000,
-      easing: "linear"
-    });
-  }
-
-  // bind method to the random button
-  // circularButton.addEventListener("click", circularLayout);
-
-  private createSigmaInstance(container: HTMLElement): Sigma {
-    return new Sigma(this.graph, container, {
-      minCameraRatio: 0.1,
-      maxCameraRatio: 10
-    });
-  }
-
-  // const renderer = new Sigma(this.graph, container: HTMLElement, {
-  //   minCameraRatio: 0.1,
-  //   maxCameraRatio: 10
-  // });
-
-  private getNodeDisplayData(node: NodeDisplayData): PlainObject {
-    const { x, y, size, color } = node;
-
-    return {
-      x,
-      y,
-      size,
-      color,
-      label: "",
-      type: "circle",
-      zIndex: 1
-    };
-  }
-
-  private getEdgeDisplayData(edge: EdgeDisplayData): PlainObject {
-    const { size, color, source, target } = edge;
-
-    return {
-      size,
-      color,
-      source,
-      target,
-      zIndex: 0
-    };
-  }
-
-  visualize(container: HTMLElement): void {
-    this.sigma = this.createSigmaInstance(container);
-
-    const nodes = this.graph.nodes();
-    const edges = this.graph.edges();
-
-    const nodeDisplayData = nodes.reduce(
-      (data: PlainObject, node: string) => ({
-        ...data,
-        [node]: this.getNodeDisplayData(this.graph.getNodeAttributes(node))
-      }),
-      {}
-    );
-
-    const edgeDisplayData = edges.reduce(
-      (data: PlainObject, edge: string) => ({
-        ...data,
-        [edge]: this.getEdgeDisplayData(this.graph.getEdgeAttributes(edge))
-      }),
-      {}
-    );
-
-    this.sigma.refresh();
-  }
-
-  // -----------------------------------------------------
-  // SEARCH FUNCTION
+  // Search by nodes feature
   // Type and declare internal state:
-  // interface State {
-  //   hoveredNode?: string;
-  //   searchQuery: string;
-  //   selectedNode?: string;
-  //   suggestions?: Set<string>;
-  //   hoveredNeighbors?: Set<string>;
-  // }
+  interface State {
+    hoveredNode?: string;
+    searchQuery: string;
 
-  // private state: State = { searchQuery: "" };
+    // State derived from query:
+    selectedNode?: string;
+    suggestions?: Set<string>;
 
-  // // Feed the datalist autocomplete values:
-  // this.searchSuggestions.innerHTML = this.graph
-  //   .nodes()
-  //   .map(
-  //     (node) =>
-  //       `<option value="${this.graph.getNodeAttribute(
-  //         node,
-  //         "label"
-  //       )}"></option>`
-  //   )
-  //   .join("\n");
+    // State derived from hovered node:
+    hoveredNeighbors?: Set<string>;
+  }
+  const state: State = { searchQuery: "" };
 
-  // // Actions:
-  // private setSearchQuery(query: string): void {
-  //   this.state.searchQuery = query;
+  // Feed the datalist autocomplete values:
+  searchSuggestions.innerHTML = graph
+    .nodes()
+    .map(
+      (node) =>
+        `<option value="${graph.getNodeAttribute(node, "label")}"></option>`
+    )
+    .join("\n");
 
-  //   if (searchInput.value !== query) searchInput.value = query;
+  // Actions:
+  function setSearchQuery(query: string) {
+    state.searchQuery = query;
 
-  //   if (query) {
-  //     const lcQuery = query.toLowerCase();
-  //     const suggestions = this.graph
-  //       .nodes()
-  //       .map((n) => ({
-  //         id: n,
-  //         label: this.graph.getNodeAttribute(n, "label") as string
-  //       }))
-  //       .filter(({ label }) => label.toLowerCase().includes(lcQuery));
+    if (searchInput.value !== query) searchInput.value = query;
 
-  //     // If we have a single perfect match, then we remove the suggestions, and
-  //     // we consider the user has selected a node through the datalist
-  //     // autocomplete:
-  //     if (suggestions.length === 1 && suggestions[0].label === query) {
-  //       this.state.selectedNode = suggestions[0].id;
-  //       this.state.suggestions = undefined;
+    if (query) {
+      const lcQuery = query.toLowerCase();
+      const suggestions = graph
+        .nodes()
+        .map((n) => ({
+          id: n,
+          label: graph.getNodeAttribute(n, "label") as string
+        }))
+        .filter(({ label }) => label.toLowerCase().includes(lcQuery));
 
-  //       // Move the camera to center it on the selected node:
-  //       const nodePosition = this.renderer.getNodeDisplayData(
-  //         this.state.selectedNode
-  //       ) as Coordinates;
-  //       this.renderer.getCamera().animate(nodePosition, {
-  //         duration: 2000
-  //       });
-  //     }
-  //     // Else, we display the suggestions list:
-  //     else {
-  //       this.state.selectedNode = undefined;
-  //       this.state.suggestions = new Set(suggestions.map(({ id }) => id));
-  //     }
-  //   }
-  //   // If the query is empty, then we reset the selectedNode / suggestions state:
-  //   else {
-  //     this.state.selectedNode = undefined;
-  //     this.state.suggestions = undefined;
-  //   }
+      /* If we have a single perfect match, them we remove the suggestions, and
+         we consider the user has selected a node through the datalist
+         autocomplete: */
+      if (suggestions.length === 1 && suggestions[0].label === query) {
+        state.selectedNode = suggestions[0].id;
+        state.suggestions = undefined;
 
-  //   // Refresh rendering:
-  //   this.renderer.refresh();
-  // }
-  // private setHoveredNode(node?: string): void {
-  //   if (node) {
-  //     this.state.hoveredNode = node;
-  //     this.state.hoveredNeighbors = new Set(this.graph.neighbors(node));
-  //   } else {
-  //     this.state.hoveredNode = undefined;
-  //     this.state.hoveredNeighbors = undefined;
-  //   }
+        // Move the camera to center it on the selected node:
+        const nodePosition = renderer.getNodeDisplayData(
+          state.selectedNode
+        ) as Coordinates;
+        renderer.getCamera().animate(nodePosition, {
+          duration: 2000
+        });
+      }
+      // Else, we display the suggestions list:
+      else {
+        state.selectedNode = undefined;
+        state.suggestions = new Set(suggestions.map(({ id }) => id));
+      }
+    }
+    // If the query is empty, then we reset the selectedNode / suggestions state:
+    else {
+      state.selectedNode = undefined;
+      state.suggestions = undefined;
+    }
 
-  //   // Refresh rendering:
-  //   this.renderer.refresh();
-  // }
+    // Refresh rendering:
+    renderer.refresh();
+  }
+  function setHoveredNode(node?: string) {
+    if (node) {
+      state.hoveredNode = node;
+      state.hoveredNeighbors = new Set(graph.neighbors(node));
+    } else {
+      state.hoveredNode = undefined;
+      state.hoveredNeighbors = undefined;
+    }
 
-  // // Bind search input interactions:
-  // searchInput.addEventListener("input", () => {
-  //   setSearchQuery(searchInput.value || "");
-  // });
-  // searchInput.addEventListener("blur", () => {
-  //   setSearchQuery("");
-  // });
+    // Refresh rendering:
+    renderer.refresh();
+  }
 
-  // // Bind graph interactions:
-  // this.renderer.on("enterNode", ({ node }) => {
-  //   this.setHoveredNode(node);
-  // });
-  // this.renderer.on("leaveNode", () => {
-  //   this.setHoveredNode(undefined);
-  // });
+  // Bind search input interactions:
+  searchInput.addEventListener("input", () => {
+    setSearchQuery(searchInput.value || "");
+  });
+  searchInput.addEventListener("blur", () => {
+    setSearchQuery("");
+  });
 
-  // // Render nodes accordingly to the internal state:
-  // // 1. If a node is selected, it is highlighted
-  // // 2. If there is query, all non-matching nodes are greyed
-  // // 3. If there is a hovered node, all non-neighbor nodes are greyed
-  // this.renderer.setSetting("nodeReducer", (node, data) => {
-  //   const res: Partial<NodeDisplayData> = { ...data };
+  // Bind graph interactions:
+  renderer.on("enterNode", ({ node }) => {
+    setHoveredNode(node);
+  });
+  renderer.on("leaveNode", () => {
+    setHoveredNode(undefined);
+  });
 
-  //   if (
-  //     this.state.hoveredNeighbors &&
-  //     !this.state.hoveredNeighbors.has(node) &&
-  //     this.state.hoveredNode !== node
-  //   ) {
-  //     res.label = "";
-  //     res.color = "#f6f6f6";
-  //   }
+  /* Render nodes accordingly to the internal state:
+     1. If a node is selected, it is highlighted
+     2. If there is query, all non-matching nodes are greyed
+     3. If there is a hovered node, all non-neighbor nodes are greyed */
 
-  //   if (this.state.selectedNode === node) {
-  //     res.highlighted = true;
-  //   } else if (this.state.suggestions && !this.state.suggestions.has(node)) {
-  //     res.label = "";
-  //     res.color = "#f6f6f6";
-  //   }
+  renderer.setSetting("nodeReducer", (node, data) => {
+    const res: Partial<NodeDisplayData> = { ...data };
 
-  //   return res;
-  // });
+    if (
+      state.hoveredNeighbors &&
+      !state.hoveredNeighbors.has(node) &&
+      state.hoveredNode !== node
+    ) {
+      res.label = "";
+      res.color = "#f6f6f6";
+    }
 
-  // // Render edges accordingly to the internal state:
-  // // 1. If a node is hovered, the edge is hidden if it is not connected to the
-  // //    node
-  // // 2. If there is a query, the edge is only visible if it connects two
-  // //    suggestions
-  // this.renderer.setSetting("edgeReducer", (edge, data) => {
-  //   const res: Partial<EdgeDisplayData> = { ...data };
+    if (state.selectedNode === node) {
+      res.highlighted = true;
+    } else if (state.suggestions && !state.suggestions.has(node)) {
+      res.label = "";
+      res.color = "#f6f6f6";
+    }
 
-  //   if (this.state.hoveredNode && !this.graph.hasExtremity(edge, this.state.hoveredNode)) {
-  //     res.hidden = true;
-  //   }
+    return res;
+  });
 
-  //   if (
-  //     this.state.suggestions &&
-  //     (!this.state.suggestions.has(this.graph.source(edge)) ||
-  //       !this.state.suggestions.has(this.graph.target(edge)))
-  //   ) {
-  //     res.hidden = true;
-  //   }
+  /* Render edges accordingly to the internal state:
+   1. If a node is hovered, the edge is hidden if it is not connected to the node
+   2. If there is a query, the edge is only visible if it connects two suggestions */
 
-  //   return res;
-  // });
+  renderer.setSetting("edgeReducer", (edge, data) => {
+    const res: Partial<EdgeDisplayData> = { ...data };
+
+    if (state.hoveredNode && !graph.hasExtremity(edge, state.hoveredNode)) {
+      res.hidden = true;
+    }
+
+    if (
+      state.suggestions &&
+      (!state.suggestions.has(graph.source(edge)) ||
+        !state.suggestions.has(graph.target(edge)))
+    ) {
+      res.hidden = true;
+    }
+
+    return res;
+  });
+
+  // Interactive Buttons
+  const camera = renderer.getCamera();
+
+  // Bind zoom manipulation buttons
+  zoomInBtn.addEventListener("click", () => {
+    camera.animatedZoom({ duration: 800 });
+  });
+  zoomOutBtn.addEventListener("click", () => {
+    camera.animatedUnzoom({ duration: 800 });
+  });
+  zoomResetBtn.addEventListener("click", () => {
+    camera.animatedReset({ duration: 800 });
+  });
+
+  // Bind labels threshold to range input
+  labelsThresholdRange.addEventListener("input", () => {
+    renderer.setSetting(
+      "labelRenderedSizeThreshold",
+      +labelsThresholdRange.value
+    );
+  });
+
+  // Set proper range initial value:
+  labelsThresholdRange.value =
+    renderer.getSetting("labelRenderedSizeThreshold") + "";
+
+  // Draggable nodes feature
+  let draggedNode: string | null = null;
+  let isDragging = false;
+
+  /* On mouse down on a node
+    - we enable the drag mode
+    - save in the dragged node in the state
+    - highlight the node
+    - disable the camera so its state is not updated */
+
+  renderer.on("downNode", (e) => {
+    isDragging = true;
+    draggedNode = e.node;
+    graph.setNodeAttribute(draggedNode, "highlighted", true);
+  });
+
+    // On mouse move, if the drag mode is enabled, we change the position of the draggedNode
+  renderer.getMouseCaptor().on("mousemovebody", (e) => {
+    if (!isDragging || !draggedNode) return;
+
+    // Get new position of node
+    const pos = renderer.viewportToGraph(e);
+
+    graph.setNodeAttribute(draggedNode, "x", pos.x);
+    graph.setNodeAttribute(draggedNode, "y", pos.y);
+
+    // Prevent sigma to move camera:
+    e.preventSigmaDefault();
+    e.original.preventDefault();
+    e.original.stopPropagation();
+  });
+
+    // On mouse up, we reset the autoscale and the dragging mode
+  renderer.getMouseCaptor().on("mouseup", () => {
+    if (draggedNode) {
+      graph.removeNodeAttribute(draggedNode, "highlighted");
+    }
+    isDragging = false;
+    draggedNode = null;
+  });
+
+  // Disable the autoscale at the first down interaction
+  renderer.getMouseCaptor().on("mousedown", () => {
+    if (!renderer.getCustomBBox()) renderer.setCustomBBox(renderer.getBBox());
+  });
 }
 
-export default GraphVisualizer;
-const container: HTMLElement = document.getElementById("sigma-container");
-const graphVisualizer = new GraphVisualizer(myPersonalData);
-graphVisualizer.visualize(container);
+export default visualize;
