@@ -91,13 +91,12 @@ export function visualize(data: any, sigmaContainer: string) {
   const state: State = { searchQuery: "" };
 
   // Feed the datalist autocomplete values:
-  searchSuggestions.innerHTML = graph
-    .nodes()
-    .map(
-      (node) =>
-        `<option value="${graph.getNodeAttribute(node, "label")}"></option>`
-    )
-    .join("\n");
+  graph.forEachNode((node) => {
+    const optionElement = document.createElement("option");
+    const label = graph.getNodeAttribute(node, "label");
+    optionElement.value = label;
+    searchSuggestions.appendChild(optionElement);
+  });
 
   // Actions:
   function setSearchQuery(query: string) {
