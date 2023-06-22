@@ -10,5 +10,5 @@ Visualize pages present in a wiki in the form of a network-graph consisting of m
 * Minimal XWiki Version Supported: XWiki 14.10
 * License: LGPL 2.1+
 * Translations: N/A 
-* Sonar Dashboard: N/A 
-* Continuous Integration Status: N/A
+* [Sonar Dashboard](https://sonarcloud.io/project/overview?id=org.xwiki.contrib%3Aapplication-interactive-link-visualizer)
+* Continuous Integration Status: [![Build Status](https://ci.xwiki.org/view/Contrib/job/XWiki%20Contrib/job/application-interactive-link-visualizer/job/main/badge/icon)](https://ci.xwiki.org/view/Contrib/job/XWiki%20Contrib/job/application-interactive-link-visualizer/job/main/)
