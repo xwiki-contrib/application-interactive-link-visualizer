@@ -32,24 +32,16 @@
   <packaging>xar</packaging>
   <description>Visualize pages present in a wiki in the form of a network-graph consisting of many nodes and edges.</description>
   <properties>
-    <!-- The Extension name. If not defined, the <name> property is used -->
     <xwiki.extension.name>Interactive Link Visualizer</xwiki.extension.name>
-    <!-- The extension's category -->
     <xwiki.extension.category>application</xwiki.extension.category>
   </properties>
   <dependencies>
-    <!-- XWiki dependencies -->
     <dependency>
       <groupId>org.xwiki.platform</groupId>
       <artifactId>xwiki-platform-search-solr-ui</artifactId>
       <version>${platform.version}</version>
       <type>xar</type>
-    </dependency>
-    <dependency>
-      <groupId>org.xwiki.platform</groupId>
-      <artifactId>xwiki-platform-appwithinminutes-ui</artifactId>
-      <version>${platform.version}</version>
-      <type>xar</type>
+      <scope>runtime</scope>
     </dependency>
   </dependencies>
 </project>
