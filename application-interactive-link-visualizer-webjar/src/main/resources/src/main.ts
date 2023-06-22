@@ -52,7 +52,7 @@ export function visualize(data: any, sigmaContainer: string) {
   const zoomResetBtn = document.getElementById("zoom-reset") as HTMLButtonElement;
   const labelsThresholdRange = document.getElementById("labels-threshold") as HTMLInputElement;
 
-  /* We have 2 for settings but ofcourse we can only choose 1 at a time:
+  /* We have 2 options for settings but ofcourse we can only choose 1 at a time:
   const customSettings = {
     gravity: 1,
     adjustSizes: true,
