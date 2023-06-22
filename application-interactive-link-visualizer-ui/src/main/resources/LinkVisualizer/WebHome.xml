@@ -174,7 +174,7 @@
     <property>
       <code>require.config({
   paths: {
-    'bundle': '$services.webjars.url('org.xwiki.contrib:webpack-demo-v8', 'bundle.js')'
+    'bundle': '$services.webjars.url('org.xwiki.contrib:application-interactive-link-visualizer-webjar', 'bundle.js')'
   }
 });
 
