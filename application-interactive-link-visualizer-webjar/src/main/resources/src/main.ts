@@ -98,7 +98,11 @@ export function visualize(data: any, sigmaContainer: string) {
     searchSuggestions.appendChild(optionElement);
   });
 
-  // Actions:
+  // Make a new Set to store all lowercase labels and then perform the check
+  const lowercaseLabels = new Set<string>(
+    graph.nodes().map((n) => graph.getNodeAttribute(n, "label").toLowerCase())
+  );
+
   function setSearchQuery(query: string) {
     state.searchQuery = query;
 
@@ -108,15 +112,17 @@ export function visualize(data: any, sigmaContainer: string) {
       const lcQuery = query.toLowerCase();
       const suggestions = graph
         .nodes()
+        .filter((n) =>
+          lowercaseLabels.has(graph.getNodeAttribute(n, "label").toLowerCase())
+        )
         .map((n) => ({
           id: n,
           label: graph.getNodeAttribute(n, "label") as string
         }))
         .filter(({ label }) => label.toLowerCase().includes(lcQuery));
 
-      /* If we have a single perfect match, them we remove the suggestions, and
-         we consider the user has selected a node through the datalist
-         autocomplete: */
+      /* If we have a single perfect match, then we remove the suggestions, and
+         we consider the user has selected a node through the datalist autocomplete: */
       if (suggestions.length === 1 && suggestions[0].label === query) {
         state.selectedNode = suggestions[0].id;
         state.suggestions = undefined;
