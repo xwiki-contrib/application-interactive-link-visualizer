@@ -29,6 +29,7 @@
   </parent>
   <packaging>webjar</packaging>
   <artifactId>application-interactive-link-visualizer-webjar</artifactId>
+  <name>Interactive Link Visualizer - Webjar</name>
   <build>
     <plugins>
       <plugin>
