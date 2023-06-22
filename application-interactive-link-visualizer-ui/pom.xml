@@ -52,22 +52,4 @@
       <type>xar</type>
     </dependency>
   </dependencies>
-  <build>
-    <!-- Needed to add support for the XAR packaging -->
-    <extensions>
-      <extension>
-        <groupId>org.xwiki.commons</groupId>
-        <artifactId>xwiki-commons-tool-xar-handlers</artifactId>
-        <version>${commons.version}</version>
-      </extension>
-    </extensions>
-    <plugins>
-      <!-- The XAR packaging uses the XAR plugin and thus we need to define what version to use -->
-      <plugin>
-        <groupId>org.xwiki.commons</groupId>
-        <artifactId>xwiki-commons-tool-xar-plugin</artifactId>
-        <version>${commons.version}</version>
-      </plugin>
-    </plugins>
-  </build>
 </project>
