@@ -62,6 +62,7 @@
     <module>application-interactive-link-visualizer-webjar</module>
   </modules>
   <properties>
+    <xwiki.issueManagement.system>jira</xwiki.issueManagement.system>
     <xwiki.issueManagement.jira.id>INTLV</xwiki.issueManagement.jira.id>
     <xwiki.release.jira.skip>false</xwiki.release.jira.skip>
   </properties>
