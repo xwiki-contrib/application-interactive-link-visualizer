@@ -52,6 +52,10 @@
       <id>slauriere</id>
       <name>Stéphane Laurière</name>
     </developer>
+    <developer>
+      <id>manuelleduc</id>
+      <name>Manuel Leduc</name>
+    </developer>
   </developers>
   <modules>
     <module>application-interactive-link-visualizer-ui</module>

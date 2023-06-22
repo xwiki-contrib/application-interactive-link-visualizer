@@ -29,16 +29,6 @@
   </parent>
   <packaging>webjar</packaging>
   <artifactId>application-interactive-link-visualizer-webjar</artifactId>
-  <developers>
-    <developer>
-      <id>wthrajat</id>
-      <name>Rajat Khanduri</name>
-    </developer>
-    <developer>
-      <id>manuelleduc</id>
-      <name>Manuel Leduc</name>
-    </developer>
-  </developers>
   <build>
     <plugins>
       <plugin>
@@ -61,9 +51,7 @@
                 </resource>
               </resources>
             </configuration>
-
           </execution>
-
           <execution>
             <id>copy-node-resources</id>
             <phase>validate</phase>
