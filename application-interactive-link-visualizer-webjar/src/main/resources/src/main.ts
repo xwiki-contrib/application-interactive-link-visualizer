@@ -36,43 +36,31 @@ export function visualize(data: any, sigmaContainer: string) {
     graph.setNodeAttribute(node, "y", i);
     i++;
   });
-  let j = 0;
   graph.forEachNode((node) => {
     graph.setNodeAttribute(node, "size", 10);
-    j++;
   });
-  let k = 0;
   graph.forEachEdge((edge) => {
     graph.setEdgeAttribute(edge, "size", 3);
-    k++;
   });
 
   // Declare DOM Elements
-  const container = document.getElementById(sigmaContainer) as HTMLElement;
-  const searchInput = document.getElementById(
-    "search-input"
-  ) as HTMLInputElement;
-  const searchSuggestions = document.getElementById(
-    "suggestions"
-  ) as HTMLDataListElement;
+  const container = document.getElementById(sigmaContainer);
+  const searchInput = document.getElementById("search-input") as HTMLInputElement;
+  const searchSuggestions = document.getElementById("suggestions") as HTMLDataListElement;
   const zoomInBtn = document.getElementById("zoom-in") as HTMLButtonElement;
   const zoomOutBtn = document.getElementById("zoom-out") as HTMLButtonElement;
-  const zoomResetBtn = document.getElementById(
-    "zoom-reset"
-  ) as HTMLButtonElement;
-  const labelsThresholdRange = document.getElementById(
-    "labels-threshold"
-  ) as HTMLInputElement;
+  const zoomResetBtn = document.getElementById("zoom-reset") as HTMLButtonElement;
+  const labelsThresholdRange = document.getElementById("labels-threshold") as HTMLInputElement;
 
-  // 2 Options for Settings
-  const sensibleSettings = forceAtlas2.inferSettings(graph);
+  // 2 Options for Settings, we can only choose 1 at a time:
   const customSettings = {
     gravity: 1,
     adjustSizes: true,
     barnesHutOptimize: true
   };
+  const sensibleSettings = forceAtlas2.inferSettings(graph);
   const fa2Layout = new FA2Layout(graph, {
-    settings: customSettings
+    settings: sensibleSettings;
   });
 
   function stopFA2() {
