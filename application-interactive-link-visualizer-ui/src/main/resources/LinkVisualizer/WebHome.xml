@@ -199,7 +199,7 @@ require(['jquery', 'bundle'], function($, bundle) {
   }, function(response) {
     tempData = response;
 
-    var nodes = data.map(function(obj) {
+    var nodes = tempData.map(function(obj) {
       var referenceArray = XWiki.Model.resolve(obj.reference);
       var url = new XWiki.Document(referenceArray).getURL();
 
@@ -209,18 +209,18 @@ require(['jquery', 'bundle'], function($, bundle) {
           label: obj.title_,
           color: getRandomColor(),
           reference: obj.reference,
-          PageURL: url
+          pageURL: url
         }
       };
       return node;
     });
 
     var edges = [];
-    data.forEach(function(obj) {
+    tempData.forEach(function(obj) {
       if (obj.links &amp;&amp; obj.links.length &gt; 0) {
         obj.links.forEach(function(link) {
           var target = link.replace(/^entity:/, '');
-          var isValid = data.some(function(item) {
+          var isValid = tempData.some(function(item) {
             return item.reference === target;
           });
           if (isValid) {
