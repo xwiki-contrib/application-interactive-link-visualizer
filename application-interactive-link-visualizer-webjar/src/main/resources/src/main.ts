@@ -61,7 +61,7 @@ export function visualize(data: any, sigmaContainer: string) {
   */
   const sensibleSettings = forceAtlas2.inferSettings(graph);
   const fa2Layout = new FA2Layout(graph, {
-    settings: sensibleSettings;
+    settings: sensibleSettings
   });
 
   function stopFA2() {
