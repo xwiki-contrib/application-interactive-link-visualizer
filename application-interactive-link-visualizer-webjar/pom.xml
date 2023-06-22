@@ -28,11 +28,15 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
   <packaging>webjar</packaging>
-  <artifactId>interactive-link-visualizer-webjar</artifactId>
+  <artifactId>application-interactive-link-visualizer-webjar</artifactId>
   <developers>
     <developer>
       <id>wthrajat</id>
       <name>Rajat Khanduri</name>
+    </developer>
+    <developer>
+      <id>manuelleduc</id>
+      <name>Manuel Leduc</name>
     </developer>
   </developers>
   <build>
