@@ -198,21 +198,15 @@ require(['jquery', 'bundle'], function($, bundle) {
   }, function(response) {
     tempData = response;
 
-    const nodes = tempData.map(function(obj) {
-      const referenceArray = XWiki.Model.resolve(obj.reference);
-      const url = new XWiki.Document(referenceArray).getURL();
-
-      const node = {
-        key: obj.reference,
-        attributes: {
-          label: obj.title_,
-          color: getRandomColor(),
-          reference: obj.reference,
-          pageURL: url
-        }
-      };
-      return node;
-    });
+    const nodes = tempData.map(obj => ({
+  key: obj.reference,
+  attributes: {
+    label: obj.title_,
+    color: getRandomColor(),
+    reference: obj.reference,
+    pageURL: new XWiki.Document(XWiki.Model.resolve(obj.reference)).getURL()
+  }
+}));
 
     const edges = [];
     tempData.forEach(function(obj) {
