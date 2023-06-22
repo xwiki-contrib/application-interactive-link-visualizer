@@ -18,7 +18,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-import { DirectedGraph } from "graphology";
+import DirectedGraph from "graphology";
 import Sigma from "sigma";
 import { Coordinates, EdgeDisplayData, NodeDisplayData } from "sigma/types";
 import forceAtlas2 from "graphology-layout-forceatlas2";
@@ -52,12 +52,13 @@ export function visualize(data: any, sigmaContainer: string) {
   const zoomResetBtn = document.getElementById("zoom-reset") as HTMLButtonElement;
   const labelsThresholdRange = document.getElementById("labels-threshold") as HTMLInputElement;
 
-  // 2 Options for Settings, we can only choose 1 at a time:
+  /* We have 2 for settings but ofcourse we can only choose 1 at a time:
   const customSettings = {
     gravity: 1,
     adjustSizes: true,
     barnesHutOptimize: true
   };
+  */
   const sensibleSettings = forceAtlas2.inferSettings(graph);
   const fa2Layout = new FA2Layout(graph, {
     settings: sensibleSettings;
