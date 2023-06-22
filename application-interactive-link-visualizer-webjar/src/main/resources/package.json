@@ -4,7 +4,8 @@
   "description": "The Webjar for the Link Visualizer Application's API responsible for the core visualization code",
   "scripts": {
     "exec": "node dist/bundle.js",
-    "build": "npx webpack --mode=production"
+    "build": "npx webpack --mode=production",
+    "build-maven": "node node/node_modules/npm/bin/npx-cli.js webpack --mode=production"
   },
   "author": "Rajat Khanduri",
   "license": "ISC",
