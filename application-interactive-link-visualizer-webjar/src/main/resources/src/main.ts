@@ -75,6 +75,13 @@ export function visualize(data: any, sigmaContainer: string) {
 
   const renderer = new Sigma(graph, container);
 
+  // Event handler for click to open page URL when a node is clicked
+  renderer.on("clickNode", ({ node }) => {
+    if (!graph.getNodeAttribute(node, "hidden")) {
+      window.open(graph.getNodeAttribute(node, "pageURL"), "_blank");
+    }
+  });
+
   // Search by nodes feature
   // Type and declare internal state:
   interface State {
