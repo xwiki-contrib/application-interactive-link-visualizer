@@ -10,8 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "graphology": "0.25.1",
-    "sigma": "3.0.0-alpha3",
-    "graphology-layout-forceatlas2": "0.8.1"
+    "graphology-layout-forceatlas2": "0.10.1",
+    "sigma": "2.4.0"
   },
   "devDependencies": {
     "ts-loader": "9.4.3",
