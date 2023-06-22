@@ -180,9 +180,8 @@
 
 require(['jquery', 'bundle'], function($, bundle) {
   
-  var solrServiceURL = new XWiki.Document('SuggestSolrService', 'XWiki').getURL('get');
+  const solrServiceURL = new XWiki.Document('SuggestSolrService', 'XWiki').getURL('get');
   var tempData = null;
-  var nodeKeyCounter = 1;
   var edgeKeyCounter = 1;
 
   $.post(solrServiceURL, {
@@ -199,11 +198,11 @@ require(['jquery', 'bundle'], function($, bundle) {
   }, function(response) {
     tempData = response;
 
-    var nodes = tempData.map(function(obj) {
-      var referenceArray = XWiki.Model.resolve(obj.reference);
-      var url = new XWiki.Document(referenceArray).getURL();
+    const nodes = tempData.map(function(obj) {
+      const referenceArray = XWiki.Model.resolve(obj.reference);
+      const url = new XWiki.Document(referenceArray).getURL();
 
-      var node = {
+      const node = {
         key: obj.reference,
         attributes: {
           label: obj.title_,
@@ -215,7 +214,7 @@ require(['jquery', 'bundle'], function($, bundle) {
       return node;
     });
 
-    var edges = [];
+    const edges = [];
     tempData.forEach(function(obj) {
       if (obj.links &amp;&amp; obj.links.length &gt; 0) {
         obj.links.forEach(function(link) {
@@ -234,7 +233,7 @@ require(['jquery', 'bundle'], function($, bundle) {
         });
       }
     });
-    var graphData = {
+    const graphData = {
       nodes: nodes,
       edges: edges
     };

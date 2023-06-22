@@ -37,10 +37,10 @@ export function visualize(data: any, sigmaContainer: string) {
     i++;
   });
   graph.forEachNode((node) => {
-    graph.setNodeAttribute(node, "size", 10);
+    graph.setNodeAttribute(node, "size", 4);
   });
   graph.forEachEdge((edge) => {
-    graph.setEdgeAttribute(edge, "size", 3);
+    graph.setEdgeAttribute(edge, "size", 1);
   });
 
   // Declare DOM Elements
