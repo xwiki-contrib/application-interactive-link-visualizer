@@ -181,7 +181,7 @@
 require(['jquery', 'bundle'], function($, bundle) {
   
   var solrServiceURL = new XWiki.Document('SuggestSolrService', 'XWiki').getURL('get');
-  var data = null;
+  var tempData = null;
   var nodeKeyCounter = 1;
   var edgeKeyCounter = 1;
 
@@ -193,11 +193,11 @@ require(['jquery', 'bundle'], function($, bundle) {
       'q=*:*',
       'q.op=AND',
       'fq=type:DOCUMENT',
-      'fl=title_,reference,links'
+      'fl=title_, reference, links'
     ].join('\n'),
     input: " "
   }, function(response) {
-    data = response;
+    tempData = response;
 
     var nodes = data.map(function(obj) {
       var referenceArray = XWiki.Model.resolve(obj.reference);
@@ -234,7 +234,7 @@ require(['jquery', 'bundle'], function($, bundle) {
         });
       }
     });
-    var myPersonalData = {
+    var graphData = {
       nodes: nodes,
       edges: edges
     };
@@ -249,22 +249,8 @@ require(['jquery', 'bundle'], function($, bundle) {
       return color;
     }
 
-    console.log("This is the modified data:", myPersonalData);
-    bundle.visualize(myPersonalData, "sigma-container");
+    bundle.visualize(graphData, "sigma-container");
 
-    
-    // THIS IS FOR DEBUGGING PURPOSE, THE JSON FILE IS DIRECTLY OPENED IN THE NEW TAB SO I DONT HAVE TO OPEN CONSOLE AGAIN AND AGAIN
-    // Convert the output to a JSON string
-    var jsonData = JSON.stringify(myPersonalData, null, 2);
-
-    // Create a Blob object from the JSON string
-    var blob = new Blob([jsonData], { type: 'application/json' });
-
-    // Create a URL for the Blob object
-    var urlBlob = URL.createObjectURL(blob);
-
-    // Open the URL in a new tab/window
-    window.open(urlBlob);
   });
 });
 </code>
