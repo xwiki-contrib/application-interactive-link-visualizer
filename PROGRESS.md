@@ -48,7 +48,6 @@
 
 - [ ] Create a UIX entry for the application so that it is visible in the left panel of XWiki.
 - [ ] Provide a better way to implement the color of nodes. Currently we use random color generation for the ndoes
-- [ ] Provide event handlers to handle click events in the API (eg, to open the page corresponding to the clicked node)
 - [ ] Study about the `Localization Module` in order to generate key-value pairs that will allow the possibility of translation of the application pages
 - [ ] Study and implement macro for the application (take inspiration from XWiki's ChartJS application)
 
