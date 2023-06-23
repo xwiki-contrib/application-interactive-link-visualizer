@@ -53,6 +53,7 @@
 - [ ] [Doubt with this comment](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/27f4dc0cf9db1b37dcc6440f3c53d179d0df7a33#r119261381)
 - [ ] Use proper CSS and button styles from XWiki
 - [ ] `<hidden> true </hidden>` or not
+- [ ] Draggable nodes does not work inside XWiki, even though they work everywhere. Debug this
 - [ ] Create a UIX entry for the application so that it is visible in the left panel of XWiki
 - [ ] Provide a better way to implement the color of nodes. Currently we use random color generation for the ndoes
 - [ ] Study about the `Localization Module` in order to generate key-value pairs that will allow the possibility of translation of the application pages
