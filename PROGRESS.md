@@ -36,6 +36,13 @@
 
 - [X] Implemented the functionality to make the graph nodes draggable.
 - [X] Solved the issue of stopping the `FA2Layout` after some time to save the resources (CPU & Memory)
+- [X] Implemented the node click handle event. On clicking the node will open it's page URL from now on
+- [X] CI and Sonar Integration done (special thanks to [Manuel Leduc](https://github.com/manuelleduc))!
+- [X] Created the `<option></option>` element using DOM API for better security and to avoid potential XSS ([commit link](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/d416e98a0e51b152091493dada1030f8666d7015))
+- [X] Made a set to store lowercase labels in `search in nodes...` feature to improve time complexity from O(n) to O(1) ([commit link](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/6271729942b7a491c0c77c0cecfe363e10f9a13d))
+- [X] Optimized the method to generate graph nodes ([commit link](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/11c1a0c5c1c0ec40dac08819db0bdb9ea5d61826))
+- [X] Variables fixed like usage of `const` instead of `var`, removing unused variables etc. ([commit link](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/aa91ce5988c9312a5a5b973aa112bf6892420094))
+- [X] Other code improvements ([commits link](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commits/main))
 
 ## Tasks for coming days...
 
