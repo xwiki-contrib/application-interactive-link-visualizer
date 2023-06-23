@@ -43,6 +43,7 @@
 - [X] Optimized the method to generate graph nodes ([commit link](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/11c1a0c5c1c0ec40dac08819db0bdb9ea5d61826))
 - [X] Variables fixed like usage of `const` instead of `var`, removing unused variables etc. ([commit link](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/aa91ce5988c9312a5a5b973aa112bf6892420094))
 - [X] Other code improvements ([commits link](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commits/main))
+- [X] Added arrow styled edges instead of plain line. Now the links actually points to the nodes.
 
 ## Tasks for coming days...
 
