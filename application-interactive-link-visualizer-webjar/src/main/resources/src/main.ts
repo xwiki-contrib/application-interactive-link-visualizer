@@ -82,9 +82,7 @@ export function visualize(data: any, sigmaContainer: string) {
     labelSize: 13,
     labelWeight: "normal",
     labelColor: { color: "black" },
-    zIndex: true,
-    minCameraRatio: 0.1,
-    maxCameraRatio: 10
+    zIndex: true
   };
 
   const renderer = new Sigma(graph, container, rendererSettings);
