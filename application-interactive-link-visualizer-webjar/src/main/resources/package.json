@@ -3,7 +3,7 @@
   "version": "1.0",
   "description": "The Webjar for the Link Visualizer Application's API responsible for the core visualization code",
   "scripts": {
-    "exec": "node dist/bundle.js",
+    "exec": "node dist/visualisationAPI.js",
     "build": "npx webpack --mode=production",
     "build-maven": "node node/node_modules/npm/bin/npx-cli.js webpack --mode=production"
   },

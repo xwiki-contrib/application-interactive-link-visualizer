@@ -174,11 +174,11 @@
     <property>
       <code>require.config({
   paths: {
-    'bundle': '$services.webjars.url('org.xwiki.contrib:application-interactive-link-visualizer-webjar', 'bundle.js')'
+    'visualisationAPI': '$services.webjars.url('org.xwiki.contrib:application-interactive-link-visualizer-webjar', 'visualisationAPI.js')'
   }
 });
 
-require(['jquery', 'bundle'], function($, bundle) {
+require(['jquery', 'visualisationAPI'], function($, visualisationAPI) {
   
   const solrServiceURL = new XWiki.Document('SuggestSolrService', 'XWiki').getURL('get');
   var tempData = null;
@@ -242,7 +242,7 @@ require(['jquery', 'bundle'], function($, bundle) {
       return color;
     }
 
-    bundle.visualize(graphData, "sigma-container");
+    visualisationAPI.visualize(graphData, "sigma-container");
 
   });
 });
