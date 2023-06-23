@@ -73,7 +73,12 @@ export function visualize(data: any, sigmaContainer: string) {
   }
   startFA2();
 
-  const renderer = new Sigma(graph, container);
+  const renderer = new Sigma(graph, container, {
+    labelDensity: 1,
+    labelGridCellSize: 100,
+    labelRenderedSizeThreshold: 1,
+    defaultEdgeType: "arrow"
+  });
 
   // Event handler for click to open page URL when a node is clicked
   renderer.on("clickNode", ({ node }) => {
