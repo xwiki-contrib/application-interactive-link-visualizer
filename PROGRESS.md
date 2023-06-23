@@ -43,12 +43,17 @@
 - [X] Optimized the method to generate graph nodes ([commit link](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/11c1a0c5c1c0ec40dac08819db0bdb9ea5d61826))
 - [X] Variables fixed like usage of `const` instead of `var`, removing unused variables etc. ([commit link](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/aa91ce5988c9312a5a5b973aa112bf6892420094))
 - [X] Other code improvements ([commits link](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commits/main))
-- [X] Added arrow styled edges instead of plain line. Now the links actually points to the nodes. Also added other optimal renderer settings.
-- [X] Changed the name of output API JS file from `bundle.js` to something more particular.
+- [X] Added arrow styled edges instead of plain line. Now the links actually points to the nodes. Also added other optimal renderer settings
+- [X] Changed the name of output API JS file from `bundle.js` to something more particular
 
 ## Tasks for coming days...
 
-- [ ] Create a UIX entry for the application so that it is visible in the left panel of XWiki.
+- [ ] Use color variables from inside of XWiki instead of hardcoding the color values
+- [ ] Use a [RequireJS Module UIX](https://www.xwiki.org/xwiki/bin/view/Documentation/DevGuide/ExtensionPoint/RequireJS%20Module%20Config) for the visualisation API to keep the code DRY
+- [ ] [Doubt with this comment](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/27f4dc0cf9db1b37dcc6440f3c53d179d0df7a33#r119261381)
+- [ ] Use proper CSS and button styles from XWiki
+- [ ] `<hidden> true </hidden>` or not
+- [ ] Create a UIX entry for the application so that it is visible in the left panel of XWiki
 - [ ] Provide a better way to implement the color of nodes. Currently we use random color generation for the ndoes
 - [ ] Study about the `Localization Module` in order to generate key-value pairs that will allow the possibility of translation of the application pages
 - [ ] Study and implement macro for the application (take inspiration from XWiki's ChartJS application)
