@@ -48,7 +48,7 @@
 
 ## Week 5 (26 June - 2 July 2023)
 
--
+- [X] Implemented the method to filter the number of documents we wish to visualize in the wiki (basically to change the `value` of the `nb: value` parameter). Now the user have to enter the desired value in the field and then only the graph will be visualized
 
 <!--
 ## Week 6 (3 July - 9 July 2023)
@@ -60,17 +60,13 @@
 - [ ] Implement the panel for visualisation only around the opened wiki page
 - [ ] Use color variables from inside of XWiki instead of hardcoding the color values
 - [ ] Use a [RequireJS Module UIX](https://www.xwiki.org/xwiki/bin/view/Documentation/DevGuide/ExtensionPoint/RequireJS%20Module%20Config) for the visualisation API to keep the code DRY
-- [ ] [Doubt with this comment](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/27f4dc0cf9db1b37dcc6440f3c53d179d0df7a33#r119261381)
 - [ ] Use proper CSS and button styles from XWiki
-- [ ] `<hidden> true </hidden>` or not
-- [ ] Draggable nodes does not work inside XWiki, even though they work everywhere. Debug this
 - [ ] Create a UIX entry for the application so that it is visible in the left panel of XWiki
-- [ ] Provide a better way to implement the color of nodes. Currently we use random color generation for the nodes
 - [ ] Study about the `Localization Module` in order to generate key-value pairs that will allow the possibility of translation of the application pages
 
 ## What is left
 
 - [ ] Research on testing JS framework & write tests for the application (potential choice: [Jasmine](https://jasmine.github.io/))
 - [X] Interactive buttons for controls
-- [ ] Provide a way to filter the number of documents in a wiki we wish to visualize (basically to change the `value` of the `nb: value` parameter. The default is 100 for now)
+- [X] Provide a way to filter the number of documents in a wiki we wish to visualize (basically to change the `value` of the `nb: value` parameter. The default is 100 for now)
 - [ ] Publish the extension the XWiki Extension Store and write documentations & demo around the extension
