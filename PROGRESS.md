@@ -48,7 +48,7 @@
 
 ## Week 5 (26 June - 2 July 2023)
 
-- [X] Implemented the method to filter the number of documents we wish to visualize in the wiki (basically to change the `value` of the `nb: value` parameter). Now the user have to enter the desired value in the field and then only the graph will be visualized
+- [X] Implemented the method to filter the number of documents we wish to visualize in the wiki (basically to change the value of the `nb` parameter). Now the user have to enter the desired value in the field and then only the graph will be visualized
 
 <!--
 ## Week 6 (3 July - 9 July 2023)
