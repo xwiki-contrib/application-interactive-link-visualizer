@@ -65,8 +65,6 @@
 
 ## What is left
 
-- [X] Interactive buttons for controls
-- [X] Provide a way to filter the number of documents in a wiki we wish to visualize (basically to change the `value` of the `nb: value` parameter. The default is 100 for now)
 - [ ] Research on testing JS framework & write tests for the application (potential choice: [Jasmine](https://jasmine.github.io/))
 - [ ] Use color variables from inside of XWiki instead of hardcoding the color values
 - [ ] Use proper CSS and button styles from XWiki
