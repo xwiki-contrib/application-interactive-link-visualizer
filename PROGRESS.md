@@ -31,7 +31,6 @@
 - [X] Solved the data-source issue of having links that does not point to any reference (it could happen due to some reasons eg, if hidden documents are not being shown to the user). This was resulting in generating an edge for which we have no node. This is fixed now.
 - [X] Solved the issue of having multiple targets `(links)` for a single source `(reference)` by splitting the edges. Now the data-source is acceptable in the API in the as is form.
 
-
 ## Week 4 (19 June - 25 June 2023)
 
 - [X] Implemented the functionality to make the graph nodes draggable.
@@ -49,24 +48,29 @@
 ## Week 5 (26 June - 2 July 2023)
 
 - [X] Implemented the method to filter the number of documents we wish to visualize in the wiki (basically to change the value of the `nb` parameter). Now the user have to enter the desired value in the field and then only the graph will be visualized
+- [X] Use a [RequireJS Module UIX](https://www.xwiki.org/xwiki/bin/view/Documentation/DevGuide/ExtensionPoint/RequireJS%20Module%20Config) for the visualisation API to keep the code DRY
+- [X] Create a UIX entry for the application so that it is visible in the application panel of XWiki
 
-<!--
 ## Week 6 (3 July - 9 July 2023)
 
-- -->
+# Midterm Evaluation (10 July - 14 July 2023)
+
+
+<!--
+# Final Evaluation (28 August - 04 September)
+-->
+
 
 ## Upcoming tasks
 
 - [ ] Implement the panel for visualisation only around the opened wiki page
-- [ ] Use color variables from inside of XWiki instead of hardcoding the color values
-- [ ] Use a [RequireJS Module UIX](https://www.xwiki.org/xwiki/bin/view/Documentation/DevGuide/ExtensionPoint/RequireJS%20Module%20Config) for the visualisation API to keep the code DRY
-- [ ] Use proper CSS and button styles from XWiki
-- [ ] Create a UIX entry for the application so that it is visible in the left panel of XWiki
-- [ ] Study about the `Localization Module` in order to generate key-value pairs that will allow the possibility of translation of the application pages
 
 ## What is left
 
-- [ ] Research on testing JS framework & write tests for the application (potential choice: [Jasmine](https://jasmine.github.io/))
 - [X] Interactive buttons for controls
 - [X] Provide a way to filter the number of documents in a wiki we wish to visualize (basically to change the `value` of the `nb: value` parameter. The default is 100 for now)
+- [ ] Research on testing JS framework & write tests for the application (potential choice: [Jasmine](https://jasmine.github.io/))
+- [ ] Use color variables from inside of XWiki instead of hardcoding the color values
+- [ ] Use proper CSS and button styles from XWiki
+- [ ] Study about the `Localization Module` in order to generate key-value pairs that will allow the possibility of translation of the application pages
 - [ ] Publish the extension the XWiki Extension Store and write documentations & demo around the extension
