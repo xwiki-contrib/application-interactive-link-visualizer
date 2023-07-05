@@ -1,0 +1,40 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<xwikidoc version="1.5" reference="Link Visualizer - Get started….WebHome" locale="">
+  <web>Link Visualizer - Get started…</web>
+  <name>WebHome</name>
+  <language/>
+  <defaultLanguage>en</defaultLanguage>
+  <translation>0</translation>
+  <creator>XWiki.Admin</creator>
+  <creationDate>1688590014000</creationDate>
+  <parent>Main.WebHome</parent>
+  <author>XWiki.Admin</author>
+  <originalMetadataAuthor>XWiki.Admin</originalMetadataAuthor>
+  <contentAuthor>XWiki.Admin</contentAuthor>
+  <date>1688590318000</date>
+  <contentUpdateDate>1688590318000</contentUpdateDate>
+  <version>2.1</version>
+  <title>Link Visualizer - Get started…</title>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>false</hidden>
+  <content>= Start the application here → **[[Interactive Link Visualizer>>doc:.Interactive Link Visualizer Application.WebHome]]** =
+
+----
+
+== Some things to keep in mind: ==
+
+* (((
+== You can change the number of results (documents) to retrieve from the XWiki Solr index by entering the desired value in the No. of Documents field and then click on Update graph… (the default number is 1000) ==
+)))
+* (((
+== You can zoom-in and zoom-out using the mouse scroll button like you zoom-in a picture! ==
+)))
+* (((
+== You can search for your documents at the top left search bar named Search for nodes… ==
+)))
+* (((
+== The application behaves differently if you have enabled to see hidden pages or not. You will see more document results if you have enabled to see the hidden pages. ==
+)))</content>
+</xwikidoc>
