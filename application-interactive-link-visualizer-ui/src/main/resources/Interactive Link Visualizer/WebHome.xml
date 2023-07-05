@@ -20,8 +20,8 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
 -->
 
-<xwikidoc version="1.5" reference="Link Visualizer - Get started….Interactive Link Visualizer Application.WebHome" locale="">
-  <web>Link Visualizer - Get started….Interactive Link Visualizer Application</web>
+<xwikidoc version="1.5" reference="Link Visualizer - Get started….Interactive Link Visualizer.WebHome" locale="">
+  <web>Link Visualizer - Get started….Interactive Link Visualizer</web>
   <name>WebHome</name>
   <language/>
   <defaultLanguage/>
@@ -85,7 +85,7 @@
 --&gt;
 {{/html}}</content>
   <object>
-    <name>Link Visualizer - Get started….Interactive Link Visualizer Application.WebHome</name>
+    <name>Link Visualizer - Get started….Interactive Link Visualizer.WebHome</name>
     <number>0</number>
     <className>XWiki.JavaScriptExtension</className>
     <guid>c0ee0007-f917-422c-8aea-805cb8cc7738</guid>
@@ -279,7 +279,7 @@ require(['jquery', 'visualisationAPI', 'chroma'], function($, visualisationAPI, 
     </property>
   </object>
   <object>
-    <name>Link Visualizer - Get started….Interactive Link Visualizer Application.WebHome</name>
+    <name>Link Visualizer - Get started….Interactive Link Visualizer.WebHome</name>
     <number>0</number>
     <className>XWiki.StyleSheetExtension</className>
     <guid>dfc2f847-7688-451e-bd54-330d9236fd4c</guid>
@@ -595,7 +595,7 @@ require(['jquery', 'visualisationAPI', 'chroma'], function($, visualisationAPI, 
     </property>
   </object>
   <object>
-    <name>Link Visualizer - Get started….Interactive Link Visualizer Application.WebHome</name>
+    <name>Link Visualizer - Get started….Interactive Link Visualizer.WebHome</name>
     <number>0</number>
     <className>XWiki.UIExtensionClass</className>
     <guid>a8183008-a9b3-492d-994e-9bbbb5cab334</guid>
@@ -740,7 +740,7 @@ icon=icon:world</parameters>
     </property>
   </object>
   <object>
-    <name>Link Visualizer - Get started….Interactive Link Visualizer Application.WebHome</name>
+    <name>Link Visualizer - Get started….Interactive Link Visualizer.WebHome</name>
     <number>1</number>
     <className>XWiki.UIExtensionClass</className>
     <guid>7c7057b0-8091-45a2-9ecc-482a0af45438</guid>

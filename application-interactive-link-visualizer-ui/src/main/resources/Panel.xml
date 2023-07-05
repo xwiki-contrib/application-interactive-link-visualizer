@@ -20,9 +20,9 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
 -->
 
-<xwikidoc version="1.5" reference="Link Visualizer - Get started….Panel demo" locale="">
+<xwikidoc version="1.5" reference="Link Visualizer - Get started….Panel" locale="">
   <web>Link Visualizer - Get started…</web>
-  <name>Panel demo</name>
+  <name>Panel</name>
   <language/>
   <defaultLanguage/>
   <translation>0</translation>
@@ -38,7 +38,7 @@
   <hidden>true</hidden>
   <content/>
   <object>
-    <name>Link Visualizer - Get started….Panel demo</name>
+    <name>Link Visualizer - Get started….Panel</name>
     <number>0</number>
     <className>Panels.PanelClass</className>
     <guid>ea8a230c-5fa5-47e4-b232-35d6975961a7</guid>
@@ -179,7 +179,7 @@
       <content>{{velocity}}
 #panelheader('Panel for INTLV')
 
-#set ($discard = $xwiki.jsx.use('Interactive Link Visualizer Application.Panel'))
+#set ($discard = $xwiki.jsx.use('Interactive Link Visualizer.Panel'))
 * [[Hello World Sandbox&gt;&gt;Sandbox.WebHome]]
 
 #panelfooter()
@@ -197,7 +197,7 @@ The aim for the panel is to show the network graph visualization centered around
     </property>
   </object>
   <object>
-    <name>Link Visualizer - Get started….Panel demo</name>
+    <name>Link Visualizer - Get started….Panel</name>
     <number>0</number>
     <className>XWiki.JavaScriptExtension</className>
     <guid>06b99b14-0d03-4511-9f5d-fc87e40c0bff</guid>
