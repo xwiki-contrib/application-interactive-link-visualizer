@@ -1,71 +1,88 @@
-<?xml version='1.1' encoding='UTF-8'?>
+<?xml version="1.1" encoding="UTF-8"?>
+
+<!--
+ * See the NOTICE file distributed with this work for additional
+ * information regarding copyright ownership.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+-->
+
 <xwikidoc version="1.5" reference="Link Visualizer - Get started….Interactive Link Visualizer Application.WebHome" locale="">
   <web>Link Visualizer - Get started….Interactive Link Visualizer Application</web>
   <name>WebHome</name>
   <language/>
-  <defaultLanguage>en</defaultLanguage>
+  <defaultLanguage/>
   <translation>0</translation>
-  <creator>XWiki.Admin</creator>
-  <creationDate>1688590075000</creationDate>
+  <creator>xwiki:XWiki.Admin</creator>
   <parent>Link Visualizer - Get started….WebHome</parent>
-  <author>XWiki.Admin</author>
-  <originalMetadataAuthor>XWiki.Admin</originalMetadataAuthor>
-  <contentAuthor>XWiki.Admin</contentAuthor>
-  <date>1688590575000</date>
-  <contentUpdateDate>1688590075000</contentUpdateDate>
-  <version>110.1</version>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
   <title>Interactive Link Visualizer</title>
   <comment/>
   <minorEdit>false</minorEdit>
   <syntaxId>xwiki/2.1</syntaxId>
   <hidden>true</hidden>
   <content>{{html}}
-&lt;div id="sigma-container">&lt;/div>
-&lt;div id="top-bar">
-&lt;div id="search">
+&lt;div id="sigma-container"&gt;&lt;/div&gt;
+&lt;div id="top-bar"&gt;
+&lt;div id="search"&gt;
    &lt;input
       type="search"
       id="search-input"
       list="suggestions"
       placeholder="Search for nodes..."
-      />
-   &lt;datalist id="suggestions">&lt;/datalist>
-&lt;/div>
-&lt;div id="nb-field">
-   &lt;label id="nb-field" for="nb-input">Number of documents: &lt;/label>
-   &lt;input type="number" id="nb-input" min="1" max="9999999" step="1" value="1000" placeholder="Enter no. of nodes... ">
-&lt;button id="update-graph-button">Update graph…&lt;/button>
-&lt;/div>
-    &lt;div id="graph-info">
-   &lt;span id="node-count">&lt;/span>
-   &lt;span id="edge-count">&lt;/span>
-&lt;/div>
-&lt;/div>
+      /&gt;
+   &lt;datalist id="suggestions"&gt;&lt;/datalist&gt;
+&lt;/div&gt;
+&lt;div id="nb-field"&gt;
+   &lt;label id="nb-field" for="nb-input"&gt;Number of documents: &lt;/label&gt;
+   &lt;input type="number" id="nb-input" min="1" max="9999999" step="1" value="1000" placeholder="Enter no. of nodes... "&gt;
+&lt;button id="update-graph-button"&gt;Update graph…&lt;/button&gt;
+&lt;/div&gt;
+    &lt;div id="graph-info"&gt;
+   &lt;span id="node-count"&gt;&lt;/span&gt;
+   &lt;span id="edge-count"&gt;&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
-&lt;!-- &lt;div id="controls">
-   &lt;div class="input">
-     &lt;label for="zoom-in">Zoom In&lt;/label
-     >&lt;button id="zoom-in">
-       &lt;span>&lt;img src="./zoomInButton.svg" />&lt;/span>
-     &lt;/button>
-   &lt;/div>
-   &lt;div class="input">
-     &lt;label for="zoom-out">Zoom Out&lt;/label
-     >&lt;button id="zoom-out">
-       &lt;span>&lt;img src="./zoomOutButton.svg" />&lt;/span>
-     &lt;/button>
-   &lt;/div>
-   &lt;div class="input">
-     &lt;label for="zoom-reset">Reset Zoom&lt;/label
-     >&lt;button id="zoom-reset">
-       &lt;span>&lt;img src="./resetZoomButton.svg" />&lt;/span>
-     &lt;/button>
-   &lt;/div> 
-&lt;div class="input">
-   &lt;label for="labels-threshold">Labels threshold&lt;/label>
-   &lt;input id="labels-threshold" type="range" min="0" max="15" step="0.5" />
-&lt;/div>
--->
+&lt;!-- &lt;div id="controls"&gt;
+   &lt;div class="input"&gt;
+     &lt;label for="zoom-in"&gt;Zoom In&lt;/label
+     &gt;&lt;button id="zoom-in"&gt;
+       &lt;span&gt;&lt;img src="./zoomInButton.svg" /&gt;&lt;/span&gt;
+     &lt;/button&gt;
+   &lt;/div&gt;
+   &lt;div class="input"&gt;
+     &lt;label for="zoom-out"&gt;Zoom Out&lt;/label
+     &gt;&lt;button id="zoom-out"&gt;
+       &lt;span&gt;&lt;img src="./zoomOutButton.svg" /&gt;&lt;/span&gt;
+     &lt;/button&gt;
+   &lt;/div&gt;
+   &lt;div class="input"&gt;
+     &lt;label for="zoom-reset"&gt;Reset Zoom&lt;/label
+     &gt;&lt;button id="zoom-reset"&gt;
+       &lt;span&gt;&lt;img src="./resetZoomButton.svg" /&gt;&lt;/span&gt;
+     &lt;/button&gt;
+   &lt;/div&gt; 
+&lt;div class="input"&gt;
+   &lt;label for="labels-threshold"&gt;Labels threshold&lt;/label&gt;
+   &lt;input id="labels-threshold" type="range" min="0" max="15" step="0.5" /&gt;
+&lt;/div&gt;
+--&gt;
 {{/html}}</content>
   <object>
     <name>Link Visualizer - Get started….Interactive Link Visualizer Application.WebHome</name>
@@ -210,7 +227,7 @@ require(['jquery', 'visualisationAPI', 'chroma'], function($, visualisationAPI, 
       });
       const edges = [];
       tempData.forEach(function(obj) {
-        if (obj.links &amp;&amp; obj.links.length > 0) {
+        if (obj.links &amp;&amp; obj.links.length &gt; 0) {
           obj.links.forEach(function(link) {
             var target = link.replace(/^entity:/, '');
             var isValid = tempData.some(function(item) {
@@ -524,7 +541,7 @@ require(['jquery', 'visualisationAPI', 'chroma'], function($, visualisationAPI, 
 	top: 1em;
 	display: flex;
 }
-#buttons>button {
+#buttons&gt;button {
 	margin-right: 2em;
 	display: inline-block;
 	text-align: center;
@@ -536,18 +553,18 @@ require(['jquery', 'visualisationAPI', 'chroma'], function($, visualisationAPI, 
 	transition: transform 0.2s;
 }
 
-#buttons>button:active {
+#buttons&gt;button:active {
 	transform: scale(0.95);
 }
 
-#buttons>button img {
+#buttons&gt;button img {
 	height: 2em;
 	margin-right: 0.1em;
 	margin-top: 0.2em;
 	margin-bottom: 0.1em;
 }
 
-#buttons>button>span {
+#buttons&gt;button&gt;span {
 	height: 100%;
 	display: flex;
 	align-items: center;
@@ -555,11 +572,11 @@ require(['jquery', 'visualisationAPI', 'chroma'], function($, visualisationAPI, 
 	margin-bottom: 0.1em;
 }
 
-#buttons>button:last-child {
+#buttons&gt;button:last-child {
 	margin-right: 0;
 }
 
-#buttons>button:hover {
+#buttons&gt;button:hover {
 	background-color: rgb(230, 247, 231);
 }
 */</code>
@@ -705,7 +722,7 @@ require(['jquery', 'visualisationAPI', 'chroma'], function($, visualisationAPI, 
       <async_enabled>0</async_enabled>
     </property>
     <property>
-      <content></content>
+      <content/>
     </property>
     <property>
       <extensionPointId>org.xwiki.platform.panels.Applications</extensionPointId>
@@ -850,7 +867,7 @@ icon=icon:world</parameters>
       <async_enabled>0</async_enabled>
     </property>
     <property>
-      <content></content>
+      <content/>
     </property>
     <property>
       <extensionPointId>org.xwiki.platform.requirejs.module</extensionPointId>
