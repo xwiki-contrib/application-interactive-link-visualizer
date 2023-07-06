@@ -47,7 +47,7 @@
 
 ## Week 5 (26 June - 2 July 2023)
 
-- [X] Implemented the method to filter the number of documents we wish to visualize in the wiki (basically to change the value of the `nb` parameter). Now the user have to enter the desired value in the field and then only the graph will be visualized
+- [X] Implemented the method to filter the number of documents we wish to visualize in the wiki (basically to change the value of the `nb` parameter). Now the user has a choice to override the default value to whatever they wish for
 - [X] Use a [RequireJS Module UIX](https://www.xwiki.org/xwiki/bin/view/Documentation/DevGuide/ExtensionPoint/RequireJS%20Module%20Config) for the visualisation API to keep the code DRY (don't repeat yourself)
 - [X] Create a UIX entry for the application so that it is visible in the application panel of XWiki
 
