@@ -2,7 +2,7 @@
 
 ## Week 1 (29 May - 04 June 2023)
 
-- [X] Created a new space called `LinkVisualizer` for the application in XWiki
+- [X] Created a new space called `Link Visualizer - Get Started` for the application in XWiki
 - [X] Attented a detailed video meeting with both the mentors
 - [X] Researched about Webjars and studied how to integrate it into the application
 - [X] Developed a `maven-webpack` module to generate the custom Webjar involving TypeScript files (special thanks to [Manuel Leduc](https://github.com/manuelleduc))!
@@ -52,6 +52,8 @@
 - [X] Create a UIX entry for the application so that it is visible in the application panel of XWiki
 
 ## Week 6 (3 July - 9 July 2023)
+
+- [ ] Working on the panel for the application (for visualisation centered around the opened wiki document)
 
 # Midterm Evaluation (10 July - 14 July 2023)
 
