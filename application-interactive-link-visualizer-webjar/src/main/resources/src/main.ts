@@ -29,7 +29,6 @@ export function visualize(data: any, sigmaContainer: string) {
   graph.import(data);
 
   // Initialise x and y coordinates; nodes and edges size
-
   let i = 0;
   graph.forEachNode((node) => {
     graph.setNodeAttribute(node, "x", i++);
@@ -47,10 +46,6 @@ export function visualize(data: any, sigmaContainer: string) {
   const container = document.getElementById(sigmaContainer);
   const searchInput = document.getElementById("search-input") as HTMLInputElement;
   const searchSuggestions = document.getElementById("suggestions") as HTMLDataListElement;
-  const zoomInBtn = document.getElementById("zoom-in") as HTMLButtonElement;
-  const zoomOutBtn = document.getElementById("zoom-out") as HTMLButtonElement;
-  const zoomResetBtn = document.getElementById("zoom-reset") as HTMLButtonElement;
-  const labelsThresholdRange = document.getElementById("labels-threshold") as HTMLInputElement;
 
   /* We have 2 options for settings but ofcourse we can only choose 1 at a time:
   const customSettings = {
@@ -60,6 +55,7 @@ export function visualize(data: any, sigmaContainer: string) {
   };
   */
   const sensibleSettings = forceAtlas2.inferSettings(graph);
+
   const fa2Layout = new FA2Layout(graph, {
     settings: sensibleSettings
   });
@@ -94,184 +90,168 @@ export function visualize(data: any, sigmaContainer: string) {
     }
   });
 
-  // Search by nodes feature
-  // Type and declare internal state:
-  interface State {
-    hoveredNode?: string;
-    searchQuery: string;
+  // Search handle function
+  function handleSearch (graph: DirectedGraph, renderer: Sigma) {
+    if (!searchInput || !searchSuggestions) {
+      return; // Skip search feature if elements are not present
+    }
 
-    // State derived from query:
-    selectedNode?: string;
-    suggestions?: Set<string>;
+    // Search by nodes feature
+    // Type and declare internal state:
+    interface State {
+      hoveredNode?: string;
+      searchQuery: string;
 
-    // State derived from hovered node:
-    hoveredNeighbors?: Set<string>;
-  }
-  const state: State = { searchQuery: "" };
+      // State derived from query:
+      selectedNode?: string;
+      suggestions?: Set<string>;
 
-  // Feed the datalist autocomplete values:
-  graph.forEachNode((node) => {
-    const optionElement = document.createElement("option");
-    const label = graph.getNodeAttribute(node, "label");
-    optionElement.value = label;
-    searchSuggestions.appendChild(optionElement);
-  });
+      // State derived from hovered node:
+      hoveredNeighbors?: Set<string>;
+    }
+    const state: State = { searchQuery: "" };
 
-  // Make a new Set to store all lowercase labels and then perform the check
-  const lowercaseLabels = new Set<string>(
-    graph.nodes().map((n) => graph.getNodeAttribute(n, "label").toLowerCase())
-  );
+    // Feed the datalist autocomplete values:
+    graph.forEachNode((node) => {
+      const optionElement = document.createElement("option");
+      const label = graph.getNodeAttribute(node, "label");
+      optionElement.value = label;
+      searchSuggestions.appendChild(optionElement);
+    });
 
-  function setSearchQuery(query: string) {
-    state.searchQuery = query;
+    // Make a new Set to store all lowercase labels and then perform the check
+    const lowercaseLabels = new Set<string>(
+      graph.nodes().map((n) => graph.getNodeAttribute(n, "label").toLowerCase())
+    );
 
-    if (searchInput.value !== query) searchInput.value = query;
+    function setSearchQuery(query: string) {
+      state.searchQuery = query;
 
-    if (query) {
-      const lcQuery = query.toLowerCase();
-      const suggestions = graph
-        .nodes()
-        .filter((n) =>
-          lowercaseLabels.has(graph.getNodeAttribute(n, "label").toLowerCase())
-        )
-        .map((n) => ({
-          id: n,
-          label: graph.getNodeAttribute(n, "label") as string
-        }))
-        .filter(({ label }) => label.toLowerCase().includes(lcQuery));
+      if (searchInput.value !== query) searchInput.value = query;
 
-      /* If we have a single perfect match, then we remove the suggestions, and
-         we consider the user has selected a node through the datalist autocomplete: */
-      if (suggestions.length === 1 && suggestions[0].label === query) {
-        state.selectedNode = suggestions[0].id;
-        state.suggestions = undefined;
+      if (query) {
+        const lcQuery = query.toLowerCase();
+        const suggestions = graph
+          .nodes()
+          .filter((n) =>
+            lowercaseLabels.has(
+              graph.getNodeAttribute(n, "label").toLowerCase()
+            )
+          )
+          .map((n) => ({
+            id: n,
+            label: graph.getNodeAttribute(n, "label") as string
+          }))
+          .filter(({ label }) => label.toLowerCase().includes(lcQuery));
 
-        // Move the camera to center it on the selected node:
-        const nodePosition = renderer.getNodeDisplayData(
-          state.selectedNode
-        ) as Coordinates;
-        renderer.getCamera().animate(nodePosition, {
-          duration: 2000
-        });
+        /* If we have a single perfect match, then we remove the suggestions, and
+           we consider the user has selected a node through the datalist autocomplete: */
+        if (suggestions.length === 1 && suggestions[0].label === query) {
+          state.selectedNode = suggestions[0].id;
+          state.suggestions = undefined;
+
+          // Move the camera to center it on the selected node:
+          const nodePosition = renderer.getNodeDisplayData(
+            state.selectedNode
+          ) as Coordinates;
+          renderer.getCamera().animate(nodePosition, {
+            duration: 2000
+          });
+        }
+        // Else, we display the suggestions list:
+        else {
+          state.selectedNode = undefined;
+          state.suggestions = new Set(suggestions.map(({ id }) => id));
+        }
       }
-      // Else, we display the suggestions list:
+      // If the query is empty, then we reset the selectedNode / suggestions state:
       else {
         state.selectedNode = undefined;
-        state.suggestions = new Set(suggestions.map(({ id }) => id));
+        state.suggestions = undefined;
       }
+
+      // Refresh rendering:
+      renderer.refresh();
     }
-    // If the query is empty, then we reset the selectedNode / suggestions state:
-    else {
-      state.selectedNode = undefined;
-      state.suggestions = undefined;
+    function setHoveredNode(node?: string) {
+      if (node) {
+        state.hoveredNode = node;
+        state.hoveredNeighbors = new Set(graph.neighbors(node));
+      } else {
+        state.hoveredNode = undefined;
+        state.hoveredNeighbors = undefined;
+      }
+
+      // Refresh rendering:
+      renderer.refresh();
     }
 
-    // Refresh rendering:
-    renderer.refresh();
+    // Bind search input interactions:
+    searchInput.addEventListener("input", () => {
+      setSearchQuery(searchInput.value || "");
+    });
+    searchInput.addEventListener("blur", () => {
+      setSearchQuery("");
+    });
+
+    // Bind graph interactions:
+    renderer.on("enterNode", ({ node }) => {
+      setHoveredNode(node);
+    });
+    renderer.on("leaveNode", () => {
+      setHoveredNode(undefined);
+    });
+
+    /* Render nodes accordingly to the internal state:
+       1. If a node is selected, it is highlighted
+       2. If there is a query, all non-matching nodes are greyed
+       3. If there is a hovered node, all non-neighbor nodes are greyed */
+
+    renderer.setSetting("nodeReducer", (node, data) => {
+      const res: Partial<NodeDisplayData> = { ...data };
+
+      if (
+        state.hoveredNeighbors &&
+        !state.hoveredNeighbors.has(node) &&
+        state.hoveredNode !== node
+      ) {
+        res.label = "";
+        res.color = "#f6f6f6";
+      }
+
+      if (state.selectedNode === node) {
+        res.highlighted = true;
+      } else if (state.suggestions && !state.suggestions.has(node)) {
+        res.label = "";
+        res.color = "#f6f6f6";
+      }
+
+      return res;
+    });
+
+    /* Render edges accordingly to the internal state:
+     1. If a node is hovered, the edge is hidden if it is not connected to the node
+     2. If there is a query, the edge is only visible if it connects two suggestions */
+
+    renderer.setSetting("edgeReducer", (edge, data) => {
+      const res: Partial<EdgeDisplayData> = { ...data };
+
+      if (state.hoveredNode && !graph.hasExtremity(edge, state.hoveredNode)) {
+        res.hidden = true;
+      }
+
+      if (
+        state.suggestions &&
+        (!state.suggestions.has(graph.source(edge)) ||
+          !state.suggestions.has(graph.target(edge)))
+      ) {
+        res.hidden = true;
+      }
+
+      return res;
+    });
   }
-  function setHoveredNode(node?: string) {
-    if (node) {
-      state.hoveredNode = node;
-      state.hoveredNeighbors = new Set(graph.neighbors(node));
-    } else {
-      state.hoveredNode = undefined;
-      state.hoveredNeighbors = undefined;
-    }
-
-    // Refresh rendering:
-    renderer.refresh();
-  }
-
-  // Bind search input interactions:
-  searchInput.addEventListener("input", () => {
-    setSearchQuery(searchInput.value || "");
-  });
-  searchInput.addEventListener("blur", () => {
-    setSearchQuery("");
-  });
-
-  // Bind graph interactions:
-  renderer.on("enterNode", ({ node }) => {
-    setHoveredNode(node);
-  });
-  renderer.on("leaveNode", () => {
-    setHoveredNode(undefined);
-  });
-
-  /* Render nodes accordingly to the internal state:
-     1. If a node is selected, it is highlighted
-     2. If there is query, all non-matching nodes are greyed
-     3. If there is a hovered node, all non-neighbor nodes are greyed */
-
-  renderer.setSetting("nodeReducer", (node, data) => {
-    const res: Partial<NodeDisplayData> = { ...data };
-
-    if (
-      state.hoveredNeighbors &&
-      !state.hoveredNeighbors.has(node) &&
-      state.hoveredNode !== node
-    ) {
-      res.label = "";
-      res.color = "#f6f6f6";
-    }
-
-    if (state.selectedNode === node) {
-      res.highlighted = true;
-    } else if (state.suggestions && !state.suggestions.has(node)) {
-      res.label = "";
-      res.color = "#f6f6f6";
-    }
-
-    return res;
-  });
-
-  /* Render edges accordingly to the internal state:
-   1. If a node is hovered, the edge is hidden if it is not connected to the node
-   2. If there is a query, the edge is only visible if it connects two suggestions */
-
-  renderer.setSetting("edgeReducer", (edge, data) => {
-    const res: Partial<EdgeDisplayData> = { ...data };
-
-    if (state.hoveredNode && !graph.hasExtremity(edge, state.hoveredNode)) {
-      res.hidden = true;
-    }
-
-    if (
-      state.suggestions &&
-      (!state.suggestions.has(graph.source(edge)) ||
-        !state.suggestions.has(graph.target(edge)))
-    ) {
-      res.hidden = true;
-    }
-
-    return res;
-  });
-
-  // Interactive Buttons
-  const camera = renderer.getCamera();
-
-  // Bind zoom manipulation buttons
-  zoomInBtn.addEventListener("click", () => {
-    camera.animatedZoom({ duration: 800 });
-  });
-  zoomOutBtn.addEventListener("click", () => {
-    camera.animatedUnzoom({ duration: 800 });
-  });
-  zoomResetBtn.addEventListener("click", () => {
-    camera.animatedReset({ duration: 800 });
-  });
-
-  // Bind labels threshold to range input
-  labelsThresholdRange.addEventListener("input", () => {
-    renderer.setSetting(
-      "labelRenderedSizeThreshold",
-      +labelsThresholdRange.value
-    );
-  });
-
-  // Set proper range initial value:
-  labelsThresholdRange.value =
-    renderer.getSetting("labelRenderedSizeThreshold") + "";
+  handleSearch(graph, renderer);
 
   // Draggable nodes feature
   let draggedNode: string | null = null;
