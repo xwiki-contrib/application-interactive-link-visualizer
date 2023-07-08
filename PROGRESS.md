@@ -53,6 +53,7 @@
 
 ## Week 6 (3 July - 9 July 2023)
 
+- [X] Refactored the `Search in nodes...` feature to adapt with the panel. Now the function checks if there is a need to have the feature or not
 - [ ] Working on the panel for the application (for visualisation centered around the opened wiki document)
 
 # Midterm Evaluation (10 July - 14 July 2023)
