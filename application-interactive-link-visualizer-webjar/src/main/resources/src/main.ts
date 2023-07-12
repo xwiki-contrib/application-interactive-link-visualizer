@@ -20,15 +20,29 @@
 
 import DirectedGraph from "graphology";
 import Sigma from "sigma";
-import { Coordinates, EdgeDisplayData, NodeDisplayData } from "sigma/types";
+import {
+  Coordinates,
+  EdgeDisplayData,
+  NodeDisplayData,
+  PartialButFor
+} from "sigma/types";
 import forceAtlas2 from "graphology-layout-forceatlas2";
 import FA2Layout from "graphology-layout-forceatlas2/worker";
+import { Settings } from "sigma/settings";
+import drawLabel from "sigma/rendering/canvas/label";
 
-export function visualize(data: any, sigmaContainer: string) {
+interface ThemeColors {
+  labelColor: string,
+  fadeColor: string,
+  labelContainerColor: string
+}
+
+export function visualize(data: any, sigmaContainer: string, themeColors: ThemeColors) {
   const graph = new DirectedGraph();
   graph.import(data);
 
   // Initialise x and y coordinates; nodes and edges size
+
   let i = 0;
   graph.forEachNode((node) => {
     graph.setNodeAttribute(node, "x", i++);
@@ -39,7 +53,7 @@ export function visualize(data: any, sigmaContainer: string) {
     graph.setNodeAttribute(node, "size", 4);
   });
   graph.forEachEdge((edge) => {
-    graph.setEdgeAttribute(edge, "size", 1);
+    graph.setEdgeAttribute(edge, "size", 2);
   });
 
   // Declare DOM Elements
@@ -55,7 +69,6 @@ export function visualize(data: any, sigmaContainer: string) {
   };
   */
   const sensibleSettings = forceAtlas2.inferSettings(graph);
-
   const fa2Layout = new FA2Layout(graph, {
     settings: sensibleSettings
   });
@@ -65,20 +78,75 @@ export function visualize(data: any, sigmaContainer: string) {
   }
   function startFA2() {
     fa2Layout.start();
-    setTimeout(stopFA2, 5000); // Stop the layout after 5 seconds
+    setTimeout(stopFA2, 8000); // Stop the layout after 8 seconds
   }
   startFA2();
 
+   function customDrawHover(
+    context: CanvasRenderingContext2D,
+    data: PartialButFor<NodeDisplayData, "x" | "y" | "size" | "label" | "color">,
+    settings: Settings
+  ): void {
+    const size = settings.labelSize,
+      font = settings.labelFont,
+      weight = settings.labelWeight;
+  
+    context.font = `${weight} ${size}px ${font}`;
+  
+    // Then we draw the label background
+    context.fillStyle = themeColors.labelContainerColor;
+    context.shadowOffsetX = 0;
+    context.shadowOffsetY = 0;
+    context.shadowBlur = 8;
+    context.shadowColor = themeColors.labelColor;
+  
+    const PADDING = 3;
+  
+    if (typeof data.label === "string") {
+      const textWidth = context.measureText(data.label).width,
+        boxWidth = Math.round(textWidth + 5),
+        boxHeight = Math.round(size + 2 * PADDING),
+        radius = Math.max(data.size, size / 2) + PADDING;
+  
+      const angleRadian = Math.asin(boxHeight / 2 / radius);
+      const xDeltaCoord = Math.sqrt(
+        Math.abs(Math.pow(radius, 2) - Math.pow(boxHeight / 2, 2))
+      );
+  
+      context.beginPath();
+      context.moveTo(data.x + xDeltaCoord, data.y + boxHeight / 2);
+      context.lineTo(data.x + radius + boxWidth, data.y + boxHeight / 2);
+      context.lineTo(data.x + radius + boxWidth, data.y - boxHeight / 2);
+      context.lineTo(data.x + xDeltaCoord, data.y - boxHeight / 2);
+      context.arc(data.x, data.y, radius, angleRadian, -angleRadian);
+      context.closePath();
+      context.fill();
+    } else {
+      context.beginPath();
+      context.arc(data.x, data.y, data.size + PADDING, 0, Math.PI * 2);
+      context.closePath();
+      context.fill();
+    }
+  
+    context.shadowOffsetX = 0;
+    context.shadowOffsetY = 0;
+    context.shadowBlur = 0;
+  
+    // And finally we draw the label
+    drawLabel(context, data, settings);
+  }
+
   const rendererSettings = {
-    labelDensity: 1,
     labelGridCellSize: 100,
     labelRenderedSizeThreshold: 1,
     defaultEdgeType: "arrow",
     defaultNodeType: "circle",
-    labelSize: 13,
+    labelSize: 14,
     labelWeight: "normal",
-    labelColor: { color: "black" },
-    zIndex: true
+    labelColor: { color: themeColors.labelColor },
+    labelFont: "Ubuntu",
+    zIndex: true,
+    hoverRenderer: customDrawHover
   };
 
   const renderer = new Sigma(graph, container, rendererSettings);
@@ -86,12 +154,13 @@ export function visualize(data: any, sigmaContainer: string) {
   // Event handler for click to open page URL when a node is clicked
   renderer.on("clickNode", ({ node }) => {
     if (!graph.getNodeAttribute(node, "hidden")) {
-      window.open(graph.getNodeAttribute(node, "pageURL"), "_blank");
+      window.open(graph.getNodeAttribute(node, "pageURL"), "_self");
     }
   });
 
-  // Search handle function
-  function handleSearch (graph: DirectedGraph, renderer: Sigma) {
+  // Search by nodes feature
+  function handleSearch(graph: DirectedGraph, renderer: Sigma) {
+
     if (!searchInput || !searchSuggestions) {
       return; // Skip search feature if elements are not present
     }
@@ -216,14 +285,14 @@ export function visualize(data: any, sigmaContainer: string) {
         state.hoveredNode !== node
       ) {
         res.label = "";
-        res.color = "#f6f6f6";
+        res.color = themeColors.fadeColor;
       }
 
       if (state.selectedNode === node) {
         res.highlighted = true;
       } else if (state.suggestions && !state.suggestions.has(node)) {
         res.label = "";
-        res.color = "#f6f6f6";
+        res.color = themeColors.labelColor;
       }
 
       return res;
@@ -252,6 +321,7 @@ export function visualize(data: any, sigmaContainer: string) {
     });
   }
   handleSearch(graph, renderer);
+
 
   // Draggable nodes feature
   let draggedNode: string | null = null;
