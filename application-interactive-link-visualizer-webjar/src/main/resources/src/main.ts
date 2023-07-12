@@ -292,7 +292,7 @@ export function visualize(data: any, sigmaContainer: string, themeColors: ThemeC
         res.highlighted = true;
       } else if (state.suggestions && !state.suggestions.has(node)) {
         res.label = "";
-        res.color = themeColors.labelColor;
+        res.color = themeColors.fadeColor;
       }
 
       return res;

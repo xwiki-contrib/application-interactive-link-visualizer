@@ -1,6 +1,6 @@
 # Progress report for the Interactive Link Visualizer Application
 
-## Week 1 (29 May - 04 June 2023)
+## Week 1 (29 May - 04 June 2023) ✔
 
 - [X] Created a new space called `Link Visualizer - Get Started` for the application in XWiki
 - [X] Attented a detailed video meeting with both the mentors
@@ -11,7 +11,7 @@
 - [X] Refactored the API code to use the `graph data` from the XWiki JavaScriptExtension (approach is to pass the data object to the constructor of the API class and then export the class and its methods so that the initialization is triggered by the called method inside the JSX)
 - [X] Created the [design page](https://design.xwiki.org/xwiki/bin/view/Proposal/InteractiveLinkVisualizerApplication) to cover the technical details of the project
 
-## Week 2 (05 June - 11 June 2023)
+## Week 2 (05 June - 11 June 2023) ✔
 
 - [X] Studied XWiki's Solr API to develop data source
 - [X] Studied different layouts of Graphology: `random-layout`, `forceAtlas2-layout` and `circular layout`
@@ -23,7 +23,7 @@
 - [X] Implemented all layouts `random-layout`, `forceAtlas2-layout` and `circular layout` in the API and provided toggle buttons for each of the 3 layouts
   Note: The demo fork of the implemenation is [here](https://codesandbox.io/s/myself-layout-experiment-mxkq36)
 
-## Week 3 (12 June - 18 June 2023)
+## Week 3 (12 June - 18 June 2023) ✔
 
 - [X] Study XWiki's JavaScript API and the relevant methods like `getURL()` to generate page's URL
 - [X] Generate required attributes for nodes & edges like wiki page's `URL, size, color` etc.
@@ -31,7 +31,7 @@
 - [X] Solved the data-source issue of having links that does not point to any reference (it could happen due to some reasons eg, if hidden documents are not being shown to the user). This was resulting in generating an edge for which we have no node. This is fixed now.
 - [X] Solved the issue of having multiple targets `(links)` for a single source `(reference)` by splitting the edges. Now the data-source is acceptable in the API in the as is form.
 
-## Week 4 (19 June - 25 June 2023)
+## Week 4 (19 June - 25 June 2023) ✔
 
 - [X] Implemented the functionality to make the graph nodes draggable.
 - [X] Solved the issue of stopping the `FA2Layout` after some time to save the resources (CPU & Memory)
@@ -45,31 +45,46 @@
 - [X] Added arrow styled edges instead of plain line. Now the links actually points to the nodes. Also added other optimal renderer settings
 - [X] Changed the name of output API JS file from `bundle.js` to something more particular
 
-## Week 5 (26 June - 2 July 2023)
+## Week 5 (26 June - 2 July 2023) ✔
 
 - [X] Implemented the method to filter the number of documents we wish to visualize in the wiki (basically to change the value of the `nb` parameter). Now the user has a choice to override the default value to whatever they wish for
 - [X] Use a [RequireJS Module UIX](https://www.xwiki.org/xwiki/bin/view/Documentation/DevGuide/ExtensionPoint/RequireJS%20Module%20Config) for the visualisation API to keep the code DRY (don't repeat yourself)
 - [X] Create a UIX entry for the application so that it is visible in the application panel of XWiki
 
-## Week 6 (3 July - 9 July 2023)
+## Week 6 (3 July - 9 July 2023) ✔
 
 - [X] Refactored the `Search in nodes...` feature to adapt with the panel. Now the function checks if there is a need to have the feature or not
-- [ ] Working on the panel for the application (for visualisation centered around the opened wiki document)
+- [X] Implemented the panel for the application (for visualisation centered around the opened wiki document)
+- [X] Implemented styles from XWiki conventions using pre-defined XWiki specific classes
+- [X] Removed all hardcoded colors and implemented the colors from XWiki Flamingo application (that handles all themes inside XWiki)
+- [X] Implemented a custom `drawHover()` method that overrides existing `drawHover()` method in Sigma.js ([issue reference](https://github.com/jacomyal/sigma.js/issues/1368))
 
-# Midterm Evaluation (10 July - 14 July 2023)
+# Midterm Evaluation ✔
+
+## Week 7 (17 July - 23 July 2023)
+
+- 
 
 <!--
+## Week 8 (24 July - 30 July 2023)
+## Week 9 (31 July - 06 August 2023)
+## Week 10 (07 August - 13 August 2023)
+## Week 11 (14 August - 20 August 2023)
+## Week 12 (21 August - 27 August 2023)
+
 # Final Evaluation (28 August - 04 September)
 -->
 
 ## Upcoming tasks
 
-- [ ] Implement the panel for visualisation only around the opened wiki page
+- [ ] Improve application's folder directory structure
+- [ ] Release the first working extension on [XWiki Extension Store](https://extensions.xwiki.org)
+- [ ] Write the extension documentation and a blog informing about the first release
+- [ ] Improve the panel code efficiency by using multiple Solr queries
+- [ ] Study about Solr Search facets and analyse the Map Application
 
 ## What is left
 
-- [ ] Research on testing JS framework & write tests for the application (potential choice: [Jasmine](https://jasmine.github.io/))
-- [ ] Use color variables from inside of XWiki instead of hardcoding the color values
-- [ ] Use proper CSS and button styles from XWiki
+- [ ] Research on testing JS framework & if feasible, write tests for the application (potential choice: [Jasmine](https://jasmine.github.io/))
 - [ ] Study about the `Localization Module` in order to generate key-value pairs that will allow the possibility of translation of the application pages
 - [ ] Publish the extension the XWiki Extension Store and write documentations & demo around the extension
