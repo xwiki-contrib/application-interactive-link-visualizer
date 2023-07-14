@@ -301,7 +301,9 @@ The aim for the panel is to show the network graph visualization centered around
     var themeColors = $jsontool.serialize({
         'nodeColor': $theme.linkColor,
         'labelColor': $theme.textColor,
-        'fadeColor': $theme.highlightColor
+        'fadeColor': $theme.highlightColor,
+        'labelContainerColor': $theme.pageContentBackgroundColor
+
     });
 
     $.post(solrServiceURL, {
