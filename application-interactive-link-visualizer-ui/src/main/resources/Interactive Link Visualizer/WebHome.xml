@@ -229,7 +229,7 @@
             };
 
             $('#sigma-container').empty();
-            $('#node-count').text(nodes.length + ' documents, ');
+            $('#node-count').text('Displaying ' + nodes.length + ' documents & ');
             $('#edge-count').text(edges.length + ' links');
             visualisationAPI.visualize(graphData, "sigma-container", themeColors);
 
