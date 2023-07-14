@@ -58,12 +58,15 @@
 - [X] Implemented styles from XWiki conventions using pre-defined XWiki specific classes
 - [X] Removed all hardcoded colors and implemented the colors from XWiki Flamingo application (that handles all themes inside XWiki)
 - [X] Implemented a custom `drawHover()` method that overrides existing `drawHover()` method in Sigma.js ([issue reference](https://github.com/jacomyal/sigma.js/issues/1368))
+- [X] Improve application's folder directory structure
+- [X] Other minor fixes like panel's width should be generated dynamically, use jsontool.serialize to keep the code DRY, external font removed, dependency version fixed, panel labelContainer fixed, include more `fl` fields like `wiki, spaces, name` to avoid log errors, added `Displaying` keyword to show that there could be more documents
+
 
 # Midterm Evaluation ✔
 
 ## Week 7 (17 July - 23 July 2023)
 
-- 
+- [ ] ...
 
 <!--
 ## Week 8 (24 July - 30 July 2023)
@@ -77,9 +80,12 @@
 
 ## Upcoming tasks
 
-- [ ] Improve application's folder directory structure
 - [ ] Release the first working extension on [XWiki Extension Store](https://extensions.xwiki.org)
 - [ ] Write the extension documentation and a blog informing about the first release
+- [ ] Implement a drag-detection method to avoid accidental clicks on the node
+- [ ] Hover-effect only triggers when the mouse is over the node itself and not the label -> check if there is a method to fix this in Sigma.js 
+- [ ] Display an isolated node for currently opened document if there are no linked pages
+- [ ] Give an indication for clicking on the node feature (like changing cursor to pointer to indicate link)
 - [ ] Improve the panel code efficiency by using multiple Solr queries
 - [ ] Study about Solr Search facets and analyse the Map Application
 
