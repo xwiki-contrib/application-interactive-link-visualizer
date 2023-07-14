@@ -178,12 +178,12 @@
                 'q=*:*',
                 'q.op=AND',
                 'fq=type:DOCUMENT',
-                'fl=title_, reference, links'
+                'fl=title_, reference, links, wiki, spaces, name'
             ].join('\n'),
             input: " "
         }, function(response) {
             tempData = response;
-            const nodes = tempData.map(function(obj) {
+          const nodes = tempData.map(function(obj) {
                 return {
                     key: obj.reference,
                     attributes: {
