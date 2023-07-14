@@ -83,13 +83,9 @@
 - [ ] Release the first working extension on [XWiki Extension Store](https://extensions.xwiki.org)
 - [ ] Write the extension documentation and a blog informing about the first release
 - [ ] Implement a drag-detection method to avoid accidental clicks on the node
-- [ ] Hover-effect only triggers when the mouse is over the node itself and not the label -> check if there is a method to fix this in Sigma.js 
+- [ ] Hover-effect only triggers when the mouse is over the node itself and not the label → check if there is a method to fix this in Sigma.js 
 - [ ] Display an isolated node for currently opened document if there are no linked pages
 - [ ] Give an indication for clicking on the node feature (like changing cursor to pointer to indicate link)
 - [ ] Improve the panel code efficiency by using multiple Solr queries
 - [ ] Study about Solr Search facets and analyse the Map Application
-
-## What is left
-
 - [ ] Study about the `Localization Module` in order to generate key-value pairs that will allow the possibility of translation of the application pages
-- [ ] Publish the extension the XWiki Extension Store and write documentations & demo around the extension
