@@ -299,11 +299,11 @@ The aim for the panel is to show the network graph visualization centered around
     var edgeKeyCounter = 1;
 
     #template('colorThemeInit.vm') // For XWiki color theme variables
-    var themeColors = {
-        nodeColor: "$escapetool.javascript($theme.linkColor)",
-        labelColor: "$escapetool.javascript($theme.textColor)",
-        fadeColor: "$escapetool.javascript($theme.highlightColor)"
-    };
+    var themeColors = $jsontool.serialize({
+        'nodeColor': $theme.linkColor,
+        'labelColor': $theme.textColor,
+        'fadeColor': $theme.highlightColor
+    });
 
     $.post(solrServiceURL, {
         outputSyntax: 'plain',

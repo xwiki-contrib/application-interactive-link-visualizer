@@ -59,10 +59,6 @@
    &lt;/div&gt;
 &lt;/div&gt;
 &lt;div id="sigma-container"&gt;&lt;/div&gt;
-&lt;style&gt;
-   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans&amp;family=Ubuntu&amp;display=swap');
-&lt;/style&gt;
-
 {{/html}}</content>
   <object>
     <name>Interactive Link Visualizer.WebHome</name>
@@ -160,13 +156,12 @@
 
     // XWiki theme variable colors
     #template('colorThemeInit.vm')
-    var themeColors = {
-    nodeColor: "$escapetool.javascript($theme.linkColor)",
-    labelColor: "$escapetool.javascript($theme.textColor)",
-    fadeColor: "$escapetool.javascript($theme.highlightColor)",
-    labelContainerColor: "$escapetool.javascript($theme.pageContentBackgroundColor)"
-    };
-
+     var themeColors = $jsontool.serialize({
+        'nodeColor': $theme.linkColor,
+        'labelColor': $theme.textColor,
+        'fadeColor': $theme.highlightColor,
+        'labelContainerColor': $theme.pageContentBackgroundColor
+    });
 
     $(document).ready(function() {
         $('#update-graph-button').trigger('click');
@@ -229,7 +224,7 @@
             };
 
             $('#sigma-container').empty();
-            $('#node-count').text('Displaying ' + nodes.length + ' documents & ');
+            $('#node-count').text('Displaying ' + nodes.length + ' documents &amp; ');
             $('#edge-count').text(edges.length + ' links');
             visualisationAPI.visualize(graphData, "sigma-container", themeColors);
 
