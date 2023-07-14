@@ -60,6 +60,8 @@
 - [X] Implemented a custom `drawHover()` method that overrides existing `drawHover()` method in Sigma.js ([issue reference](https://github.com/jacomyal/sigma.js/issues/1368))
 - [X] Improve application's folder directory structure
 - [X] Other minor fixes like panel's width should be generated dynamically, use `jsontool.serialize` to keep the code DRY, external font removed, dependency version fixed, panel `labelContainer` fixed, include more `fl` fields like `wiki, spaces, name` to avoid log errors, added `Displaying` keyword to show that there could be more documents
+- [X] Release the first working extension on [XWiki Extension Store](https://extensions.xwiki.org)
+- [X] Write the extension documentation and a blog informing about the first release
 
 
 # Midterm Evaluation ✔
@@ -80,8 +82,6 @@
 
 ## Upcoming tasks
 
-- [ ] Release the first working extension on [XWiki Extension Store](https://extensions.xwiki.org)
-- [ ] Write the extension documentation and a blog informing about the first release
 - [ ] Implement a drag-detection method to avoid accidental clicks on the node
 - [ ] Hover-effect only triggers when the mouse is over the node itself and not the label → check if there is a method to fix this in Sigma.js 
 - [ ] Display an isolated node for currently opened document if there are no linked pages
