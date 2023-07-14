@@ -46,7 +46,7 @@
     <dependency>
     <groupId>org.xwiki.contrib</groupId>
   <artifactId>application-interactive-link-visualizer-webjar</artifactId>
-      <version>${platform.version}</version>
+      <version>${project.version}</version>
       <type>webjar</type>
       <scope>runtime</scope>
     </dependency>
