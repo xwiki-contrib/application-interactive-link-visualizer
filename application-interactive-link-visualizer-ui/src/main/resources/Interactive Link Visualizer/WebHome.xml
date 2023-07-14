@@ -183,10 +183,6 @@
             input: " "
         }, function(response) {
             tempData = response;
-            var totalNodes = 0;
-            totalNodes = tempData.length;
-          $('#nb-input').attr('max')
-            console.log("totalNodes", totalNodes)
             const nodes = tempData.map(function(obj) {
                 return {
                     key: obj.reference,
