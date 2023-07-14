@@ -36,7 +36,7 @@
   <scm>
     <connection>scm:git:git://github.com/xwiki-contrib/application-interactive-link-visualizer.git</connection>
     <developerConnection>scm:git:git@github.com:xwiki-contrib/application-interactive-link-visualizer.git</developerConnection>
-    <url>https://github.com/xwiki-contrib/application-interactive-link-visualizer</url>
+    <url>https://github.com/xwiki-contrib/application-interactive-link-visualizer/tree/main</url>
     <tag>HEAD</tag>
   </scm>
   <developers>
