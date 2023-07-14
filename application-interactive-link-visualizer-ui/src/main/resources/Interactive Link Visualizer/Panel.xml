@@ -312,7 +312,7 @@ The aim for the panel is to show the network graph visualization centered around
             'q=*:*',
             'q.op=AND',
             'fq=type:DOCUMENT',
-            'fl=title_, reference, links'
+            'fl=title_, reference, links, wiki, spaces, name'
         ].join('\n'),
         input: " "
     }, function(response) {
