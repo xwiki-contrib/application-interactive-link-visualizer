@@ -144,7 +144,6 @@ export function visualize(data: any, sigmaContainer: string, themeColors: ThemeC
     labelSize: 14,
     labelWeight: "normal",
     labelColor: { color: themeColors.labelColor },
-    labelFont: "Ubuntu",
     zIndex: true,
     hoverRenderer: customDrawHover
   };
