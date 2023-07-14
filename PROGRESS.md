@@ -51,7 +51,7 @@
 - [X] Use a [RequireJS Module UIX](https://www.xwiki.org/xwiki/bin/view/Documentation/DevGuide/ExtensionPoint/RequireJS%20Module%20Config) for the visualisation API to keep the code DRY (don't repeat yourself)
 - [X] Create a UIX entry for the application so that it is visible in the application panel of XWiki
 
-## Week 6 (3 July - 9 July 2023) ✔
+## Week 6 (03 July - 9 July 2023) ✔
 
 - [X] Refactored the `Search in nodes...` feature to adapt with the panel. Now the function checks if there is a need to have the feature or not
 - [X] Implemented the panel for the application (for visualisation centered around the opened wiki document)
@@ -85,6 +85,5 @@
 
 ## What is left
 
-- [ ] Research on testing JS framework & if feasible, write tests for the application (potential choice: [Jasmine](https://jasmine.github.io/))
 - [ ] Study about the `Localization Module` in order to generate key-value pairs that will allow the possibility of translation of the application pages
 - [ ] Publish the extension the XWiki Extension Store and write documentations & demo around the extension

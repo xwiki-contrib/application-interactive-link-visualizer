@@ -20,14 +20,14 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
 -->
 
-<xwikidoc version="1.5" reference="Link Visualizer - Get started….Interactive Link Visualizer.WebHome" locale="">
-  <web>Link Visualizer - Get started….Interactive Link Visualizer</web>
+<xwikidoc version="1.5" reference="Interactive Link Visualizer.WebHome" locale="">
+  <web>Interactive Link Visualizer</web>
   <name>WebHome</name>
   <language/>
   <defaultLanguage/>
   <translation>0</translation>
   <creator>xwiki:XWiki.Admin</creator>
-  <parent>Link Visualizer - Get started….WebHome</parent>
+  <parent>Main.WebHome</parent>
   <author>xwiki:XWiki.Admin</author>
   <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
   <version>1.1</version>
@@ -37,58 +37,38 @@
   <syntaxId>xwiki/2.1</syntaxId>
   <hidden>true</hidden>
   <content>{{html}}
-&lt;div id="sigma-container"&gt;&lt;/div&gt;
 &lt;div id="top-bar"&gt;
-&lt;div id="search"&gt;
-   &lt;input
-      type="search"
-      id="search-input"
-      list="suggestions"
-      placeholder="Search for nodes..."
-      /&gt;
-   &lt;datalist id="suggestions"&gt;&lt;/datalist&gt;
+   &lt;div id="search"&gt;
+      &lt;i class="fa fa-search"&gt;&lt;/i&gt;
+      &lt;input
+         type="search"
+         id="search-input"
+         list="suggestions"
+         placeholder="Search for documents…"
+         /&gt;
+      &lt;datalist id="suggestions"&gt;&lt;/datalist&gt;
+   &lt;/div&gt;
+   &lt;div class="xformInline" id="nb-field"&gt;
+      &lt;label id="nb-field" for="nb-input"&gt;Number of documents: &lt;/label&gt;
+      &lt;input type="number" id="nb-input" min="1" max="9999999999" step="1" value="1000"&gt;
+      &lt;input id="update-graph-button" class="button" type="button" value="UPDATE GRAPH"/&gt;
+   &lt;/div&gt;
+   &lt;div id="graph-info"&gt;
+      &lt;span id="node-count"&gt;&lt;/span&gt;
+      &lt;span id="edge-count"&gt;&lt;/span&gt;
+   &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="nb-field"&gt;
-   &lt;label id="nb-field" for="nb-input"&gt;Number of documents: &lt;/label&gt;
-   &lt;input type="number" id="nb-input" min="1" max="9999999" step="1" value="1000" placeholder="Enter no. of nodes... "&gt;
-&lt;button id="update-graph-button"&gt;Update graph…&lt;/button&gt;
-&lt;/div&gt;
-    &lt;div id="graph-info"&gt;
-   &lt;span id="node-count"&gt;&lt;/span&gt;
-   &lt;span id="edge-count"&gt;&lt;/span&gt;
-&lt;/div&gt;
-&lt;/div&gt;
+&lt;div id="sigma-container"&gt;&lt;/div&gt;
+&lt;style&gt;
+   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans&amp;family=Ubuntu&amp;display=swap');
+&lt;/style&gt;
 
-&lt;!-- &lt;div id="controls"&gt;
-   &lt;div class="input"&gt;
-     &lt;label for="zoom-in"&gt;Zoom In&lt;/label
-     &gt;&lt;button id="zoom-in"&gt;
-       &lt;span&gt;&lt;img src="./zoomInButton.svg" /&gt;&lt;/span&gt;
-     &lt;/button&gt;
-   &lt;/div&gt;
-   &lt;div class="input"&gt;
-     &lt;label for="zoom-out"&gt;Zoom Out&lt;/label
-     &gt;&lt;button id="zoom-out"&gt;
-       &lt;span&gt;&lt;img src="./zoomOutButton.svg" /&gt;&lt;/span&gt;
-     &lt;/button&gt;
-   &lt;/div&gt;
-   &lt;div class="input"&gt;
-     &lt;label for="zoom-reset"&gt;Reset Zoom&lt;/label
-     &gt;&lt;button id="zoom-reset"&gt;
-       &lt;span&gt;&lt;img src="./resetZoomButton.svg" /&gt;&lt;/span&gt;
-     &lt;/button&gt;
-   &lt;/div&gt; 
-&lt;div class="input"&gt;
-   &lt;label for="labels-threshold"&gt;Labels threshold&lt;/label&gt;
-   &lt;input id="labels-threshold" type="range" min="0" max="15" step="0.5" /&gt;
-&lt;/div&gt;
---&gt;
 {{/html}}</content>
   <object>
-    <name>Link Visualizer - Get started….Interactive Link Visualizer.WebHome</name>
+    <name>Interactive Link Visualizer.WebHome</name>
     <number>0</number>
     <className>XWiki.JavaScriptExtension</className>
-    <guid>c0ee0007-f917-422c-8aea-805cb8cc7738</guid>
+    <guid>20555344-bac7-4a8d-ab7c-ce61059c23f2</guid>
     <class>
       <name>XWiki.JavaScriptExtension</name>
       <customClass/>
@@ -172,101 +152,90 @@
       <cache>default</cache>
     </property>
     <property>
-      <code>require.config({
-  paths: {
-    'chroma' : 'https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.4.2/chroma.min'
-  }
-});
+      <code>require(['jquery', 'visualisationAPI'], function($, visualisationAPI) {
+    const solrServiceURL = new XWiki.Document('SuggestSolrService', 'XWiki').getURL('get');
+    var tempData = null;
+    var edgeKeyCounter = 1;
+    var isFirstLoad = true;
 
-require(['jquery', 'visualisationAPI', 'chroma'], function($, visualisationAPI, chroma) {
-  const solrServiceURL = new XWiki.Document('SuggestSolrService', 'XWiki').getURL('get');
-  var tempData = null;
-  var edgeKeyCounter = 1;
-  var isFirstLoad = true;
-  $(document).ready(function() {
-    $('#update-graph-button').trigger('click');
-  });
-  $('#update-graph-button').on('click', function() {
+    // XWiki theme variable colors
+    #template('colorThemeInit.vm')
+    var themeColors = {
+    nodeColor: "$escapetool.javascript($theme.linkColor)",
+    labelColor: "$escapetool.javascript($theme.textColor)",
+    fadeColor: "$escapetool.javascript($theme.highlightColor)",
+    labelContainerColor: "$escapetool.javascript($theme.pageContentBackgroundColor)"
+    };
+
+
+    $(document).ready(function() {
+        $('#update-graph-button').trigger('click');
+    });
+    $('#update-graph-button').on('click', function() {
       var nb = isFirstLoad ? 1000 : $('#nb-input').val(); // Get the value of 'nb' from the input field
       var isFirstLoad = false;
-      $('#graph-info').css('display', 'block');
 
-    $.post(solrServiceURL, {
-      outputSyntax: 'plain',
-      nb: nb,
-      media: 'json',
-      query: [
-        'q=*:*',
-        'q.op=AND',
-        'fq=type:DOCUMENT',
-        'fl=title_, reference, links'
-      ].join('\n'),
-      input: " "
-    }, function(response) {
-      tempData = response;
-      // Generate a range of colors within the same color family
-      function generateColorVariants(baseColor, count) {
-        const colorScale = chroma.scale(['purple', baseColor]);
-        return colorScale.colors(count);
-      }
-
-      const baseColor = chroma(chroma.random()); // Set the base color to a random color
-      const colorScale = generateColorVariants(baseColor, tempData.length);
-
-      const nodes = tempData.map(function(obj, index) {
-        const color = colorScale[index];
-        return {
-          key: obj.reference,
-          attributes: {
-            label: obj.title_,
-            color: color,
-            reference: obj.reference,
-            pageURL: new XWiki.Document(XWiki.Model.resolve(obj.reference)).getURL()
-          }
-        };
-      });
-      const edges = [];
-      tempData.forEach(function(obj) {
-        if (obj.links &amp;&amp; obj.links.length &gt; 0) {
-          obj.links.forEach(function(link) {
-            var target = link.replace(/^entity:/, '');
-            var isValid = tempData.some(function(item) {
-              return item.reference === target;
+        $.post(solrServiceURL, {
+            outputSyntax: 'plain',
+            nb: nb,
+            media: 'json',
+            query: [
+                'q=*:*',
+                'q.op=AND',
+                'fq=type:DOCUMENT',
+                'fl=title_, reference, links'
+            ].join('\n'),
+            input: " "
+        }, function(response) {
+            tempData = response;
+            var totalNodes = 0;
+            totalNodes = tempData.length;
+          $('#nb-input').attr('max')
+            console.log("totalNodes", totalNodes)
+            const nodes = tempData.map(function(obj) {
+                return {
+                    key: obj.reference,
+                    attributes: {
+                        label: obj.title_,
+                        color: themeColors.nodeColor,
+                        reference: obj.reference,
+                        pageURL: new XWiki.Document(XWiki.Model.resolve(obj.reference)).getURL()
+                    }
+                };
             });
-            if (isValid) {
-              edges.push({
-                key: edgeKeyCounter.toString(),
-                target: target,
-                source: obj.reference
-              });
-              edgeKeyCounter++;
-            }
-          });
-        }
-      });
-      const graphData = {
-        nodes: nodes,
-        edges: edges
-      };
-     $('#sigma-container').empty();
 
-    // Display the node and edge counts
-    $('#node-count').text(nodes.length + ' documents, ');
-    $('#edge-count').text(edges.length + ' links');
-      
-      // THIS IS FOR DEBUGGING PURPOSE, THE JSON FILE IS DIRECTLY OPENED IN THE NEW TAB SO I DONT HAVE TO OPEN CONSOLE AGAIN AND AGAIN
-      var jsonData = JSON.stringify(graphData, null, 2);
-      var blob = new Blob([jsonData], { type: 'application/json' });
-      var urlBlob = URL.createObjectURL(blob);
-      // window.open(urlBlob);
-      console.log("This is the graph data:", graphData);
-    
-      visualisationAPI.visualize(graphData, "sigma-container");
-    
+            const edges = [];
+            tempData.forEach(function(obj) {
+                if (obj.links &amp;&amp; obj.links.length &gt; 0) {
+                    obj.links.forEach(function(link) {
+                        var target = link.replace(/^entity:/, '');
+                        var isValid = tempData.some(function(item) {
+                            return item.reference === target;
+                        });
+                        if (isValid) {
+                            edges.push({
+                                key: edgeKeyCounter.toString(),
+                                target: target,
+                                source: obj.reference
+                            });
+                            edgeKeyCounter++;
+                        }
+                    });
+                }
+            });
+            const graphData = {
+                nodes: nodes,
+                edges: edges
+            };
+
+            $('#sigma-container').empty();
+            $('#node-count').text(nodes.length + ' documents, ');
+            $('#edge-count').text(edges.length + ' links');
+            visualisationAPI.visualize(graphData, "sigma-container", themeColors);
+
+        });
     });
-  });
-});
-</code>
+});</code>
     </property>
     <property>
       <name>Visualisation API</name>
@@ -279,10 +248,10 @@ require(['jquery', 'visualisationAPI', 'chroma'], function($, visualisationAPI, 
     </property>
   </object>
   <object>
-    <name>Link Visualizer - Get started….Interactive Link Visualizer.WebHome</name>
+    <name>Interactive Link Visualizer.WebHome</name>
     <number>0</number>
     <className>XWiki.StyleSheetExtension</className>
-    <guid>dfc2f847-7688-451e-bd54-330d9236fd4c</guid>
+    <guid>ad878237-7440-4248-94d6-7834e683d4a3</guid>
     <class>
       <name>XWiki.StyleSheetExtension</name>
       <customClass/>
@@ -381,211 +350,75 @@ require(['jquery', 'visualisationAPI', 'chroma'], function($, visualisationAPI, 
       </use>
     </class>
     <property>
-      <cache>long</cache>
+      <cache>default</cache>
     </property>
     <property>
       <code>#sigma-container {
-    width: 100%;
-	height: 1200px;
-    border: 1px solid #ccc;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    margin-top: 40px;
+	width: 100%;
+	height: 800px;
+	border: 1px solid @body-bg;
+	border-radius: 5px;
+	box-shadow: rgba(red(@text-color), green(@text-color), blue(@text-color), 0.3) 0px 8px 8px;
+	margin-top: 40px;
 }
 
-/* Styles for the top bar */
 #top-bar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 3px;
-  padding-right: 12px;
-  background-color: #f2f2f2;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	position: absolute;
+	top: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 97.5%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 3px 12px;
+	border: 1px solid @breadcrumb-bg;
+	border-radius: 5px;
+	background-color: @breadcrumb-bg;
+	box-shadow: rgba(red(@text-color), green(@text-color), blue(@text-color), 0.3) 1px 3px 4px 0px;
 }
 
 #search {
-  margin-right: 20px;
+	margin-right: 20px;
 }
 
 #search-input {
-  width: 200px;
-  padding: 5px;
-  font-size: 16px;
+	width: 200px;
+	height: 2.3em;
+	padding: 0.5em;
+	font-size: 1em;
+	background-color: @body-bg;
+	color: @text-color;
 }
 
-#nb-field {
-  margin-right: 20px;
+i {
+	display: inline-block;
+	margin-right: 5px;
 }
 
 #nb-input {
-  width: 80px;
-  padding: 5px;
-  font-size: 16px;
-}
-
-#update-graph-button {
-  padding: 8px 10px;
-  font-size: 16px;
-  background-color: #4CAF50;
-  color: white;
-  border: 1px solid;
-  border-radius: 5px;
-  cursor: pointer;
+	width: 8em;
+	padding: 5px;
+	font-size: 1em;
+	text-align: center;
+	background-color: @body-bg;
+	color: @text-color;
 }
 
 #graph-info {
-  font-size: 16px;
+	font-size: 1.1em;
+	padding: inherit;
 }
 
-#top-bar input[type="number"],
-#top-bar button {
-  margin-left: 10px;
-}
-
-
-/*
-#nb-field {
-  	position: absolute;
-  	right: 28em;
-	top: 0em;
-}
-
-#generate-graph-button {
-  	position: absolute;
-  	right: 16em;
-	top: 0em;
-	font-size: 16px;
-}
-
-#graph-info {
-    position: absolute;
-  	right: 0em;
-	top: 0em;
-	display: none;
-}
-
-#search {
-	position: absolute;
-	left: 0em;
-	top: 0em;
-}
-
-#search-input {
-	height: 2.4em;
-	border: 1px solid black;
-	border-radius: 5px;
-	padding: 12px 12px;
-	text-align: left;
-	transition: box-shadow 0.3s;
-}
-
-#search-input:focus {
-	outline: none;
-	box-shadow: 0px 0 8px rgb(230, 247, 231);
-}
-
-
-.input {
-	position: relative;
-	display: inline-block;
-	vertical-align: middle;
-}
-
-.input:not(:hover) label {
-	display: none;
-}
-
-.input label {
-	position: absolute;
-	top: 100%;
-	left: 50%;
-	transform: translateX(-50%);
-	background: black;
-	color: white;
-	padding: 0.2em;
-	border-radius: 2px;
-	margin-top: 0.3em;
-	font-size: 0.8em;
-	white-space: nowrap;
-}
-
-.input button {
-	width: 3em;
-	height: 3em;
-	display: inline-block;
-	text-align: center;
-	background: white;
-	outline: none;
-	border: 1px solid dimgrey;
-	border-radius: 5px;
-	cursor: pointer;
-}
-
-.input button:hover {
-	background: rgb(230, 247, 231);
-}
-
-
-#controls {
-	position: absolute;
-	right: 1em;
-	top: 1em;
-}
-#buttons {
-	position: absolute;
-	right: 1em;
-	top: 1em;
-	display: flex;
-}
-#buttons&gt;button {
-	margin-right: 2em;
-	display: inline-block;
-	text-align: center;
-	background: white;
-	outline: none;
-	border: 1px solid dimgrey;
-	border-radius: 5px;
-	cursor: pointer;
-	transition: transform 0.2s;
-}
-
-#buttons&gt;button:active {
-	transform: scale(0.95);
-}
-
-#buttons&gt;button img {
-	height: 2em;
-	margin-right: 0.1em;
-	margin-top: 0.2em;
-	margin-bottom: 0.1em;
-}
-
-#buttons&gt;button&gt;span {
-	height: 100%;
-	display: flex;
-	align-items: center;
-	margin-right: 0.5em;
-	margin-bottom: 0.1em;
-}
-
-#buttons&gt;button:last-child {
-	margin-right: 0;
-}
-
-#buttons&gt;button:hover {
-	background-color: rgb(230, 247, 231);
-}
-*/</code>
+#xwikicontent {
+	overflow: hidden;
+}</code>
     </property>
     <property>
-      <contentType>CSS</contentType>
+      <contentType>LESS</contentType>
     </property>
     <property>
-      <name>Stylesheet CSS</name>
+      <name>Styles</name>
     </property>
     <property>
       <parse>1</parse>
@@ -595,10 +428,10 @@ require(['jquery', 'visualisationAPI', 'chroma'], function($, visualisationAPI, 
     </property>
   </object>
   <object>
-    <name>Link Visualizer - Get started….Interactive Link Visualizer.WebHome</name>
+    <name>Interactive Link Visualizer.WebHome</name>
     <number>0</number>
     <className>XWiki.UIExtensionClass</className>
-    <guid>a8183008-a9b3-492d-994e-9bbbb5cab334</guid>
+    <guid>f003652a-6769-4909-a1c6-0c07b2f7a38f</guid>
     <class>
       <name>XWiki.UIExtensionClass</name>
       <customClass/>
@@ -732,7 +565,7 @@ require(['jquery', 'visualisationAPI', 'chroma'], function($, visualisationAPI, 
     </property>
     <property>
       <parameters>label=Interactive Link Visualizer
-target=Link Visualizer - Get started….WebHome
+target=Interactive Link Visualizer.WebHome
 icon=icon:world</parameters>
     </property>
     <property>
@@ -740,10 +573,10 @@ icon=icon:world</parameters>
     </property>
   </object>
   <object>
-    <name>Link Visualizer - Get started….Interactive Link Visualizer.WebHome</name>
+    <name>Interactive Link Visualizer.WebHome</name>
     <number>1</number>
     <className>XWiki.UIExtensionClass</className>
-    <guid>7c7057b0-8091-45a2-9ecc-482a0af45438</guid>
+    <guid>2251b6f7-dbd8-4057-a819-433251966c8c</guid>
     <class>
       <name>XWiki.UIExtensionClass</name>
       <customClass/>
@@ -877,7 +710,7 @@ icon=icon:world</parameters>
     </property>
     <property>
       <parameters>id=visualisationAPI
-path=$services.webjars.url('org.xwiki.contrib:webpack-demo-v13', 'visualisationAPI.js')
+path=$services.webjars.url('org.xwiki.contrib:application-interactive-link-visualizer-webjar', 'visualisationAPI.js')
 </parameters>
     </property>
     <property>
