@@ -182,7 +182,7 @@
 #set ($discard = $xwiki.jsx.use('Interactive Link Visualizer.Panel'))
 
 {{html}}
-&lt;div id="sigma-panel-container" style="width: 245px;
+&lt;div id="sigma-panel-container" style="width: 100%;
  height: 300px;
     border: 1px solid #ccc;"&gt;&lt;/div&gt;
 &lt;script type='javascript'&gt;
