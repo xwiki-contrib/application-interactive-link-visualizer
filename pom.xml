@@ -32,7 +32,7 @@
   <name>Interactive Link Visualizer - Parent POM</name>
   <packaging>pom</packaging>
   <inceptionYear>2023</inceptionYear>
-  <description>Visualize pages present in a wiki in the form of a network-graph consisting of many interconnected nodes and edges.</description>
+  <description>Visualize pages present in a wiki in the form of a network-graph consisting of many interconnected nodes and edges</description>
   <scm>
     <connection>scm:git:git://github.com/xwiki-contrib/application-interactive-link-visualizer.git</connection>
     <developerConnection>scm:git:git@github.com:xwiki-contrib/application-interactive-link-visualizer.git</developerConnection>
@@ -49,12 +49,12 @@
       <name>Michael Hamann</name>
     </developer>
     <developer>
-      <id>slauriere</id>
-      <name>Stéphane Laurière</name>
-    </developer>
-    <developer>
       <id>manuelleduc</id>
       <name>Manuel Leduc</name>
+    </developer>
+    <developer>
+      <id>slauriere</id>
+      <name>Stéphane Laurière</name>
     </developer>
   </developers>
   <modules>
