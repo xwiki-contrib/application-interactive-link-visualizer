@@ -2,7 +2,7 @@
 
 ## Week 1 (29 May - 04 June 2023) ✔
 
-- [X] Created a new space called `Link Visualizer - Get Started` for the application in XWiki
+- [X] Created a new space called `Interactive Link Visualizer` for the application in XWiki
 - [X] Attented a detailed video meeting with both the mentors
 - [X] Researched about Webjars and studied how to integrate it into the application
 - [X] Developed a `maven-webpack` module to generate the custom Webjar involving TypeScript files (special thanks to [Manuel Leduc](https://github.com/manuelleduc))!
@@ -76,7 +76,6 @@
 ## Week 10 (07 August - 13 August 2023)
 ## Week 11 (14 August - 20 August 2023)
 ## Week 12 (21 August - 27 August 2023)
-
 # Final Evaluation (28 August - 04 September)
 -->
 
