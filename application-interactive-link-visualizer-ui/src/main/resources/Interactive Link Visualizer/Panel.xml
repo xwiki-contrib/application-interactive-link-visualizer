@@ -325,7 +325,7 @@ The aim for the panel is to show the network graph visualization centered around
 
     $.post(solrServiceURL, {
         outputSyntax: 'plain',
-        nb: 10,
+        nb: 50,
         media: 'json',
         query: [
             'q=reference:' + documentQuery + ' OR links:' + linkQuery,
@@ -370,9 +370,6 @@ The aim for the panel is to show the network graph visualization centered around
             nodes: nodes,
             edges: edges
         };
-        console.log("Graph data: ", graphData)
-        console.log("Temp data: ", tempData)
-      
         visualisationAPI.visualize(graphData, "sigma-panel-container", themeColors);
 
     });

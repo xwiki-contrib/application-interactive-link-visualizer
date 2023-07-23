@@ -701,7 +701,7 @@ icon=icon:world</parameters>
     </property>
     <property>
       <parameters>id=visualisationAPI
-path=$services.webjars.url('org.xwiki.contrib:webpack-demo-v19-color', 'visualisationAPI.js')
+path=$services.webjars.url('org.xwiki.contrib:application-interactive-link-visualizer-webjar', 'visualisationAPI.js')
 </parameters>
     </property>
     <property>
