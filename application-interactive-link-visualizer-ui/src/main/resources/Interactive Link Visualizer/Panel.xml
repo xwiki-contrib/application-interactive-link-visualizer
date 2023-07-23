@@ -297,7 +297,7 @@ The aim for the panel is to show the network graph visualization centered around
     var tempData = null;
     var edgeKeyCounter = 1;
 
-    #template('colorThemeInit.vm') // For XWiki color theme variables
+ #template('colorThemeInit.vm') // For XWiki color theme variables
     var themeColors = $jsontool.serialize({
         'nodeColor': $theme.linkColor,
         'labelColor': $theme.textColor,
@@ -306,61 +306,56 @@ The aim for the panel is to show the network graph visualization centered around
 
     });
 
+
+    function escapeQueryChars(s) {
+        const specialCharacters = "\\+-!()^[]\"{}~*?|&amp;;:/";
+        let escapedString = "";
+        for (let i = 0; i &lt; s.length; i++) {
+            const c = s.charAt(i);
+            if (specialCharacters.includes(c) || /\s/.test(c)) {
+                escapedString += '\\';
+            }
+            escapedString += c;
+        }
+        return escapedString;
+    }
+
+    const documentQuery = 'document\\:xwiki\\:' + escapeQueryChars(xm.document);
+    const linkQuery = 'entity\\:' + documentQuery;
+
     $.post(solrServiceURL, {
         outputSyntax: 'plain',
-        nb: 1000,
+        nb: 10,
         media: 'json',
         query: [
-            'q=*:*',
-            'q.op=AND',
+            'q=reference:' + documentQuery + ' OR links:' + linkQuery,
             'fq=type:DOCUMENT',
             'fl=title_, reference, links, wiki, spaces, name'
         ].join('\n'),
         input: " "
     }, function(response) {
         tempData = response;
-
-
-
-        const validNodes = new Set();
-        const nodes = [];
-
-        // Identify valid nodes
-        tempData.forEach(function(obj) {
-            if (obj.links &amp;&amp; obj.links.length &gt; 0) {
-                obj.links.forEach(function(link) {
-                    const target = link.replace(/^entity:/, '');
-                    if (target === `document:xwiki:${xm.document}`) {
-                        validNodes.add(obj.reference);
-                        validNodes.add(target);
-                    }
-                });
-            }
-        });
-
-        // Filter and create nodes based on valid nodes
-        tempData.forEach(function(obj) {
-            if (validNodes.has(obj.reference)) {
-                nodes.push({
-                    key: obj.reference,
-                    attributes: {
-                        label: obj.title_,
-                        color: themeColors.nodeColor,
-                        reference: obj.reference,
-                        pageURL: new XWiki.Document(XWiki.Model.resolve(obj.reference)).getURL()
-                    }
-                });
-            }
+        const nodes = tempData.map(function(obj) {
+            return {
+                key: obj.reference,
+                attributes: {
+                    label: obj.title_,
+                    color: themeColors.nodeColor,
+                    reference: obj.reference,
+                    pageURL: new XWiki.Document(XWiki.Model.resolve(obj.reference)).getURL()
+                }
+            };
         });
 
         const edges = [];
-
-        // Create edges based on valid nodes
         tempData.forEach(function(obj) {
-            if (obj.links &amp;&amp; obj.links.length &gt; 0 &amp;&amp; validNodes.has(obj.reference)) {
+            if (obj.links &amp;&amp; obj.links.length &gt; 0) {
                 obj.links.forEach(function(link) {
-                    const target = link.replace(/^entity:/, '');
-                    if (validNodes.has(target)) {
+                    var target = link.replace(/^entity:/, '');
+                    var isValid = tempData.some(function(item) {
+                        return item.reference === target;
+                    });
+                    if (isValid) {
                         edges.push({
                             key: edgeKeyCounter.toString(),
                             target: target,
@@ -371,17 +366,19 @@ The aim for the panel is to show the network graph visualization centered around
                 });
             }
         });
-
         const graphData = {
             nodes: nodes,
             edges: edges
         };
-
+        console.log("Graph data: ", graphData)
+        console.log("Temp data: ", tempData)
+      
         visualisationAPI.visualize(graphData, "sigma-panel-container", themeColors);
 
     });
 
-});</code>
+});
+</code>
     </property>
     <property>
       <name>API</name>

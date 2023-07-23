@@ -366,7 +366,7 @@
 	border: 1px solid @breadcrumb-bg;
 	border-radius: 5px;
 	background-color: @breadcrumb-bg;
-	box-shadow: rgba(red(@text-color), green(@text-color), blue(@text-color), 0.3) 1px 3px 4px 0px;
+	box-shadow: rgba(red(@text-color), green(@text-color), blue(@text-color), 0.3) 1px 1px 4px 0px;
 }
 
 #search {
@@ -701,7 +701,7 @@ icon=icon:world</parameters>
     </property>
     <property>
       <parameters>id=visualisationAPI
-path=$services.webjars.url('org.xwiki.contrib:application-interactive-link-visualizer-webjar', 'visualisationAPI.js')
+path=$services.webjars.url('org.xwiki.contrib:webpack-demo-v19-color', 'visualisationAPI.js')
 </parameters>
     </property>
     <property>

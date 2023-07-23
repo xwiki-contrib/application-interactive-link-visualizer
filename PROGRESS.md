@@ -70,21 +70,25 @@
 - [X] Write the extension documentation and a blog informing about the first release
 
 
-<!--
 ## Week 8 (24 July - 30 July 2023)
+
+- [X] Implemented a `escapeQueryChars()` function to escape reserved characters in Solr queries
+- [X] Improve the panel code efficiency by using multiple Solr queries
+- [X] Display an isolated node for currently opened document if there are no linked pages
+
+
+## Upcoming tasks
+
+- [ ] Implement a drag-detection method to avoid accidental clicks on the node
+- [ ] Hover-effect only triggers when the mouse is over the node itself and not the label → check if there is a method to fix this in Sigma.js 
+- [ ] Give an indication for clicking on the node feature (like changing cursor to pointer to indicate link)
+- [ ] Study about Solr Search facets and analyse the Map Application
+- [ ] Study about the `Localization Module` in order to generate key-value pairs that will allow the possibility of translation of the application pages
+
+<!--
 ## Week 9 (31 July - 06 August 2023)
 ## Week 10 (07 August - 13 August 2023)
 ## Week 11 (14 August - 20 August 2023)
 ## Week 12 (21 August - 27 August 2023)
 # Final Evaluation (28 August - 04 September)
 -->
-
-## Upcoming tasks
-
-- [ ] Implement a drag-detection method to avoid accidental clicks on the node
-- [ ] Hover-effect only triggers when the mouse is over the node itself and not the label → check if there is a method to fix this in Sigma.js 
-- [ ] Display an isolated node for currently opened document if there are no linked pages
-- [ ] Give an indication for clicking on the node feature (like changing cursor to pointer to indicate link)
-- [ ] Improve the panel code efficiency by using multiple Solr queries
-- [ ] Study about Solr Search facets and analyse the Map Application
-- [ ] Study about the `Localization Module` in order to generate key-value pairs that will allow the possibility of translation of the application pages
