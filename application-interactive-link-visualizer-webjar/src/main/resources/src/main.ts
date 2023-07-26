@@ -30,6 +30,9 @@ import forceAtlas2 from "graphology-layout-forceatlas2";
 import FA2Layout from "graphology-layout-forceatlas2/worker";
 import { Settings } from "sigma/settings";
 import drawLabel from "sigma/rendering/canvas/label";
+import EdgeArrowHeadProgram from "sigma/rendering/webgl/programs/edge.arrowHead";
+import { createEdgeCompoundProgram } from "sigma/rendering/webgl/programs/common/edge";
+import EdgeClampedProgram from "sigma/rendering/webgl/programs/edge.clamped";
 
 interface ThemeColors {
   labelColor: string,
@@ -41,20 +44,40 @@ export function visualize(data: any, sigmaContainer: string, themeColors: ThemeC
   const graph = new DirectedGraph();
   graph.import(data);
 
-  // Initialise x and y coordinates; nodes and edges size
+ // Initialise x and y coordinates; nodes and edges size
+ let i = 0;
+ graph.forEachNode((node) => {
+   graph.setNodeAttribute(node, "x", i++);
+   graph.setNodeAttribute(node, "y", i);
+   i++;
+ });
+ graph.forEachNode((node) => {
+   graph.setNodeAttribute(node, "size", 4);
+ });
+ graph.forEachEdge((edge) => {
+   graph.setEdgeAttribute(edge, "size", 1);
+   graph.setEdgeAttribute(edge, "color", "pink");
+ });
 
-  let i = 0;
-  graph.forEachNode((node) => {
-    graph.setNodeAttribute(node, "x", i++);
-    graph.setNodeAttribute(node, "y", i);
-    i++;
-  });
-  graph.forEachNode((node) => {
-    graph.setNodeAttribute(node, "size", 4);
-  });
-  graph.forEachEdge((edge) => {
-    graph.setEdgeAttribute(edge, "size", 2);
-  });
+
+ class customEdgeArrowHeadProgram extends EdgeArrowHeadProgram {
+  // Override the process method to modify data.size
+  process(
+    sourceData: NodeDisplayData,
+    targetData: NodeDisplayData,
+    data: EdgeDisplayData,
+    hidden: boolean,
+    offset: number
+  ) {
+    data.size *= 4 || 1;
+    super.process(sourceData, targetData, data, hidden, offset);
+  }
+}
+
+const EdgeArrowProgram = createEdgeCompoundProgram([
+  EdgeClampedProgram,
+  customEdgeArrowHeadProgram
+]);
 
   // Declare DOM Elements
   const container = document.getElementById(sigmaContainer);
@@ -144,18 +167,13 @@ export function visualize(data: any, sigmaContainer: string, themeColors: ThemeC
     labelSize: 14,
     labelWeight: "normal",
     labelColor: { color: themeColors.labelColor },
+    labelFont: "Ubuntu",
     zIndex: true,
-    hoverRenderer: customDrawHover
+    hoverRenderer: customDrawHover,
+    edgeProgramClasses: { arrow: EdgeArrowProgram }
   };
 
   const renderer = new Sigma(graph, container, rendererSettings);
-
-  // Event handler for click to open page URL when a node is clicked
-  renderer.on("clickNode", ({ node }) => {
-    if (!graph.getNodeAttribute(node, "hidden")) {
-      window.open(graph.getNodeAttribute(node, "pageURL"), "_self");
-    }
-  });
 
   // Search by nodes feature
   function handleSearch(graph: DirectedGraph, renderer: Sigma) {
@@ -322,7 +340,13 @@ export function visualize(data: any, sigmaContainer: string, themeColors: ThemeC
   handleSearch(graph, renderer);
 
 
-  // Draggable nodes feature
+  // Nodes click and drag events
+    renderer.on("clickNode", ({ node }) => {
+      if (!graph.getNodeAttribute(node, "hidden")) {
+        window.open(graph.getNodeAttribute(node, "pageURL"), "_self");
+      }
+    });
+
   let draggedNode: string | null = null;
   let isDragging = false;
 

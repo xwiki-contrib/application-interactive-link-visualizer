@@ -3,10 +3,13 @@
     "outDir": "./dist/",
     "sourceMap": true,
     "noImplicitAny": true,
-    "module": "ES6",
+    "module": "es6",
     "target": "es5",
     "allowJs": true,
     "moduleResolution": "node",
-    "removeComments": true
+    "removeComments": true,
+    "strictFunctionTypes": false,
+    "strictBindCallApply": false,
+    "skipLibCheck": true
   }
 }
