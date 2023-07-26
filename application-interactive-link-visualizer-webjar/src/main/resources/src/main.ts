@@ -160,14 +160,12 @@ const EdgeArrowProgram = createEdgeCompoundProgram([
   }
 
   const rendererSettings = {
-    labelGridCellSize: 100,
     labelRenderedSizeThreshold: 1,
     defaultEdgeType: "arrow",
     defaultNodeType: "circle",
     labelSize: 14,
     labelWeight: "normal",
     labelColor: { color: themeColors.labelColor },
-    labelFont: "Ubuntu",
     zIndex: true,
     hoverRenderer: customDrawHover,
     edgeProgramClasses: { arrow: EdgeArrowProgram }
