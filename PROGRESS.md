@@ -75,6 +75,7 @@
 - [X] Implemented a `escapeQueryChars()` function to escape reserved characters in Solr queries
 - [X] Improve the panel code efficiency by using multiple Solr queries
 - [X] Display an isolated node for currently opened document if there are no linked pages
+- [X] Increased arrow head size in the edges by implementing a custom `customEdgeArrowHeadProgram` class ([commit link](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/7ca54c5b117fb30dbec27c65da039cbfa1b4b274))
 
 
 ## Upcoming tasks
