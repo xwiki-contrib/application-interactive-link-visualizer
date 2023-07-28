@@ -32,8 +32,7 @@
   <name>Interactive Link Visualizer - Parent POM</name>
   <packaging>pom</packaging>
   <inceptionYear>2023</inceptionYear>
-Visualize &amp; interact with pages present in a wiki in the form of a network-graph consisting of many nodes and edges
-  <description></description>
+  <description>Visualize &amp; interact with pages present in a wiki in the form of a network-graph consisting of many nodes and edges</description>
   <scm>
     <connection>scm:git:git://github.com/xwiki-contrib/application-interactive-link-visualizer.git</connection>
     <developerConnection>scm:git:git@github.com:xwiki-contrib/application-interactive-link-visualizer.git</developerConnection>
