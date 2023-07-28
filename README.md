@@ -1,6 +1,6 @@
 # Interactive Link Visualizer
 
-Visualize pages present in a wiki in the form of a network-graph consisting of many nodes and edges. 
+Visualize & interact with pages present in a wiki in the form of a network-graph consisting of many nodes and edges
 
 * Project Lead: [Rajat Khanduri](https://www.xwiki.org/xwiki/bin/view/XWiki/rajat)
 * [Documentation & Download](https://extensions.xwiki.org/xwiki/bin/view/Extension/Interactive%20Link%20Visualizer/)
