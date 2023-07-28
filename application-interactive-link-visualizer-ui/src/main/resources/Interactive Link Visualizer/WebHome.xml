@@ -162,7 +162,6 @@
         'fadeColor': $theme.highlightColor,
         'labelContainerColor': $theme.pageContentBackgroundColor
     });
-    console.log("Theme Colors", themeColors.nodeColor)
 
     $(document).ready(function() {
         $('#update-graph-button').trigger('click');
