@@ -40,7 +40,7 @@ interface ThemeColors {
   labelContainerColor: string
 }
 
-export function visualize(data: any, sigmaContainer: string, themeColors: ThemeColors) {
+export function visualize(data: DirectedGraph, sigmaContainer: string, themeColors: ThemeColors, isPanel = false) {
   const graph = new DirectedGraph();
   graph.import(data);
 
@@ -52,16 +52,13 @@ export function visualize(data: any, sigmaContainer: string, themeColors: ThemeC
    i++;
  });
  graph.forEachNode((node) => {
-   graph.setNodeAttribute(node, "size", 4);
+   graph.setNodeAttribute(node, "size", 8);
  });
  graph.forEachEdge((edge) => {
    graph.setEdgeAttribute(edge, "size", 1);
-   graph.setEdgeAttribute(edge, "color", "pink");
  });
 
-
  class customEdgeArrowHeadProgram extends EdgeArrowHeadProgram {
-  // Override the process method to modify data.size
   process(
     sourceData: NodeDisplayData,
     targetData: NodeDisplayData,
@@ -69,7 +66,7 @@ export function visualize(data: any, sigmaContainer: string, themeColors: ThemeC
     hidden: boolean,
     offset: number
   ) {
-    data.size *= 4 || 1;
+    data.size *= (isPanel ? 4 : 3) || 1;
     super.process(sourceData, targetData, data, hidden, offset);
   }
 }
@@ -101,7 +98,7 @@ const EdgeArrowProgram = createEdgeCompoundProgram([
   }
   function startFA2() {
     fa2Layout.start();
-    setTimeout(stopFA2, 8000); // Stop the layout after 8 seconds
+    setTimeout(stopFA2, (isPanel ? 2000 : 8000));
   }
   startFA2();
 
@@ -160,10 +157,9 @@ const EdgeArrowProgram = createEdgeCompoundProgram([
   }
 
   const rendererSettings = {
-    labelRenderedSizeThreshold: 1,
+    labelRenderedSizeThreshold: (isPanel ? 0.7 : 1),
     defaultEdgeType: "arrow",
-    defaultNodeType: "circle",
-    labelSize: 14,
+    labelSize: (isPanel ? 13 : 14),
     labelWeight: "normal",
     labelColor: { color: themeColors.labelColor },
     zIndex: true,
@@ -336,7 +332,6 @@ const EdgeArrowProgram = createEdgeCompoundProgram([
     });
   }
   handleSearch(graph, renderer);
-
 
   // Nodes click and drag events
     renderer.on("clickNode", ({ node }) => {

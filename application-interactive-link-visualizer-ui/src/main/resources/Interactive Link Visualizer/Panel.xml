@@ -178,17 +178,16 @@
     <property>
       <content>{{velocity}}
 #panelheader('Linked Pages')
-
+#set ($discard = $xwiki.jsx.use('Interactive Link Visualizer.JSCode'))
 #set ($discard = $xwiki.jsx.use('Interactive Link Visualizer.Panel'))
-
 {{html}}
-&lt;div id="sigma-panel-container" style="width: 100%;
- height: 300px;"&gt;&lt;/div&gt;
-&lt;script type='javascript'&gt;
-
-&lt;/script&gt;
+&lt;div id="sigma-container-panel"
+style=
+"width: 100%;
+height: 350px;
+"&gt;
+&lt;/div&gt;
 {{/html}}
-
 #panelfooter()
 {{/velocity}}
 </content>
@@ -297,13 +296,12 @@ The aim for the panel is to show the network graph visualization centered around
     var tempData = null;
     var edgeKeyCounter = 1;
 
- #template('colorThemeInit.vm') // For XWiki color theme variables
+    #template('colorThemeInit.vm') // For XWiki color theme variables
     var themeColors = $jsontool.serialize({
         'nodeColor': $theme.linkColor,
         'labelColor': $theme.textColor,
         'fadeColor': $theme.highlightColor,
         'labelContainerColor': $theme.pageContentBackgroundColor
-
     });
 
 
@@ -328,54 +326,71 @@ The aim for the panel is to show the network graph visualization centered around
         nb: 1000,
         media: 'json',
         query: [
-            'q=reference:' + documentQuery + ' OR links:' + linkQuery,
+            'q=reference:' + documentQuery,
             'fq=type:DOCUMENT',
             'fl=title_, reference, links, wiki, spaces, name'
         ].join('\n'),
         input: " "
-    }, function(response) {
-        tempData = response;
-        const nodes = tempData.map(function(obj) {
-            return {
-                key: obj.reference,
-                attributes: {
-                    label: obj.title_,
-                    color: themeColors.nodeColor,
-                    reference: obj.reference,
-                    pageURL: new XWiki.Document(XWiki.Model.resolve(obj.reference)).getURL()
-                }
-            };
-        });
+    }, function(firstResult) {
+        if (firstResult.length == 1) {
+            let extraDocuments = "";
+            if (firstResult[0].links) {
+                extraDocuments = ' OR ' + firstResult[0].links.map(link =&gt; 'reference:' + escapeQueryChars(link.replace(/^entity:/, ''))).join(' OR ');
+            }
+            $.post(solrServiceURL, {
+                outputSyntax: 'plain',
+                nb: 1000,
+                media: 'json',
+                query: [
+                    'q=reference:' + documentQuery + ' OR links:' + linkQuery + extraDocuments,
+                    'fq=type:DOCUMENT',
+                    'fl=title_, reference, links, wiki, spaces, name'
+                ].join('\n'),
+                input: " "
+            }, function(response) {
+                tempData = response;
+                const nodes = tempData.map(function(obj) {
+                    return {
+                        key: obj.reference,
+                        attributes: {
+                            label: obj.title_,
+                            color: themeColors.nodeColor,
+                            reference: obj.reference,
+                            pageURL: new XWiki.Document(XWiki.Model.resolve(obj.reference)).getURL()
+                        }
+                    };
+                });
 
-        const edges = [];
-        tempData.forEach(function(obj) {
-            if (obj.links &amp;&amp; obj.links.length &gt; 0) {
-                obj.links.forEach(function(link) {
-                    var target = link.replace(/^entity:/, '');
-                    var isValid = tempData.some(function(item) {
-                        return item.reference === target;
-                    });
-                    if (isValid) {
-                        edges.push({
-                            key: edgeKeyCounter.toString(),
-                            target: target,
-                            source: obj.reference
+                const edges = [];
+                tempData.forEach(function(obj) {
+                    if (obj.links &amp;&amp; obj.links.length &gt; 0) {
+                        obj.links.forEach(function(link) {
+                            var target = link.replace(/^entity:/, '');
+                            var isValid = tempData.some(function(item) {
+                                return item.reference === target;
+                            });
+                            if (isValid) {
+                                edges.push({
+                                    key: edgeKeyCounter.toString(),
+                                    target: target,
+                                    source: obj.reference
+                                });
+                                edgeKeyCounter++;
+                            }
                         });
-                        edgeKeyCounter++;
                     }
                 });
-            }
-        });
-        const graphData = {
-            nodes: nodes,
-            edges: edges
-        };
-        visualisationAPI.visualize(graphData, "sigma-panel-container", themeColors);
+                const graphData = {
+                    nodes: nodes,
+                    edges: edges
+                };
 
+                visualisationAPI.visualize(graphData, "sigma-container-panel", themeColors, isPanel = true);
+
+            });
+        }
     });
-
-});
-</code>
+});</code>
     </property>
     <property>
       <name>API</name>
