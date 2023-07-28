@@ -52,10 +52,10 @@ export function visualize(data: DirectedGraph, sigmaContainer: string, themeColo
    i++;
  });
  graph.forEachNode((node) => {
-   graph.setNodeAttribute(node, "size", 8);
+   graph.setNodeAttribute(node, "size", (isPanel ? 8 : 5));
  });
  graph.forEachEdge((edge) => {
-   graph.setEdgeAttribute(edge, "size", 1);
+   graph.setEdgeAttribute(edge, "size", (isPanel ? 2 : 1));
  });
 
  class customEdgeArrowHeadProgram extends EdgeArrowHeadProgram {
