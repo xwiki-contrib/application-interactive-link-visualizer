@@ -168,6 +168,14 @@ const EdgeArrowProgram = createEdgeCompoundProgram([
   };
 
   const renderer = new Sigma(graph, container, rendererSettings);
+   
+  // Change the cursor to pointer when hovering over a node
+    renderer.on("enterNode", ({ node }) => {
+      container.style.cursor = "pointer";
+    });
+    renderer.on("leaveNode", ({ node }) => {
+      container.style.cursor = "default";
+    });
 
   // Search by nodes feature
   function handleSearch(graph: DirectedGraph, renderer: Sigma) {

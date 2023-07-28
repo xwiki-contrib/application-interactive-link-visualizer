@@ -59,7 +59,6 @@
 - [X] Removed all hardcoded colors and implemented the colors from XWiki Flamingo application (that handles all themes inside XWiki)
 - [X] Implemented a custom `drawHover()` method that overrides existing `drawHover()` method in Sigma.js ([issue reference](https://github.com/jacomyal/sigma.js/issues/1368))
 
-
 # Midterm Evaluation ✔
 
 ## Week 7 (17 July - 23 July 2023)
@@ -69,19 +68,21 @@
 - [X] Release the first working extension on [XWiki Extension Store](https://extensions.xwiki.org)
 - [X] Write the extension documentation and a blog informing about the first release
 
-
 ## Week 8 (24 July - 30 July 2023)
 
 - [X] Implemented a `escapeQueryChars()` function to escape reserved characters in Solr queries
 - [X] Improve the panel code efficiency by using multiple Solr queries
 - [X] Display an isolated node for currently opened document if there are no linked pages
 - [X] Increased arrow head size in the edges by implementing a custom `customEdgeArrowHeadProgram` class ([commit link](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/7ca54c5b117fb30dbec27c65da039cbfa1b4b274))
-
+- [X] Implemented a way to keep the main visualisation and panel settings separate. Now the following settings are different for the main visualisation and the panel:
+    1. Size of nodes, edges, label arrow head & the label of graph nodes
+    2. Layout stopping time
+    3. `labelRenderedSizeThreshold` setting
+    
 
 ## Upcoming tasks
 
 - [ ] Implement a drag-detection method to avoid accidental clicks on the node
-- [ ] Hover-effect only triggers when the mouse is over the node itself and not the label → check if there is a method to fix this in Sigma.js 
 - [ ] Give an indication for clicking on the node feature (like changing cursor to pointer to indicate link)
 - [ ] Study about Solr Search facets and analyse the Map Application
 - [ ] Study about the `Localization Module` in order to generate key-value pairs that will allow the possibility of translation of the application pages
