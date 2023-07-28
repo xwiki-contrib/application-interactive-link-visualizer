@@ -61,14 +61,14 @@
 
 # Midterm Evaluation ✔
 
-## Week 7 (17 July - 23 July 2023)
+## Week 7 (17 July - 23 July 2023) ✔
 
 - [X] Improve application's folder directory structure
 - [X] Other minor fixes like panel's width should be generated dynamically, use `jsontool.serialize` to keep the code DRY, external font removed, dependency version fixed, panel `labelContainer` fixed, include more `fl` fields like `wiki, spaces, name` to avoid log errors, added `Displaying` keyword to show that there could be more documents
 - [X] Release the first working extension on [XWiki Extension Store](https://extensions.xwiki.org)
 - [X] Write the extension documentation and a blog informing about the first release
 
-## Week 8 (24 July - 30 July 2023)
+## Week 8 (24 July - 30 July 2023) ✔
 
 - [X] Implemented a `escapeQueryChars()` function to escape reserved characters in Solr queries
 - [X] Improve the panel code efficiency by using multiple Solr queries
@@ -80,7 +80,9 @@
     - `labelRenderedSizeThreshold` setting
 - [X] Change the mouse cursor to a hand pointer when hovering over a node to give the indication of a link ([INTLV-8 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/ab74b94e762db7c6d4c7172f09f0971c6f434388))
 
-    
+## Week 9 (31 July - 06 August 2023)
+
+- ...
 
 ## Upcoming tasks
 
@@ -89,7 +91,6 @@
 - [ ] Study about the `Localization Module` in order to generate key-value pairs that will allow the possibility of translation of the application pages
 
 <!--
-## Week 9 (31 July - 06 August 2023)
 ## Week 10 (07 August - 13 August 2023)
 ## Week 11 (14 August - 20 August 2023)
 ## Week 12 (21 August - 27 August 2023)
