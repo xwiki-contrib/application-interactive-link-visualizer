@@ -37,12 +37,15 @@ import EdgeClampedProgram from "sigma/rendering/webgl/programs/edge.clamped";
 interface ThemeColors {
   labelColor: string,
   fadeColor: string,
-  labelContainerColor: string
+  labelContainerColor: string,
+  nodeColor: string
 }
 
 export function visualize(data: DirectedGraph, sigmaContainer: string, themeColors: ThemeColors, isPanel = false) {
   const graph = new DirectedGraph();
   graph.import(data);
+
+  let nodeSize : number = null;
 
  // Initialise x and y coordinates; nodes and edges size
  let i = 0;
@@ -53,6 +56,7 @@ export function visualize(data: DirectedGraph, sigmaContainer: string, themeColo
  });
  graph.forEachNode((node) => {
    graph.setNodeAttribute(node, "size", (isPanel ? 8 : 5));
+   nodeSize = graph.getNodeAttribute(node, "size");
  });
  graph.forEachEdge((edge) => {
    graph.setEdgeAttribute(edge, "size", (isPanel ? 2 : 1));
@@ -109,7 +113,7 @@ const EdgeArrowProgram = createEdgeCompoundProgram([
   ): void {
     const size = settings.labelSize,
       font = settings.labelFont,
-      weight = settings.labelWeight;
+      weight = "bold";
   
     context.font = `${weight} ${size}px ${font}`;
   
@@ -117,7 +121,7 @@ const EdgeArrowProgram = createEdgeCompoundProgram([
     context.fillStyle = themeColors.labelContainerColor;
     context.shadowOffsetX = 0;
     context.shadowOffsetY = 0;
-    context.shadowBlur = 8;
+    context.shadowBlur = 6;
     context.shadowColor = themeColors.labelColor;
   
     const PADDING = 3;
@@ -169,13 +173,17 @@ const EdgeArrowProgram = createEdgeCompoundProgram([
 
   const renderer = new Sigma(graph, container, rendererSettings);
    
-  // Change the cursor to pointer when hovering over a node
-    renderer.on("enterNode", ({ node }) => {
-      container.style.cursor = "pointer";
-    });
-    renderer.on("leaveNode", ({ node }) => {
-      container.style.cursor = "default";
-    });
+  // Nice visual optimisations
+  renderer.on("enterNode", ({ node }) => {
+    container.style.cursor = "pointer";
+    graph.setNodeAttribute(node, "size", nodeSize + (isPanel ? 6 : 5));
+    graph.setNodeAttribute(node, "color", themeColors.labelColor);
+  });
+  renderer.on("leaveNode", ({ node }) => {
+    container.style.cursor = "default";
+    graph.setNodeAttribute(node, "size", nodeSize);
+    graph.setNodeAttribute(node, "color", themeColors.nodeColor);
+  });
 
   // Search by nodes feature
   function handleSearch(graph: DirectedGraph, renderer: Sigma) {
