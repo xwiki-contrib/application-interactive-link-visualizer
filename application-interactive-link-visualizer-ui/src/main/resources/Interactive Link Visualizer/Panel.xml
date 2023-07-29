@@ -385,7 +385,7 @@ The aim for the panel is to show the network graph visualization centered around
                     edges: edges
                 };
 
-                visualisationAPI.visualize(graphData, "sigma-container-panel", themeColors, isPanel = true, nb);
+                visualisationAPI.visualize(graphData, "sigma-container-panel", themeColors, isPanel = true, nb = 1000);
 
             });
         }
