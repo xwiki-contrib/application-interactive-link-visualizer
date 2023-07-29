@@ -82,11 +82,11 @@
 
 ## Week 9 (31 July - 06 August 2023)
 
-- ...
+- [ ] Implement a drag-detection method to avoid accidental clicks on the node
+
 
 ## Upcoming tasks
 
-- [ ] Implement a drag-detection method to avoid accidental clicks on the node
 - [ ] Study about Solr Search facets and analyse the Map Application
 - [ ] Study about the `Localization Module` in order to generate key-value pairs that will allow the possibility of translation of the application pages
 
