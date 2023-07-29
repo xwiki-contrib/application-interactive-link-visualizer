@@ -83,6 +83,7 @@
 ## Week 9 (31 July - 06 August 2023)
 
 - [X] Node size increases & color changes when hovering over it; for better visuals ([INTLV-9 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/0c674e75ae75ba4a2bf5828653df90761eebb21a))
+- [X] Create a mathematical formula to stop the graph layout after some time; that depends on `nb` ([INTLV-10 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/8c6806b8c52f2344f5d7759f526d7ca2ce455ef6))
 - [ ] Implement a drag-detection method to avoid accidental clicks on the node
 
 
