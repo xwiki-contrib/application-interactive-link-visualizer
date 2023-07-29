@@ -41,7 +41,7 @@ interface ThemeColors {
   nodeColor: string
 }
 
-export function visualize(data: DirectedGraph, sigmaContainer: string, themeColors: ThemeColors, isPanel = false) {
+export function visualize(data: DirectedGraph, sigmaContainer: string, themeColors: ThemeColors, isPanel = false, nb : number = null) {
   const graph = new DirectedGraph();
   graph.import(data);
 
@@ -102,7 +102,7 @@ const EdgeArrowProgram = createEdgeCompoundProgram([
   }
   function startFA2() {
     fa2Layout.start();
-    setTimeout(stopFA2, (isPanel ? 2000 : 8000));
+    setTimeout(stopFA2, (isPanel ? 1500 : (Math.log(nb) * 1200)));
   }
   startFA2();
 
