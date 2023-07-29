@@ -75,19 +75,22 @@
 - [X] Display an isolated node for currently opened document if there are no linked pages
 - [X] Increased arrow head size in the edges by implementing a custom `customEdgeArrowHeadProgram` class ([INTLV-5 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/7ca54c5b117fb30dbec27c65da039cbfa1b4b274))
 - [X] Implemented a way to keep the main visualisation and panel settings separate. Now the following settings are different for the main visualisation and the panel:
-    - Size of nodes, edges, label arrow head & the label of graph nodes
+    - Size of `nodes`, `edges`, `label arrow head` & the `graph nodes label`
     - Layout stopping time
-    - `labelRenderedSizeThreshold` setting
+    - Label rendered size threshold setting
 - [X] Change the mouse cursor to a hand pointer when hovering over a node to give the indication of a link ([INTLV-8 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/ab74b94e762db7c6d4c7172f09f0971c6f434388))
 
 ## Week 9 (31 July - 06 August 2023)
 
+- [X] Node size increases & color changes when hovering over it; for better visuals ([INTLV-9 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/0c674e75ae75ba4a2bf5828653df90761eebb21a))
 - [ ] Implement a drag-detection method to avoid accidental clicks on the node
 
 
 ## Upcoming tasks
 
-- [ ] Study about Solr Search facets and analyse the Map Application
+- [ ] Analyse the Map Application & integrate the Solr Search Facets integration
+OR
+- [ ] Implement a macro for generating visualisation by custom graph data input
 - [ ] Study about the `Localization Module` in order to generate key-value pairs that will allow the possibility of translation of the application pages
 
 <!--

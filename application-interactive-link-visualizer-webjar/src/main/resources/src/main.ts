@@ -163,7 +163,7 @@ const EdgeArrowProgram = createEdgeCompoundProgram([
   const rendererSettings = {
     labelRenderedSizeThreshold: (isPanel ? 0.7 : 1),
     defaultEdgeType: "arrow",
-    labelSize: (isPanel ? 13 : 14),
+    labelSize: (isPanel ? 14 : 15),
     labelWeight: "normal",
     labelColor: { color: themeColors.labelColor },
     zIndex: true,
@@ -176,8 +176,8 @@ const EdgeArrowProgram = createEdgeCompoundProgram([
   // Nice visual optimisations
   renderer.on("enterNode", ({ node }) => {
     container.style.cursor = "pointer";
-    graph.setNodeAttribute(node, "size", nodeSize + (isPanel ? 6 : 5));
-    graph.setNodeAttribute(node, "color", themeColors.labelColor);
+    graph.setNodeAttribute(node, "size", nodeSize + (isPanel ? 5 : 4));
+    graph.setNodeAttribute(node, "color", "orange");
   });
   renderer.on("leaveNode", ({ node }) => {
     container.style.cursor = "default";
