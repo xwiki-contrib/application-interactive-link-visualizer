@@ -75,7 +75,7 @@
 - [X] Display an isolated node for currently opened document if there are no linked pages
 - [X] Increased arrow head size in the edges by implementing a custom `customEdgeArrowHeadProgram` class ([INTLV-5 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/7ca54c5b117fb30dbec27c65da039cbfa1b4b274))
 - [X] Implemented a way to keep the main visualisation and panel settings separate. Now the following settings are different for the main visualisation and the panel:
-    - Size of `nodes`, `edges`, `label arrow head` & the `graph nodes label`
+    - Size of `nodes`, `edges`, `label arrow head` & `graph nodes label`
     - Layout stopping time
     - Label rendered size threshold setting
 - [X] Change the mouse cursor to a hand pointer when hovering over a node to give the indication of a link ([INTLV-8 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/ab74b94e762db7c6d4c7172f09f0971c6f434388))
@@ -84,15 +84,14 @@
 
 - [X] Node size increases & color changes when hovering over it; for better visuals ([INTLV-9 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/0c674e75ae75ba4a2bf5828653df90761eebb21a))
 - [X] Create a mathematical formula to stop the graph layout after some time; that depends on `nb` ([INTLV-10 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/8c6806b8c52f2344f5d7759f526d7ca2ce455ef6))
-- [ ] Implement a drag-detection method to avoid accidental clicks on the node
+- [X] Implement a drag-detection method to avoid accidental clicks on the node ([INTLV-3 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/1e688d287cabba6848360657e7b0924bb8bf2493))
+- [X] Integrate the Solr Search Facets integration in the application
+- [ ] Current opened document's node in the panel should have a different color & size
 
 
 ## Upcoming tasks
 
-- [ ] Analyse the Map Application & integrate the Solr Search Facets integration
-OR
-- [ ] Implement a macro for generating visualisation by custom graph data input
-- [ ] Study about the `Localization Module` in order to generate key-value pairs that will allow the possibility of translation of the application pages
+- [ ] Translations: study about the `Localization Module` in order to generate key-value pairs that will allow the possibility of translation of the application pages
 
 <!--
 ## Week 10 (07 August - 13 August 2023)
