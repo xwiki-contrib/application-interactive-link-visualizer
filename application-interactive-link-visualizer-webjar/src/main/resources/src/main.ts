@@ -41,21 +41,20 @@ interface ThemeColors {
   nodeColor: string
 }
 
-export function visualize(data: DirectedGraph, sigmaContainer: string, themeColors: ThemeColors, isPanel = false, nb : number = null) {
+export function visualize(data: DirectedGraph, sigmaContainer: string, themeColors: ThemeColors, isPanel : boolean = false, nb : number = null) {
   const graph = new DirectedGraph();
   graph.import(data);
-
   let nodeSize : number = null;
 
  // Initialise x and y coordinates; nodes and edges size
- let i = 0;
+ let i : number = 0;
  graph.forEachNode((node) => {
    graph.setNodeAttribute(node, "x", i++);
    graph.setNodeAttribute(node, "y", i);
    i++;
  });
  graph.forEachNode((node) => {
-   graph.setNodeAttribute(node, "size", (isPanel ? 8 : 5));
+   graph.setNodeAttribute(node, "size", (isPanel ? 8 : 6));
    nodeSize = graph.getNodeAttribute(node, "size");
  });
  graph.forEachEdge((edge) => {
@@ -70,7 +69,7 @@ export function visualize(data: DirectedGraph, sigmaContainer: string, themeColo
     hidden: boolean,
     offset: number
   ) {
-    data.size *= (isPanel ? 4 : 3) || 1;
+    data.size *= (isPanel ? 4.5 : 4) || 1;
     super.process(sourceData, targetData, data, hidden, offset);
   }
 }
@@ -81,7 +80,7 @@ const EdgeArrowProgram = createEdgeCompoundProgram([
 ]);
 
   // Declare DOM Elements
-  const container = document.getElementById(sigmaContainer);
+  const container : HTMLElement = document.getElementById(sigmaContainer);
   const searchInput = document.getElementById("search-input") as HTMLInputElement;
   const searchSuggestions = document.getElementById("suggestions") as HTMLDataListElement;
 
@@ -192,7 +191,6 @@ const EdgeArrowProgram = createEdgeCompoundProgram([
       return; // Skip search feature if elements are not present
     }
 
-    // Search by nodes feature
     // Type and declare internal state:
     interface State {
       hoveredNode?: string;
@@ -349,57 +347,73 @@ const EdgeArrowProgram = createEdgeCompoundProgram([
   }
   handleSearch(graph, renderer);
 
-  // Nodes click and drag events
-    renderer.on("clickNode", ({ node }) => {
-      if (!graph.getNodeAttribute(node, "hidden")) {
-        window.open(graph.getNodeAttribute(node, "pageURL"), "_self");
-      }
-    });
+// Nodes drag & click events
+let draggedNode: string | null = null;
+let isDragging = false;
 
-  let draggedNode: string | null = null;
-  let isDragging = false;
+/* On mouse down on a node
+  - we enable the drag mode
+  - save in the dragged node in the state
+  - highlight the node
+  - disable the camera so its state is not updated */
 
-  /* On mouse down on a node
-    - we enable the drag mode
-    - save in the dragged node in the state
-    - highlight the node
-    - disable the camera so its state is not updated */
+renderer.on("downNode", (e) => {
+  isDragging = true;
+  draggedNode = e.node;
+  graph.setNodeAttribute(draggedNode, "highlighted", true);
+});
 
-  renderer.on("downNode", (e) => {
-    isDragging = true;
-    draggedNode = e.node;
-    graph.setNodeAttribute(draggedNode, "highlighted", true);
-  });
+// On mouse move, if the drag mode is enabled, we change the position of the draggedNode
+renderer.getMouseCaptor().on("mousemovebody", (e) => {
+  if (!isDragging || !draggedNode) return;
 
-    // On mouse move, if the drag mode is enabled, we change the position of the draggedNode
-  renderer.getMouseCaptor().on("mousemovebody", (e) => {
-    if (!isDragging || !draggedNode) return;
+  // Get new position of node
+  const pos = renderer.viewportToGraph(e);
 
-    // Get new position of node
-    const pos = renderer.viewportToGraph(e);
+  graph.setNodeAttribute(draggedNode, "x", pos.x);
+  graph.setNodeAttribute(draggedNode, "y", pos.y);
 
-    graph.setNodeAttribute(draggedNode, "x", pos.x);
-    graph.setNodeAttribute(draggedNode, "y", pos.y);
+  // Prevent sigma to move camera:
+  e.preventSigmaDefault();
+  e.original.preventDefault();
+  e.original.stopPropagation();
+});
 
-    // Prevent sigma to move camera:
-    e.preventSigmaDefault();
-    e.original.preventDefault();
-    e.original.stopPropagation();
-  });
+/* Delta is the distance in pixels that we must move horizontally or vertically between the up and down events 
+for the code to classify it as a drag rather than a click. This is because sometimes we will move the mouse or
+our finger a few pixels before lifting it.
+:) Read more here: https://stackoverflow.com/a/59741870/9691448
+*/
+const delta : number = 10;  
+let startX : number;
+let startY : number;
+let allowClick : boolean = true;
 
-    // On mouse up, we reset the autoscaling and the dragging mode
-  renderer.getMouseCaptor().on("mouseup", () => {
-    if (draggedNode) {
-      graph.removeNodeAttribute(draggedNode, "highlighted");
-    }
+// Disable the autoscale at the first down interaction
+renderer.getMouseCaptor().on("mousedown", (event) => {
+  startX = event.original.pageX;
+  startY = event.original.pageY;
+  if (!renderer.getCustomBBox()) renderer.setCustomBBox(renderer.getBBox());
+});
+
+// On mouse up, we reset the autoscaling and the dragging mode
+renderer.getMouseCaptor().on("mouseup", (event) => {
+  if (draggedNode) {
+    graph.removeNodeAttribute(draggedNode, "highlighted");
+    const diffX : number = Math.abs(event.original.pageX - startX);
+    const diffY : number = Math.abs(event.original.pageY - startY);
+    allowClick  = diffX < delta && diffY < delta;
     isDragging = false;
     draggedNode = null;
-  });
+  }
+});
 
-  // Disable the autoscale at the first down interaction
-  renderer.getMouseCaptor().on("mousedown", () => {
-    if (!renderer.getCustomBBox()) renderer.setCustomBBox(renderer.getBBox());
-  });
+// On click, we open the corresponding page URL
+renderer.on("clickNode", ({ node }) => {
+  if (!graph.getNodeAttribute(node, "hidden") && allowClick) {
+    window.open(graph.getNodeAttribute(node, "pageURL"), "_self");
+  }
+});
 }
 
 export default visualize;
