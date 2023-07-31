@@ -54,7 +54,7 @@ export function visualize(data: DirectedGraph, sigmaContainer: string, themeColo
    i++;
  });
  graph.forEachNode((node) => {
-   graph.setNodeAttribute(node, "size", (isPanel ? 8 : 7));
+   graph.setNodeAttribute(node, "size", (isPanel ? 8 : 6));
    nodeSize = graph.getNodeAttribute(node, "size");
  });
  graph.forEachEdge((edge) => {
