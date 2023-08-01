@@ -30,7 +30,7 @@
   <artifactId>application-interactive-link-visualizer-ui</artifactId>
   <name>Interactive Link Visualizer - UI</name>
   <packaging>xar</packaging>
-  <description>Visualize pages present in a wiki in the form of a network-graph consisting of many nodes and edges.</description>
+  <description>Visualize &amp; interact with pages present in a wiki in the form of a network-graph consisting of many nodes and edges</description>
   <properties>
     <xwiki.extension.name>Interactive Link Visualizer</xwiki.extension.name>
     <xwiki.extension.category>application</xwiki.extension.category>
