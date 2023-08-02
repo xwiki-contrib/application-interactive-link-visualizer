@@ -355,7 +355,7 @@ The aim for the panel is to show the network graph visualization centered around
                         attributes: {
                             label: obj.title_,
                             color: themeColors.nodeColor,
-                            reference: obj.reference,
+                            size: (("document:xwiki:"+xm.document) == obj.reference) ? 12: 8,
                             pageURL: new XWiki.Document(XWiki.Model.resolve(obj.reference)).getURL()
                         }
                     };

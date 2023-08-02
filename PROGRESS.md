@@ -85,16 +85,18 @@
 - [X] Node size increases & color changes when hovering over it; for better visuals ([INTLV-9 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/0c674e75ae75ba4a2bf5828653df90761eebb21a))
 - [X] Create a mathematical formula to stop the graph layout after some time; that depends on `nb` ([INTLV-10 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/8c6806b8c52f2344f5d7759f526d7ca2ce455ef6))
 - [X] Implement a drag-detection method to avoid accidental clicks on the node ([INTLV-3 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/1e688d287cabba6848360657e7b0924bb8bf2493))
-- [X] Integrate the Solr Search Facets integration in the application
 - [X] Current opened document's node in the panel should have a different color & size
+- [X] Integrate the Solr Search Facets integration in the application
 - [X] Make the `Type` Facet field force to show only Documents
 - [X] Enable `Tags` type Facet field
-- [ ] Add a fullscreen button for the visualisation 
+- [X] Override query limit to 1000
 
 
 ## Upcoming tasks
 
-- [ ] Translations: study about the `Localization Module` in order to generate key-value pairs that will allow the possibility of translation of the application pages
+- [ ] Add a fullscreen button for the visualisation 
+- [ ] Empty search should also display the default graph
+- [ ] Translations: implement the `Localization Module` in order to generate key-value pairs that will allow the possibility of translation of the application pages
 
 <!--
 ## Week 10 (07 August - 13 August 2023)

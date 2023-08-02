@@ -189,7 +189,7 @@
                     attributes: {
                         label: obj.title_,
                         color: themeColors.nodeColor,
-                        reference: obj.reference,
+                        size: 6,
                         pageURL: new XWiki.Document(XWiki.Model.resolve(obj.reference)).getURL()
                     }
                 };
