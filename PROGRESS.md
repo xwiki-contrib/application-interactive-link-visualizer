@@ -90,12 +90,13 @@
 - [X] Make the `Type` Facet field force to show only Documents
 - [X] Enable `Tags` type Facet field
 - [X] Override query limit to 1000
+- [X] Empty search should also display the default graph
 
 
-## Upcoming tasks
+## What is left
 
-- [ ] Add a fullscreen button for the visualisation 
-- [ ] Empty search should also display the default graph
+- [ ] Add a fullscreen button for the visualisation
+- [ ] Add zoom-in & zoom-out buttons
 - [ ] Translations: implement the `Localization Module` in order to generate key-value pairs that will allow the possibility of translation of the application pages
 
 <!--

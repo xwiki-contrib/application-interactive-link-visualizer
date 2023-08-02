@@ -78,6 +78,10 @@ const EdgeArrowProgram = createEdgeCompoundProgram([
   const container : HTMLElement = document.getElementById(sigmaContainer);
   const searchInput = document.getElementById("search-input") as HTMLInputElement;
   const searchSuggestions = document.getElementById("suggestions") as HTMLDataListElement;
+  const zoomInBtn = document.getElementById("zoom-in") as HTMLButtonElement;
+  const zoomOutBtn = document.getElementById("zoom-out") as HTMLButtonElement;
+  const zoomResetBtn = document.getElementById("zoom-reset") as HTMLButtonElement;
+
 
   /* We have 2 options for settings but ofcourse we can only choose 1 at a time:
     const customSettings = {
@@ -426,6 +430,18 @@ renderer.on("clickNode", ({ node }) => {
     window.open(graph.getNodeAttribute(node, "pageURL"), "_self");
   }
 });
+if (!isPanel) {
+  const camera = renderer.getCamera();
+  zoomInBtn.addEventListener("click", () => {
+    camera.animatedZoom({ duration: 600 });
+  });
+  zoomOutBtn.addEventListener("click", () => {
+    camera.animatedUnzoom({ duration: 600 });
+  });
+  zoomResetBtn.addEventListener("click", () => {
+    camera.animatedReset({ duration: 600 });
+  });
+}
 }
 
 export default visualize;
