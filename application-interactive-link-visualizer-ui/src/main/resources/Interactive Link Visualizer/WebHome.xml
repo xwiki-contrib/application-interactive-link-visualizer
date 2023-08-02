@@ -48,11 +48,16 @@
          placeholder="Find pages in graph…"
          /&gt;&lt;datalist id="suggestions"&gt;&lt;/datalist&gt;
    &lt;/div&gt;
-   &lt;button id="zoom-in"&gt;+&lt;/button&gt;&lt;button id="zoom-out"&gt;-&lt;/button&gt;&lt;button id="view-fullscreen"&gt;⛶&lt;/button&gt;
    &lt;div id="graph-info"&gt;
       &lt;span id="node-count"&gt;&lt;/span&gt;
       &lt;span id="edge-count"&gt;&lt;/span&gt;
    &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="buttonwrapper" id="graph-buttons"&gt;
+   &lt;button class="icon-button" id="zoom-in"&gt;+&lt;/button&gt;
+   &lt;button class="icon-button" id="zoom-out"&gt;-&lt;/button&gt;
+   &lt;button class="icon-button" id="zoom-reset"&gt;⊙&lt;/button&gt;
+   &lt;button class="icon-button" id="view-fullscreen"&gt;⛶&lt;/button&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 {{/html}}#end##
@@ -178,7 +183,7 @@
   ## Pagination
   #set ($rows = $numbertool.toNumber($request.rows).intValue())
   #if ("$!rows" == '')
-    #set ($rows = 10)
+    #set ($rows = 100)
   #end
   #set ($start = $numbertool.toNumber($request.firstIndex).intValue())
   #if ("$!start" == '')
@@ -591,6 +596,22 @@ i {
 a.options-item.active, a.options-item.active:hover {
     color: @link-color;
     text-decoration: underline;
+}
+#graph-buttons {
+    position: absolute;
+    left: 10px;
+    z-index: 99;
+}
+.buttonwrapper {
+  display: flex;
+  flex-direction: column;
+  margin: 4px 10px;
+}
+
+.icon-button {
+  width: 100%;
+  margin: 2px 0;
+  text-align: center;
 }</code>
     </property>
     <property>
