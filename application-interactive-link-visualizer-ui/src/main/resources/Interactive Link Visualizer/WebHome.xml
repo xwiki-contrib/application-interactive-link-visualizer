@@ -36,7 +36,8 @@
   <minorEdit>false</minorEdit>
   <syntaxId>xwiki/2.1</syntaxId>
   <hidden>true</hidden>
-  <content>{{html}}
+  <content>{{velocity output="false"}}#set($solrConfig = {'filterQuery': ['type:DOCUMENT'], 'facetFields': ['property.XWiki.TagClass.tags_string', 'wiki', 'space_facet', 'locale', 'author', 'creator', 'date', 'creationdate', 'class', 'mimetype', 'attauthor', 'attdate', 'attsize'], 'facetEnabled': false}){{/velocity}}{{include reference="Main.SolrSearchConfig" /}}{{include reference="Main.SolrSearchMacros" /}}{{velocity}}#macro (displaySearchResults){{html}}
+&lt;div id="sigma-container" data-results="$escapetool.xml($jsontool.serialize($searchResponse.results))"&gt;
 &lt;div id="top-bar"&gt;
    &lt;div id="search"&gt;
       &lt;i class="fa fa-search"&gt;&lt;/i&gt;
@@ -44,22 +45,206 @@
          type="search"
          id="search-input"
          list="suggestions"
-         placeholder="Search for documents…"
-         /&gt;
-      &lt;datalist id="suggestions"&gt;&lt;/datalist&gt;
+         placeholder="Find pages in graph…"
+         /&gt;&lt;datalist id="suggestions"&gt;&lt;/datalist&gt;
    &lt;/div&gt;
-   &lt;div class="xformInline" id="nb-field"&gt;
-      &lt;label id="nb-field" for="nb-input"&gt;Number of documents: &lt;/label&gt;
-      &lt;input type="number" id="nb-input" min="1" max="9999999999" step="1" value="1000"&gt;
-      &lt;input id="update-graph-button" class="button" type="button" value="UPDATE GRAPH"/&gt;
-   &lt;/div&gt;
+   &lt;button id="zoom-in"&gt;+&lt;/button&gt;&lt;button id="zoom-out"&gt;-&lt;/button&gt;&lt;button id="view-fullscreen"&gt;⛶&lt;/button&gt;
    &lt;div id="graph-info"&gt;
       &lt;span id="node-count"&gt;&lt;/span&gt;
       &lt;span id="edge-count"&gt;&lt;/span&gt;
    &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="sigma-container"&gt;&lt;/div&gt;
-{{/html}}</content>
+&lt;/div&gt;
+{{/html}}#end##
+#macro(setHighlightQuery $query)
+  #set ($discard = $query.bindValue('fl', 'title_, reference, links, wiki, spaces, name'))
+#end##
+#macro (displaySearchForm)
+  #set($void = $services.progress.startStep('#displaySearchForm'))
+  {{html clean="false"}}
+  &lt;form class="search-form row" action="$doc.getURL()" role="search"&gt;
+    &lt;div class="hidden"&gt;
+      &lt;input type="hidden" name="sort" value="$!escapetool.xml($sort)"/&gt;
+      &lt;input type="hidden" name="sortOrder" value="$!escapetool.xml($sortOrder)"/&gt;
+      &lt;input type="hidden" name="highlight" value="$highlightEnabled"/&gt;
+      &lt;input type="hidden" name="facet" value="$facetEnabled"/&gt;
+      ## The parameter used to determine if the request has been redirected with default search filters.
+      &lt;input type="hidden" name="r" value="$!escapetool.xml($request.r)"/&gt;
+      #if ("$!request.debug" != '')
+        &lt;input type="hidden" name="debug" value="$escapetool.xml($request.debug)"/&gt;
+      #end
+      ## Preserve the current facet values when submitting a new search query.
+      #foreach ($entry in $request.parameterMap.entrySet())
+        #if ($entry.key.startsWith('f_') || $entry.key.startsWith('l_'))
+          #foreach ($value in $entry.value)
+            &lt;input type="hidden" name="$escapetool.xml($entry.key)" value="$escapetool.xml($value)"/&gt;
+          #end
+        #end
+      #end
+    &lt;/div&gt;
+    &lt;div class="col-xs-12 col-sm-6"&gt;
+      &lt;div class="input-group"&gt;
+        &lt;input type="search" name="text" class="form-control withTip useTitleAsTip"
+          title="$services.localization.render('search.page.bar.query.title')" value="$escapetool.xml($text)"/&gt;
+        &lt;span class="input-group-btn"&gt;
+          &lt;button type="submit" class="btn btn-primary"&gt;
+            $services.icon.renderHTML('search')
+            &lt;span class="sr-only"&gt;$services.localization.render('search.page.bar.submit')&lt;/span&gt;
+          &lt;/button&gt;
+        &lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/form&gt;
+  {{/html}}
+  #set($void = $services.progress.endStep())
+#end##
+#macro (displaySearchUI)
+  #set($void = $services.progress.startStep('#displaySearchUI'))
+  #set($void = $services.progress.pushLevel())
+  #set ($discard = $xwiki.ssx.use('Main.SolrSearch'))
+  #set ($discard = $xwiki.jsx.use('Main.SolrSearch'))
+  ## Disable the document extra data: comments, attachments, history...
+  #set ($displayDocExtra = false)
+  #processRequestParameters()
+  (% class="search-ui" %)(((
+    #if ($xcontext.action == 'get')
+      {{html clean="false"}}
+      ## The search UI is updated dynamically through AJAX and we need to pull the skin extensions.
+      ## We put the skin extension imports inside a &lt;noscript&gt; element to prevent jQuery from fetching the JavaScript
+      ## files automatically (we want to fetch only the new JavaScript files).
+      &lt;noscript class="hidden skin-extension-imports"&gt;#skinExtensionHooks&lt;/noscript&gt;
+      {{/html}}
+
+    #end
+    #displaySearchForm()
+    #if ($text != '')
+      #getSearchResults()
+      #if ($debug)
+        #displaySearchDebugInfo()
+      #end
+      (% class="search-results-container row" %)(((
+        #if ($facetEnabled)
+          (% class="col-xs-12 col-sm-4 col-sm-push-8 col-md-3 col-md-push-9" %)(((
+            #displaySearchFacets($searchResponse)
+          )))
+        #end
+        (% class="search-results-left col-xs-12#if ($facetEnabled) col-sm-8 col-sm-pull-4 col-md-9 col-md-pull-3#end" %)
+        (((
+          #displaySearchResultsSort()
+
+          #displaySearchResults()
+        )))
+      )))
+    #end
+    #if ($text == '')
+      #set ($text = "*")
+      #getSearchResults()
+      #if ($debug)
+        #displaySearchDebugInfo()
+      #end
+      (% class="search-results-container row" %)(((
+        #if ($facetEnabled)
+          (% class="col-xs-12 col-sm-4 col-sm-push-8 col-md-3 col-md-push-9" %)(((
+            #displaySearchFacets($searchResponse)
+          )))
+        #end
+        (% class="search-results-left col-xs-12#if ($facetEnabled) col-sm-8 col-sm-pull-4 col-md-9 col-md-pull-3#end" %)
+        (((
+          #displaySearchResultsSort()
+
+          #displaySearchResults()
+        )))
+      )))
+    #end
+  )))
+  #set($void = $services.progress.popLevel())
+  #set($void = $services.progress.endStep())
+#end##
+#macro (processRequestParameters)
+  #set ($text = "$!request.text")
+  #set ($boost = "$!request.boost")
+  #set ($debug = "$!request.debug" != '')
+  ##
+  ## Facet enabled
+  ## First check the request, then the configuration and enable it by default
+  #if ($request.facet)
+    #set ($facetEnabled = $request.facet != 'false')
+  #elseif ($solrConfig.containsKey('facetEnabled'))
+    #set ($facetEnabled = $solrConfig.facetEnabled)
+  #else
+    #set ($facetEnabled = true)
+  #end
+  ##
+  ## Pagination
+  #set ($rows = $numbertool.toNumber($request.rows).intValue())
+  #if ("$!rows" == '')
+    #set ($rows = 10)
+  #end
+  #set ($start = $numbertool.toNumber($request.firstIndex).intValue())
+  #if ("$!start" == '')
+    #set ($start = 0)
+  #end
+  ##
+  ## Sort
+  #set ($sort = $request.sort)
+  #if ("$!sort" == '')
+    #set ($sort = 'score')
+  #end
+  #set ($sortOrder = $request.sortOrder)
+  #if ("$!sortOrder" == '')
+    #set ($sortOrder = 'desc')
+  #elseif ($sortOrder != 'desc')
+    #set ($sortOrder = 'asc')
+  #end
+  ##
+  ## Result type
+  ## We store the selected result type because we need it to decide what search and sort fields to use.
+  #set ($type = $request.getParameterValues('f_type'))
+  #if ($type &amp;&amp; $type.size() == 1)
+    #set ($type = $type.get(0))
+  #else
+    ## Extract the result type from the filter query, if specified.
+    #foreach ($item in $solrConfig.filterQuery)
+      #if ($item.startsWith('type:'))
+        #set ($type = $item.substring(5))
+        #break
+      #end
+    #end
+  #end
+#end
+##################
+#macro (displaySearchResultsSort)
+  #set ($defaultSortOrder = $solrConfig.sortFields.get($type))
+  #if (!$defaultSortOrder)
+    #set ($defaultSortOrder = {'score': 'desc'})
+  #end
+  #set ($sortOrderSymbol = {
+    'asc': $services.icon.render('caret-up'),
+    'desc': $services.icon.render('caret-down')
+  })
+  (% class="search-options" %)
+  * {{translation key="solr.options"/}}
+  #if($facetEnabled)#extendQueryString($url {'facet': [false]})#else#extendQueryString($url {'facet': [true]})#end
+  * [[{{translation key="solr.options.facet"/}}&gt;&gt;path:${url}||class="options-item#if($facetEnabled) active#end" title="$services.localization.render('solr.options.facet.title')"]]
+
+  (% class="search-results-sort" %)
+  * {{translation key="solr.sortBy"/}}
+  #foreach ($entry in $defaultSortOrder.entrySet())
+    #set ($class = 'sort-item')
+    #set ($sortOrderIndicator = $NULL)
+    #set ($targetSortOrder = $entry.value)
+    #if ($sort == $entry.key)
+      #set ($class = "$class active")
+      #set ($sortOrderHint = $services.localization.render("solr.sortOrder.$sortOrder"))
+      #set ($sortOrderIndicator = "(% class=""sort-item-order"" title=""$sortOrderHint"" %)$sortOrderSymbol.get($sortOrder)(%%)")
+      #set ($targetSortOrder = "#if ($sortOrder == 'asc')desc#{else}asc#end")
+    #end
+    #extendQueryString($url {'sort': [$entry.key], 'sortOrder': [$targetSortOrder]})
+    * [[{{translation key="solr.sortBy.$entry.key"/}}$!sortOrderIndicator&gt;&gt;path:${url}||class="$class"]]
+  #end
+#end
+#handleSolrSearchRequest
+{{/velocity}}</content>
   <object>
     <name>Interactive Link Visualizer.WebHome</name>
     <number>0</number>
@@ -149,83 +334,83 @@
     </property>
     <property>
       <code>require(['jquery', 'visualisationAPI'], function($, visualisationAPI) {
-    const solrServiceURL = new XWiki.Document('SuggestSolrService', 'XWiki').getURL('get');
-    var tempData = null;
-    var edgeKeyCounter = 1;
-    var isFirstLoad = true;
+    var tempData = null,
+        edgeKeyCounter = 1;
 
-    // XWiki theme variable colors
     #template('colorThemeInit.vm')
-     var themeColors = $jsontool.serialize({
+    var themeColors = $jsontool.serialize({
         'nodeColor': $theme.linkColor,
         'labelColor': $theme.textColor,
         'fadeColor': $theme.highlightColor,
         'labelContainerColor': $theme.pageContentBackgroundColor
     });
-
-    $(document).ready(function() {
-        $('#update-graph-button').trigger('click');
-    });
-    $('#update-graph-button').on('click', function() {
-      var nb = isFirstLoad ? 1000 : $('#nb-input').val(); // Get the value of 'nb' from the input field
-      var isFirstLoad = false;
-
-        $.post(solrServiceURL, {
-            outputSyntax: 'plain',
-            nb: nb,
-            media: 'json',
-            query: [
-                'q=*:*',
-                'q.op=AND',
-                'fq=type:DOCUMENT',
-                'fl=title_, reference, links, wiki, spaces, name'
-            ].join('\n'),
-            input: " "
-        }, function(response) {
-            tempData = response;
-          const nodes = tempData.map(function(obj) {
-                return {
-                    key: obj.reference,
-                    attributes: {
-                        label: obj.title_,
-                        color: themeColors.nodeColor,
-                        size: 6,
-                        pageURL: new XWiki.Document(XWiki.Model.resolve(obj.reference)).getURL()
-                    }
-                };
-            });
-
-            const edges = [];
-            tempData.forEach(function(obj) {
-                if (obj.links &amp;&amp; obj.links.length &gt; 0) {
-                    obj.links.forEach(function(link) {
-                        var target = link.replace(/^entity:/, '');
-                        var isValid = tempData.some(function(item) {
-                            return item.reference === target;
-                        });
-                        if (isValid) {
-                            edges.push({
-                                key: edgeKeyCounter.toString(),
-                                target: target,
-                                source: obj.reference
-                            });
-                            edgeKeyCounter++;
-                        }
-                    });
+    document.observe('xwiki:dom:updated', function() {
+        tempData = JSON.parse(document.getElementById('sigma-container').dataset.results);
+        const nodes = tempData.map(function(obj) {
+            return {
+                key: obj.reference,
+                attributes: {
+                    label: obj.title_,
+                    color: themeColors.nodeColor,
+                    size: 5,
+                    pageURL: new XWiki.Document(XWiki.Model.resolve(obj.reference)).getURL()
                 }
-            });
-            const graphData = {
-                nodes: nodes,
-                edges: edges
             };
-
-            $('#sigma-container').empty();
-            $('#node-count').text('Displaying ' + nodes.length + ' documents &amp; ');
-            $('#edge-count').text(edges.length + ' links');
-            visualisationAPI.visualize(graphData, "sigma-container", themeColors, isPanel = false, nb);
-
         });
+        const edges = [];
+        tempData.forEach(function(obj) {
+            if (obj.links &amp;&amp; obj.links.length &gt; 0) {
+                obj.links.forEach(function(link) {
+                    var target = link.replace(/^entity:/, '');
+                    var isValid = tempData.some(function(item) {
+                        return item.reference === target;
+                    });
+                    if (isValid) {
+                        edges.push({
+                            key: edgeKeyCounter.toString(),
+                            target: target,
+                            source: obj.reference
+                        });
+                        edgeKeyCounter++;
+                    }
+                });
+            }
+        });
+        const graphData = {
+            nodes: nodes,
+            edges: edges
+        };
+        let nb = nodes.length;
+        $('#node-count').text('Displaying ' + nb + ' documents &amp; ');
+        $('#edge-count').text(edges.length + ' links');
+        visualisationAPI.visualize(graphData, "sigma-container", themeColors, isPanel = false, nb);
     });
+    var viewFullScreen = document.getElementById("view-fullscreen");
+    if (viewFullScreen) {
+        viewFullScreen.addEventListener("click", function() {
+            const docElm = document.querySelector("#sigma-container");
+
+            if (docElm.requestFullscreen) {
+                docElm.requestFullscreen();
+            } else if (docElm.msRequestFullscreen) {
+                docElm.msRequestFullscreen();
+            } else if (docElm.mozRequestFullScreen) {
+                docElm.mozRequestFullScreen();
+            } else if (docElm.webkitRequestFullScreen) {
+                docElm.webkitRequestFullScreen();
+            }
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            }
+        });
+    }
+
 });</code>
     </property>
     <property>
@@ -346,16 +531,18 @@
     <property>
       <code>#sigma-container {
 	width: 100%;
-	height: 800px;
+	height: 700px;
 	border: 1px solid @breadcrumb-bg;
 	border-radius: 5px;
-	box-shadow: rgba(red(@text-color), green(@text-color), blue(@text-color), 0.3) 0px 8px 8px;
-	margin-top: 40px;
+	box-shadow: rgba(red(@text-color), green(@text-color), blue(@text-color), 0.2) 0px 2px 6px;
+	margin-top: 50px;
 }
-
+#sigma-container::backdrop {
+    background-color: @xwiki-page-content-bg;
+}
 #top-bar {
 	position: absolute;
-	top: 0;
+	top: 56px;
 	left: 50%;
 	transform: translateX(-50%);
 	width: 97.5%;
@@ -365,14 +552,13 @@
 	padding: 3px 12px;
 	border: 1px solid @breadcrumb-bg;
 	border-radius: 5px;
-	background-color: @breadcrumb-bg;
-	box-shadow: rgba(red(@text-color), green(@text-color), blue(@text-color), 0.3) 1px 1px 4px 0px;
+	background-color: @panel-bg;;
+	box-shadow: rgba(red(@text-color), green(@text-color), blue(@text-color), 0.3) 0px 0px 3px 1px;
+    z-index: 99;
 }
-
 #search {
 	margin-right: 20px;
 }
-
 #search-input {
 	width: 200px;
 	height: 2.3em;
@@ -381,28 +567,30 @@
 	background-color: @body-bg;
 	color: @text-color;
 }
-
 i {
 	display: inline-block;
 	margin-right: 5px;
 }
-
-#nb-input {
-	width: 8em;
-	padding: 5px;
-	font-size: 1em;
-	text-align: center;
-	background-color: @body-bg;
-	color: @text-color;
-}
-
 #graph-info {
 	font-size: 1.1em;
 	padding: inherit;
 }
-
 #xwikicontent {
-	overflow: hidden;
+  	overflow: hidden;
+    padding-top: 0;
+}
+.search-facets {
+    background-color: @panel-bg;
+}
+.input-group {
+    left: 50%;
+}
+.form-control {
+    text-align: center
+}
+a.options-item.active, a.options-item.active:hover {
+    color: @link-color;
+    text-decoration: underline;
 }</code>
     </property>
     <property>

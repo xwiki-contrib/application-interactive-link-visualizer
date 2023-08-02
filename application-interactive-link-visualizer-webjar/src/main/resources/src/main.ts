@@ -164,7 +164,8 @@ const EdgeArrowProgram = createEdgeCompoundProgram([
     labelColor: { color: themeColors.labelColor },
     zIndex: true,
     hoverRenderer: customDrawHover,
-    edgeProgramClasses: { arrow: EdgeArrowProgram }
+    edgeProgramClasses: { arrow: EdgeArrowProgram },
+    allowInvalidContainer: true
   };
 
   const renderer = new Sigma(graph, container, rendererSettings);

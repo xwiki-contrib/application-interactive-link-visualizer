@@ -193,8 +193,7 @@ height: 350px;
 </content>
     </property>
     <property>
-      <description>Panel Application for the Interactive Link Visualizer Application.
-The aim for the panel is to show the network graph visualization centered around the currently opened document.</description>
+      <description>Show the network graph visualization centered around the currently opened document.</description>
     </property>
     <property>
       <name>Panel - Interactive Graph</name>
@@ -295,7 +294,6 @@ The aim for the panel is to show the network graph visualization centered around
     const solrServiceURL = new XWiki.Document('SuggestSolrService', 'XWiki').getURL('get');
     var tempData = null;
     var edgeKeyCounter = 1;
-
     #template('colorThemeInit.vm') // For XWiki color theme variables
     var themeColors = $jsontool.serialize({
         'nodeColor': $theme.linkColor,
@@ -303,7 +301,6 @@ The aim for the panel is to show the network graph visualization centered around
         'fadeColor': $theme.highlightColor,
         'labelContainerColor': $theme.pageContentBackgroundColor
     });
-
 
     function escapeQueryChars(s) {
         const specialCharacters = "\\+-!()^[]\"{}~*?|&amp;;:/";
@@ -323,7 +320,7 @@ The aim for the panel is to show the network graph visualization centered around
 
     $.post(solrServiceURL, {
         outputSyntax: 'plain',
-        nb: 1000,
+        nb: 100,
         media: 'json',
         query: [
             'q=reference:' + documentQuery,
@@ -339,7 +336,7 @@ The aim for the panel is to show the network graph visualization centered around
             }
             $.post(solrServiceURL, {
                 outputSyntax: 'plain',
-                nb: 1000,
+                nb: 100,
                 media: 'json',
                 query: [
                     'q=reference:' + documentQuery + ' OR links:' + linkQuery + extraDocuments,
@@ -354,7 +351,7 @@ The aim for the panel is to show the network graph visualization centered around
                         key: obj.reference,
                         attributes: {
                             label: obj.title_,
-                            color: themeColors.nodeColor,
+                            color: (("document:xwiki:"+xm.document) == obj.reference) ? "orange" : themeColors.nodeColor,
                             size: (("document:xwiki:"+xm.document) == obj.reference) ? 12: 8,
                             pageURL: new XWiki.Document(XWiki.Model.resolve(obj.reference)).getURL()
                         }
@@ -384,9 +381,7 @@ The aim for the panel is to show the network graph visualization centered around
                     nodes: nodes,
                     edges: edges
                 };
-
                 visualisationAPI.visualize(graphData, "sigma-container-panel", themeColors, isPanel = true, nb = 1000);
-
             });
         }
     });
