@@ -86,17 +86,17 @@
 - [X] Create a mathematical formula to stop the graph layout after some time; that depends on `nb` ([INTLV-10 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/8c6806b8c52f2344f5d7759f526d7ca2ce455ef6))
 - [X] Implement a drag-detection method to avoid accidental clicks on the node ([INTLV-3 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/1e688d287cabba6848360657e7b0924bb8bf2493))
 - [X] Current opened document's node in the panel should have a different color & size
-- [X] Integrate the Solr Search Facets integration in the application
+- [X] Integrate the Solr Search Facets integration in the application ([INTLV-13 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/bee8fc3c7a80a0791a29a88d9a79e6a35b60ad4d))
 - [X] Make the `Type` Facet field force to show only Documents
 - [X] Enable `Tags` type Facet field
 - [X] Override query limit to 1000
 - [X] Empty search should also display the default graph
+- [X] Add a fullscreen button for the visualisation ([INTLV-14 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/2171d0bc9b8f650ef8dec0edd284f9aeb9fb77ff))
+- [X] Add zoom-in & zoom-out buttons ([INTLV-15 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/2171d0bc9b8f650ef8dec0edd284f9aeb9fb77ff))
 
 
 ## What is left
 
-- [ ] Add a fullscreen button for the visualisation
-- [ ] Add zoom-in & zoom-out buttons
 - [ ] Translations: implement the `Localization Module` in order to generate key-value pairs that will allow the possibility of translation of the application pages
 
 <!--
