@@ -94,7 +94,8 @@
 - [X] Remove `Highlighting` filter from Solr Facets
 - [X] Add a fullscreen button for the visualisation ([INTLV-14 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/2171d0bc9b8f650ef8dec0edd284f9aeb9fb77ff))
 - [X] Add zoom-in & zoom-out buttons ([INTLV-15 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/2171d0bc9b8f650ef8dec0edd284f9aeb9fb77ff))
-
+- [X] Listen for both DOM loaded and updated events to start the initialisation
+- [ ] Add a way to change the number of results to be displayed in the graph
 
 ## What is left
 

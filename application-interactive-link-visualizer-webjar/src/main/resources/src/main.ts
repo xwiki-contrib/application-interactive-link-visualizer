@@ -201,10 +201,10 @@ renderer.on("leaveNode", ({ node }) => {
 }
 
   // Search by nodes feature
-  function handleSearch(graph: DirectedGraph, renderer: Sigma) {
+  function handleSearch(graph: DirectedGraph, renderer: Sigma, isPanel : boolean) {
 
-    if (!searchInput || !searchSuggestions) {
-      return; // Skip search feature if elements are not present
+    if (isPanel) {
+      return; // Skip search feature if we are on the Panel
     }
 
     // Type and declare internal state:
@@ -361,7 +361,7 @@ renderer.on("leaveNode", ({ node }) => {
       return res;
     });
   }
-  handleSearch(graph, renderer);
+  handleSearch(graph, renderer, isPanel);
 
 // Nodes drag & click events
 let draggedNode: string | null = null;
