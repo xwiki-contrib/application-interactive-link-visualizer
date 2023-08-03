@@ -389,33 +389,35 @@
         $('#node-count').text('Displaying ' + nb + ' documents &amp; ');
         $('#edge-count').text(edges.length + ' links');
         visualisationAPI.visualize(graphData, "sigma-container", themeColors, isPanel = false, nb);
-    });
-    var viewFullScreen = document.getElementById("view-fullscreen");
-    if (viewFullScreen) {
-        viewFullScreen.addEventListener("click", function() {
-            const docElm = document.querySelector("#sigma-container");
 
-            if (docElm.requestFullscreen) {
-                docElm.requestFullscreen();
-            } else if (docElm.msRequestFullscreen) {
-                docElm.msRequestFullscreen();
-            } else if (docElm.mozRequestFullScreen) {
-                docElm.mozRequestFullScreen();
-            } else if (docElm.webkitRequestFullScreen) {
-                docElm.webkitRequestFullScreen();
-            }
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-            } else if (document.msExitFullscreen) {
-                document.msExitFullscreen();
-            } else if (document.mozCancelFullScreen) {
-                document.mozCancelFullScreen();
-            } else if (document.webkitExitFullscreen) {
-                document.webkitExitFullscreen();
+        var FSButton = document.getElementById("view-fullscreen");
+        const sigmaContainer = document.querySelector("#sigma-container");
+        FSButton.addEventListener("click", function() {
+            if (document.fullscreenElement) {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.webkitCancelFullScreen) {
+                    document.webkitCancelFullScreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            } else {
+                if (!document.mozFullScreen &amp;&amp; !document.webkitFullScreen) {
+                    if (sigmaContainer.requestFullscreen) {
+                        sigmaContainer.requestFullscreen();
+                    } else if (sigmaContainer.mozRequestFullScreen) {
+                        sigmaContainer.mozRequestFullScreen();
+                    } else if (sigmaContainer.webkitRequestFullScreen) {
+                        sigmaContainer.webkitRequestFullScreen();
+                    } else if (sigmaContainer.msRequestFullscreen) {
+                        sigmaContainer.msRequestFullscreen();
+                    }
+                }
             }
         });
-    }
-
+    });
 });</code>
     </property>
     <property>
@@ -599,7 +601,7 @@ a.options-item.active, a.options-item.active:hover {
 }
 #graph-buttons {
     position: absolute;
-    left: 10px;
+    right: 10px;
     z-index: 99;
 }
 .buttonwrapper {
