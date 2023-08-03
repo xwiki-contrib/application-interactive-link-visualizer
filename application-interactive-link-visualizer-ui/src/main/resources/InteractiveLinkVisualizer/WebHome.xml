@@ -1,0 +1,235 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<xwikidoc version="1.5" reference="InteractiveLinkVisualizer.WebHome" locale="">
+  <web>InteractiveLinkVisualizer</web>
+  <name>WebHome</name>
+  <language/>
+  <defaultLanguage>en</defaultLanguage>
+  <translation>0</translation>
+  <creator>XWiki.Admin</creator>
+  <creationDate>1691042382000</creationDate>
+  <parent>Main.WebHome</parent>
+  <author>XWiki.Admin</author>
+  <originalMetadataAuthor>XWiki.Admin</originalMetadataAuthor>
+  <contentAuthor>XWiki.Admin</contentAuthor>
+  <date>1691042441000</date>
+  <contentUpdateDate>1691042441000</contentUpdateDate>
+  <version>2.1</version>
+  <title>Interactive Link Visualizer</title>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>false</hidden>
+  <content>{{velocity output="false"}}#set ($discard = $xwiki.jsx.use('InteractiveLinkVisualizer.Code'))#set ($discard = $xwiki.ssx.use('InteractiveLinkVisualizer.Code'))#set($solrConfig = {'filterQuery': ['type:DOCUMENT'], 'facetFields': ['property.XWiki.TagClass.tags_string', 'wiki', 'space_facet', 'locale', 'author', 'creator', 'date', 'creationdate', 'class', 'mimetype', 'attauthor', 'attdate', 'attsize'], 'facetEnabled': false}){{/velocity}}{{include reference="Main.SolrSearchConfig" /}}{{include reference="Main.SolrSearchMacros" /}}{{velocity}}#macro (displaySearchResults){{html}}
+&lt;div id="sigma-container" data-results="$escapetool.xml($jsontool.serialize($searchResponse.results))">
+&lt;div id="top-bar">
+   &lt;div id="search">
+      &lt;i class="fa fa-search">&lt;/i>
+      &lt;input
+         type="search"
+         id="search-input"
+         list="suggestions"
+         placeholder="Find pages in graph…"
+         />&lt;datalist id="suggestions">&lt;/datalist>
+   &lt;/div>
+   &lt;div id="graph-info">
+      &lt;span id="node-count">&lt;/span>
+      &lt;span id="edge-count">&lt;/span>
+   &lt;/div>
+&lt;/div>
+&lt;div class="buttonwrapper" id="graph-buttons">
+   &lt;button class="icon-button" id="zoom-in">+&lt;/button>
+   &lt;button class="icon-button" id="zoom-out">-&lt;/button>
+   &lt;button class="icon-button" id="zoom-reset">⊙&lt;/button>
+   &lt;button class="icon-button" id="view-fullscreen">⛶&lt;/button>
+&lt;/div>
+&lt;/div>
+{{/html}}#end##
+#macro(setHighlightQuery $query)
+  #set ($discard = $query.bindValue('fl', 'title_, reference, links, wiki, spaces, name'))
+#end##
+#macro (displaySearchForm)
+  #set($void = $services.progress.startStep('#displaySearchForm'))
+  {{html clean="false"}}
+  &lt;form class="search-form row" action="$doc.getURL()" role="search">
+    &lt;div class="hidden">
+      &lt;input type="hidden" name="sort" value="$!escapetool.xml($sort)"/>
+      &lt;input type="hidden" name="sortOrder" value="$!escapetool.xml($sortOrder)"/>
+      &lt;input type="hidden" name="highlight" value="$highlightEnabled"/>
+      &lt;input type="hidden" name="facet" value="$facetEnabled"/>
+      ## The parameter used to determine if the request has been redirected with default search filters.
+      &lt;input type="hidden" name="r" value="$!escapetool.xml($request.r)"/>
+      #if ("$!request.debug" != '')
+        &lt;input type="hidden" name="debug" value="$escapetool.xml($request.debug)"/>
+      #end
+      ## Preserve the current facet values when submitting a new search query.
+      #foreach ($entry in $request.parameterMap.entrySet())
+        #if ($entry.key.startsWith('f_') || $entry.key.startsWith('l_'))
+          #foreach ($value in $entry.value)
+            &lt;input type="hidden" name="$escapetool.xml($entry.key)" value="$escapetool.xml($value)"/>
+          #end
+        #end
+      #end
+    &lt;/div>
+    &lt;div class="col-xs-12 col-sm-6">
+      &lt;div class="input-group">
+        &lt;input type="search" name="text" class="form-control withTip useTitleAsTip"
+          title="$services.localization.render('search.page.bar.query.title')" value="$escapetool.xml($text)"/>
+        &lt;span class="input-group-btn">
+          &lt;button type="submit" class="btn btn-primary">
+            $services.icon.renderHTML('search')
+            &lt;span class="sr-only">$services.localization.render('search.page.bar.submit')&lt;/span>
+          &lt;/button>
+        &lt;/span>
+      &lt;/div>
+    &lt;/div>
+  &lt;/form>
+  {{/html}}
+  #set($void = $services.progress.endStep())
+#end##
+#macro (displaySearchUI)
+  #set($void = $services.progress.startStep('#displaySearchUI'))
+  #set($void = $services.progress.pushLevel())
+  #set ($discard = $xwiki.ssx.use('Main.SolrSearch'))
+  #set ($discard = $xwiki.jsx.use('Main.SolrSearch'))
+  ## Disable the document extra data: comments, attachments, history...
+  #set ($displayDocExtra = false)
+  #processRequestParameters()
+  (% class="search-ui" %)(((
+    #if ($xcontext.action == 'get')
+      {{html clean="false"}}
+      ## The search UI is updated dynamically through AJAX and we need to pull the skin extensions.
+      ## We put the skin extension imports inside a &lt;noscript> element to prevent jQuery from fetching the JavaScript
+      ## files automatically (we want to fetch only the new JavaScript files).
+      &lt;noscript class="hidden skin-extension-imports">#skinExtensionHooks&lt;/noscript>
+      {{/html}}
+
+    #end
+    #displaySearchForm()
+    #if ($text != '')
+      #getSearchResults()
+      #if ($debug)
+        #displaySearchDebugInfo()
+      #end
+      (% class="search-results-container row" %)(((
+        #if ($facetEnabled)
+          (% class="col-xs-12 col-sm-4 col-sm-push-8 col-md-3 col-md-push-9" %)(((
+            #displaySearchFacets($searchResponse)
+          )))
+        #end
+        (% class="search-results-left col-xs-12#if ($facetEnabled) col-sm-8 col-sm-pull-4 col-md-9 col-md-pull-3#end" %)
+        (((
+          #displaySearchResultsSort()
+
+          #displaySearchResults()
+        )))
+      )))
+    #end
+    #if ($text == '')
+      #set ($text = "*")
+      #getSearchResults()
+      #if ($debug)
+        #displaySearchDebugInfo()
+      #end
+      (% class="search-results-container row" %)(((
+        #if ($facetEnabled)
+          (% class="col-xs-12 col-sm-4 col-sm-push-8 col-md-3 col-md-push-9" %)(((
+            #displaySearchFacets($searchResponse)
+          )))
+        #end
+        (% class="search-results-left col-xs-12#if ($facetEnabled) col-sm-8 col-sm-pull-4 col-md-9 col-md-pull-3#end" %)
+        (((
+          #displaySearchResultsSort()
+
+          #displaySearchResults()
+        )))
+      )))
+    #end
+  )))
+  #set($void = $services.progress.popLevel())
+  #set($void = $services.progress.endStep())
+#end##
+#macro (processRequestParameters)
+  #set ($text = "$!request.text")
+  #set ($boost = "$!request.boost")
+  #set ($debug = "$!request.debug" != '')
+  ##
+  ## Facet enabled
+  ## First check the request, then the configuration and enable it by default
+  #if ($request.facet)
+    #set ($facetEnabled = $request.facet != 'false')
+  #elseif ($solrConfig.containsKey('facetEnabled'))
+    #set ($facetEnabled = $solrConfig.facetEnabled)
+  #else
+    #set ($facetEnabled = true)
+  #end
+  ##
+  ## Pagination
+  #set ($rows = $numbertool.toNumber($request.rows).intValue())
+  #if ("$!rows" == '')
+    #set ($rows = 1000)
+  #end
+  #set ($start = $numbertool.toNumber($request.firstIndex).intValue())
+  #if ("$!start" == '')
+    #set ($start = 0)
+  #end
+  ##
+  ## Sort
+  #set ($sort = $request.sort)
+  #if ("$!sort" == '')
+    #set ($sort = 'score')
+  #end
+  #set ($sortOrder = $request.sortOrder)
+  #if ("$!sortOrder" == '')
+    #set ($sortOrder = 'desc')
+  #elseif ($sortOrder != 'desc')
+    #set ($sortOrder = 'asc')
+  #end
+  ##
+  ## Result type
+  ## We store the selected result type because we need it to decide what search and sort fields to use.
+  #set ($type = $request.getParameterValues('f_type'))
+  #if ($type &amp;&amp; $type.size() == 1)
+    #set ($type = $type.get(0))
+  #else
+    ## Extract the result type from the filter query, if specified.
+    #foreach ($item in $solrConfig.filterQuery)
+      #if ($item.startsWith('type:'))
+        #set ($type = $item.substring(5))
+        #break
+      #end
+    #end
+  #end
+#end##
+#macro (displaySearchResultsSort)
+  #set ($defaultSortOrder = $solrConfig.sortFields.get($type))
+  #if (!$defaultSortOrder)
+    #set ($defaultSortOrder = {'score': 'desc'})
+  #end
+  #set ($sortOrderSymbol = {
+    'asc': $services.icon.render('caret-up'),
+    'desc': $services.icon.render('caret-down')
+  })
+  (% class="search-options" %)
+  * {{translation key="solr.options"/}}
+  #if($facetEnabled)#extendQueryString($url {'facet': [false]})#else#extendQueryString($url {'facet': [true]})#end
+  * [[{{translation key="solr.options.facet"/}}>>path:${url}||class="options-item#if($facetEnabled) active#end" title="$services.localization.render('solr.options.facet.title')"]]
+
+  (% class="search-results-sort" %)
+  * {{translation key="solr.sortBy"/}}
+  #foreach ($entry in $defaultSortOrder.entrySet())
+    #set ($class = 'sort-item')
+    #set ($sortOrderIndicator = $NULL)
+    #set ($targetSortOrder = $entry.value)
+    #if ($sort == $entry.key)
+      #set ($class = "$class active")
+      #set ($sortOrderHint = $services.localization.render("solr.sortOrder.$sortOrder"))
+      #set ($sortOrderIndicator = "(% class=""sort-item-order"" title=""$sortOrderHint"" %)$sortOrderSymbol.get($sortOrder)(%%)")
+      #set ($targetSortOrder = "#if ($sortOrder == 'asc')desc#{else}asc#end")
+    #end
+    #extendQueryString($url {'sort': [$entry.key], 'sortOrder': [$targetSortOrder]})
+    * [[{{translation key="solr.sortBy.$entry.key"/}}$!sortOrderIndicator>>path:${url}||class="$class"]]
+  #end
+#end
+#handleSolrSearchRequest
+{{/velocity}}</content>
+</xwikidoc>

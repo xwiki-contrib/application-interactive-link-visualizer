@@ -91,6 +91,7 @@
 - [X] Enable `Tags` type Facet field
 - [X] Override query limit to 1000
 - [X] Empty search should also display the default graph
+- [X] Remove `Highlighting` filter from Solr Facets
 - [X] Add a fullscreen button for the visualisation ([INTLV-14 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/2171d0bc9b8f650ef8dec0edd284f9aeb9fb77ff))
 - [X] Add zoom-in & zoom-out buttons ([INTLV-15 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/2171d0bc9b8f650ef8dec0edd284f9aeb9fb77ff))
 
