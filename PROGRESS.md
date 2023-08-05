@@ -98,15 +98,19 @@
 - [X] Fixed Search feature should not work on the panel ([INTLV-18 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/f9d7232a5ac614633bd41f09ecd161c782597aa1))
 - [X] Add a way to change the number of results to be displayed in the graph
 - [X] Add a button to increase the number of iterations in the graph
-- [X] Kill and clear the previous graph instance to release memory ([INTLV-20 commit]())
-- [X] Move the application to `XWiki` space
+- [X] Kill and clear the previous graph instance to release memory ([INTLV-20 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/96a6f8267d0ef1f59c5387b37b3e154d8ca2e001))
+- [X] Move the application to `XWiki` space & encapsulate code ([commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/faeb004ac22afb6161525711e3903bbcbf05f06a))
+- [X] Fixed JSX Editor gets console error of document returned as null & object not loading properly ([INTLV-21 commit]())
+
+## Week 10 (07 August - 13 August 2023)
+
+- [ ] ...
 
 ## What is left
 
 - [ ] Translations: implement the `Localization Module` in order to generate key-value pairs that will allow the possibility of translation of the application pages
 
 <!--
-## Week 10 (07 August - 13 August 2023)
 ## Week 11 (14 August - 20 August 2023)
 ## Week 12 (21 August - 27 August 2023)
 # Final Evaluation (28 August - 04 September)

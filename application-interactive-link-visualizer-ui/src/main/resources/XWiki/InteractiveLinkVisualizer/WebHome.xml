@@ -345,7 +345,9 @@
             }
         });
     };
+    if ($('#sigma-container') &amp;&amp; $('#sigma-container').data('results')) {
     $(init).on('xwiki:dom:updated', init);
+    }
 });</code>
     </property>
     <property>
