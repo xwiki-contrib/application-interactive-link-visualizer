@@ -81,6 +81,7 @@ const EdgeArrowProgram = createEdgeCompoundProgram([
   const zoomInBtn = document.getElementById("zoom-in") as HTMLButtonElement;
   const zoomOutBtn = document.getElementById("zoom-out") as HTMLButtonElement;
   const zoomResetBtn = document.getElementById("zoom-reset") as HTMLButtonElement;
+  const iterationBtn = document.getElementById("iteration-button") as HTMLButtonElement;
 
 
   /* We have 2 options for settings but ofcourse we can only choose 1 at a time:
@@ -441,6 +442,9 @@ if (!isPanel) {
   zoomResetBtn.addEventListener("click", () => {
     camera.animatedReset({ duration: 600 });
   });
+  iterationBtn.addEventListener("click", () => {
+    startFA2();
+  })
 }
 }
 
