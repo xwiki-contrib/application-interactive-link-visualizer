@@ -82,6 +82,7 @@ const EdgeArrowProgram = createEdgeCompoundProgram([
   const zoomOutBtn = document.getElementById("zoom-out") as HTMLButtonElement;
   const zoomResetBtn = document.getElementById("zoom-reset") as HTMLButtonElement;
   const iterationBtn = document.getElementById("iteration-button") as HTMLButtonElement;
+  const killGraphBtn = document.getElementById("kill-graph-button") as HTMLButtonElement;
 
 
   /* We have 2 options for settings but ofcourse we can only choose 1 at a time:
@@ -444,6 +445,11 @@ if (!isPanel) {
   });
   iterationBtn.addEventListener("click", () => {
     startFA2();
+  })
+  killGraphBtn.addEventListener("click", () => {
+    stopFA2();
+    renderer.clear();
+    renderer.kill();
   })
 }
 }

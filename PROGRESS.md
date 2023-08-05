@@ -98,6 +98,7 @@
 - [X] Fixed Search feature should not work on the panel ([INTLV-18 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/f9d7232a5ac614633bd41f09ecd161c782597aa1))
 - [X] Add a way to change the number of results to be displayed in the graph
 - [X] Add a button to increase the number of iterations in the graph
+- [X] Kill and clear the previous graph instance to release memory ([INTLV-20 commit]())
 
 ## What is left
 
