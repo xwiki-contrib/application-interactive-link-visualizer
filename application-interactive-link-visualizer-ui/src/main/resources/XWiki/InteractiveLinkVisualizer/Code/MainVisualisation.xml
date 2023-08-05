@@ -20,9 +20,9 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
 -->
 
-<xwikidoc version="1.5" reference="InteractiveLinkVisualizer.Code" locale="">
-  <web>InteractiveLinkVisualizer</web>
-  <name>Code</name>
+<xwikidoc version="1.5" reference="XWiki.InteractiveLinkVisualizer.Code.MainVisualisation" locale="">
+  <web>XWiki.InteractiveLinkVisualizer.Code</web>
+  <name>MainVisualisation</name>
   <language/>
   <defaultLanguage/>
   <translation>0</translation>
@@ -31,196 +31,17 @@
   <author>xwiki:XWiki.Admin</author>
   <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
   <version>1.1</version>
-  <title>Code</title>
+  <title>MainVisualisation</title>
   <comment/>
   <minorEdit>false</minorEdit>
   <syntaxId>xwiki/2.1</syntaxId>
   <hidden>true</hidden>
   <content/>
   <object>
-    <name>InteractiveLinkVisualizer.Code</name>
-    <number>0</number>
-    <className>XWiki.JavaScriptExtension</className>
-    <guid>43420a50-36cb-445f-83fa-73a902603616</guid>
-    <class>
-      <name>XWiki.JavaScriptExtension</name>
-      <customClass/>
-      <customMapping/>
-      <defaultViewSheet/>
-      <defaultEditSheet/>
-      <defaultWeb/>
-      <nameField/>
-      <validationScript/>
-      <cache>
-        <cache>0</cache>
-        <defaultValue>long</defaultValue>
-        <disabled>0</disabled>
-        <displayType>select</displayType>
-        <freeText>forbidden</freeText>
-        <largeStorage>0</largeStorage>
-        <multiSelect>0</multiSelect>
-        <name>cache</name>
-        <number>5</number>
-        <prettyName>Caching policy</prettyName>
-        <relationalStorage>0</relationalStorage>
-        <separator> </separator>
-        <separators>|, </separators>
-        <size>1</size>
-        <unmodifiable>0</unmodifiable>
-        <values>long|short|default|forbid</values>
-        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
-      </cache>
-      <code>
-        <contenttype>PureText</contenttype>
-        <disabled>0</disabled>
-        <editor>PureText</editor>
-        <name>code</name>
-        <number>2</number>
-        <prettyName>Code</prettyName>
-        <restricted>0</restricted>
-        <rows>20</rows>
-        <size>50</size>
-        <unmodifiable>0</unmodifiable>
-        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
-      </code>
-      <name>
-        <disabled>0</disabled>
-        <name>name</name>
-        <number>1</number>
-        <prettyName>Name</prettyName>
-        <size>30</size>
-        <unmodifiable>0</unmodifiable>
-        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
-      </name>
-      <parse>
-        <disabled>0</disabled>
-        <displayFormType>select</displayFormType>
-        <displayType>yesno</displayType>
-        <name>parse</name>
-        <number>4</number>
-        <prettyName>Parse content</prettyName>
-        <unmodifiable>0</unmodifiable>
-        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
-      </parse>
-      <use>
-        <cache>0</cache>
-        <disabled>0</disabled>
-        <displayType>select</displayType>
-        <freeText>forbidden</freeText>
-        <largeStorage>0</largeStorage>
-        <multiSelect>0</multiSelect>
-        <name>use</name>
-        <number>3</number>
-        <prettyName>Use this extension</prettyName>
-        <relationalStorage>0</relationalStorage>
-        <separator> </separator>
-        <separators>|, </separators>
-        <size>1</size>
-        <unmodifiable>0</unmodifiable>
-        <values>currentPage|onDemand|always</values>
-        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
-      </use>
-    </class>
-    <property>
-      <cache>default</cache>
-    </property>
-    <property>
-      <code>require(['jquery', 'visualisationAPI'], function($, visualisationAPI) {
-    var tempData = null,
-        edgeKeyCounter = 1;
-
-    #template('colorThemeInit.vm')
-    var themeColors = $jsontool.serialize({
-        'nodeColor': $theme.linkColor,
-        'labelColor': $theme.textColor,
-        'fadeColor': $theme.highlightColor,
-        'labelContainerColor': $theme.pageContentBackgroundColor
-    });
-    document.observe('xwiki:dom:updated', function() {
-        tempData = JSON.parse(document.getElementById('sigma-container').dataset.results);
-        const nodes = tempData.map(function(obj) {
-            return {
-                key: obj.reference,
-                attributes: {
-                    label: obj.title_,
-                    color: themeColors.nodeColor,
-                    size: 5,
-                    pageURL: new XWiki.Document(XWiki.Model.resolve(obj.reference)).getURL()
-                }
-            };
-        });
-        const edges = [];
-        tempData.forEach(function(obj) {
-            if (obj.links &amp;&amp; obj.links.length &gt; 0) {
-                obj.links.forEach(function(link) {
-                    var target = link.replace(/^entity:/, '');
-                    var isValid = tempData.some(function(item) {
-                        return item.reference === target;
-                    });
-                    if (isValid) {
-                        edges.push({
-                            key: edgeKeyCounter.toString(),
-                            target: target,
-                            source: obj.reference
-                        });
-                        edgeKeyCounter++;
-                    }
-                });
-            }
-        });
-        var graphData = {
-            nodes: nodes,
-            edges: edges
-        };
-        let nb = nodes.length;
-        $('#node-count').text('Displaying ' + nb + ' documents &amp; ');
-        $('#edge-count').text(edges.length + ' links');
-        visualisationAPI.visualize(graphData, "sigma-container", themeColors, isPanel = false, nb);
-        var FSButton = document.getElementById("view-fullscreen");
-        const sigmaContainer = document.querySelector("#sigma-container");
-        FSButton.addEventListener("click", function() {
-            if (document.fullscreenElement) {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.mozCancelFullScreen) {
-                    document.mozCancelFullScreen();
-                } else if (document.webkitCancelFullScreen) {
-                    document.webkitCancelFullScreen();
-                } else if (document.msExitFullscreen) {
-                    document.msExitFullscreen();
-                }
-            } else {
-                if (!document.mozFullScreen &amp;&amp; !document.webkitFullScreen) {
-                    if (sigmaContainer.requestFullscreen) {
-                        sigmaContainer.requestFullscreen();
-                    } else if (sigmaContainer.mozRequestFullScreen) {
-                        sigmaContainer.mozRequestFullScreen();
-                    } else if (sigmaContainer.webkitRequestFullScreen) {
-                        sigmaContainer.webkitRequestFullScreen();
-                    } else if (sigmaContainer.msRequestFullscreen) {
-                        sigmaContainer.msRequestFullscreen();
-                    }
-                }
-            }
-        });
-    });
-});</code>
-    </property>
-    <property>
-      <name>Visualisation API</name>
-    </property>
-    <property>
-      <parse>1</parse>
-    </property>
-    <property>
-      <use>currentPage</use>
-    </property>
-  </object>
-  <object>
-    <name>InteractiveLinkVisualizer.Code</name>
+    <name>XWiki.InteractiveLinkVisualizer.Code.MainVisualisation</name>
     <number>0</number>
     <className>XWiki.StyleSheetExtension</className>
-    <guid>335413c4-8e39-4080-99ca-16c16a37b9b7</guid>
+    <guid>5c3c6ab2-2662-4fca-b024-ef1f1b87d73f</guid>
     <class>
       <name>XWiki.StyleSheetExtension</name>
       <customClass/>
@@ -324,7 +145,7 @@
     <property>
       <code>#sigma-container {
 	width: 100%;
-	height: 700px;
+	height: 500px;
 	border: 1px solid @breadcrumb-bg;
 	border-radius: 5px;
 	box-shadow: rgba(red(@text-color), green(@text-color), blue(@text-color), 0.2) 0px 2px 6px;
@@ -335,10 +156,10 @@
 }
 #top-bar {
 	position: absolute;
-	top: 56px;
+	top: 0;
 	left: 50%;
 	transform: translateX(-50%);
-	width: 97.5%;
+	width: 97%;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -375,11 +196,27 @@ i {
 .search-facets {
     background-color: @panel-bg;
 }
+
 .input-group {
-    left: 50%;
+    left: 145%;
+    width: 60%;
 }
 .form-control {
-    text-align: center
+    text-align: left;
+}
+#nb-results {
+  position: absolute;
+  bottom: 0;
+  left: 100%;
+}
+
+.search-options {
+    position: absolute;
+    bottom: 105%;
+}
+.search-results-sort {
+    position: absolute;
+    bottom: 102%;
 }
 a.options-item.active, a.options-item.active:hover {
     color: @link-color;
@@ -387,9 +224,10 @@ a.options-item.active, a.options-item.active:hover {
 }
 #graph-buttons {
     position: absolute;
-    right: 10px;
-    bottom: 10px;
+    right: 0;
+    bottom: 0;
     z-index: 99;
+    margin: 10px 30px;
 }
 .buttonwrapper {
   display: flex;
@@ -402,8 +240,8 @@ a.options-item.active, a.options-item.active:hover {
   margin: 2px 0;
   text-align: center;
 }
-input.button, .buttonwrapper button, .buttonwrapper a {
-  font-weight: bolder;
+.btn, .btn-group {
+  margin-bottom: 0;
 }</code>
     </property>
     <property>
@@ -420,10 +258,10 @@ input.button, .buttonwrapper button, .buttonwrapper a {
     </property>
   </object>
   <object>
-    <name>InteractiveLinkVisualizer.Code</name>
+    <name>XWiki.InteractiveLinkVisualizer.Code.MainVisualisation</name>
     <number>0</number>
     <className>XWiki.UIExtensionClass</className>
-    <guid>060c3a15-fbe2-451c-81e4-098cb6a38381</guid>
+    <guid>838264b6-d90b-484e-a6d0-2d9c5588b752</guid>
     <class>
       <name>XWiki.UIExtensionClass</name>
       <customClass/>
@@ -557,7 +395,7 @@ input.button, .buttonwrapper button, .buttonwrapper a {
     </property>
     <property>
       <parameters>label=Interactive Link Visualizer
-target=InteractiveLinkVisualizer.WebHome
+target=XWiki.InteractiveLinkVisualizer.WebHome
 icon=icon:world</parameters>
     </property>
     <property>
@@ -565,10 +403,10 @@ icon=icon:world</parameters>
     </property>
   </object>
   <object>
-    <name>InteractiveLinkVisualizer.Code</name>
+    <name>XWiki.InteractiveLinkVisualizer.Code.MainVisualisation</name>
     <number>1</number>
     <className>XWiki.UIExtensionClass</className>
-    <guid>01acda46-7213-4dae-a103-dbeceddad957</guid>
+    <guid>96dc9dee-e614-4c5e-af09-3f81b5c9c572</guid>
     <class>
       <name>XWiki.UIExtensionClass</name>
       <customClass/>

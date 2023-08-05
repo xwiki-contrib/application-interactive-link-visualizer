@@ -20,8 +20,8 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
 -->
 
-<xwikidoc version="1.5" reference="InteractiveLinkVisualizer.LinkVisualizerPanel" locale="">
-  <web>InteractiveLinkVisualizer</web>
+<xwikidoc version="1.5" reference="XWiki.InteractiveLinkVisualizer.Code.LinkVisualizerPanel" locale="">
+  <web>XWiki.InteractiveLinkVisualizer.Code</web>
   <name>LinkVisualizerPanel</name>
   <language/>
   <defaultLanguage/>
@@ -38,7 +38,7 @@
   <hidden>true</hidden>
   <content/>
   <object>
-    <name>InteractiveLinkVisualizer.LinkVisualizerPanel</name>
+    <name>XWiki.InteractiveLinkVisualizer.Code.LinkVisualizerPanel</name>
     <number>0</number>
     <className>Panels.PanelClass</className>
     <guid>56c51443-a643-47d0-bd97-91c9e4ee37a0</guid>
@@ -178,7 +178,7 @@
     <property>
       <content>{{velocity}}
 #panelheader('Linked Pages Graph')
-#set ($discard = $xwiki.jsx.use('InteractiveLinkVisualizer.LinkVisualizerPanel'))
+#set ($discard = $xwiki.jsx.use('XWiki.InteractiveLinkVisualizer.Code.LinkVisualizerPanel'))
 {{html}}
 &lt;div id="sigma-container-panel"
 style=
@@ -188,8 +188,7 @@ height: 350px;
 &lt;/div&gt;
 {{/html}}
 #panelfooter()
-{{/velocity}}
-</content>
+{{/velocity}}</content>
     </property>
     <property>
       <description>Show the network graph visualization centered around the currently opened document.</description>
@@ -202,7 +201,7 @@ height: 350px;
     </property>
   </object>
   <object>
-    <name>InteractiveLinkVisualizer.LinkVisualizerPanel</name>
+    <name>XWiki.InteractiveLinkVisualizer.Code.LinkVisualizerPanel</name>
     <number>1</number>
     <className>XWiki.JavaScriptExtension</className>
     <guid>47c5defe-899e-4207-9a82-63c7e057df67</guid>

@@ -99,6 +99,7 @@
 - [X] Add a way to change the number of results to be displayed in the graph
 - [X] Add a button to increase the number of iterations in the graph
 - [X] Kill and clear the previous graph instance to release memory ([INTLV-20 commit]())
+- [X] Move the application to `XWiki` space
 
 ## What is left
 
