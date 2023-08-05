@@ -1,24 +1,41 @@
-<?xml version='1.1' encoding='UTF-8'?>
+<?xml version="1.1" encoding="UTF-8"?>
+
+<!--
+ * See the NOTICE file distributed with this work for additional
+ * information regarding copyright ownership.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+-->
+
 <xwikidoc version="1.5" reference="XWiki.InteractiveLinkVisualizer.WebHome" locale="">
   <web>XWiki.InteractiveLinkVisualizer</web>
   <name>WebHome</name>
   <language/>
-  <defaultLanguage>en</defaultLanguage>
+  <defaultLanguage/>
   <translation>0</translation>
-  <creator>XWiki.Admin</creator>
-  <creationDate>1691042382000</creationDate>
+  <creator>xwiki:XWiki.Admin</creator>
   <parent>XWiki.WebHome</parent>
-  <author>XWiki.Admin</author>
-  <originalMetadataAuthor>XWiki.Admin</originalMetadataAuthor>
-  <contentAuthor>XWiki.Admin</contentAuthor>
-  <date>1691247580000</date>
-  <contentUpdateDate>1691231537000</contentUpdateDate>
-  <version>17.4</version>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
   <title>Interactive Link Visualizer</title>
   <comment/>
-  <minorEdit>true</minorEdit>
+  <minorEdit>false</minorEdit>
   <syntaxId>xwiki/2.1</syntaxId>
-  <hidden>false</hidden>
+  <hidden>true</hidden>
   <content>{{velocity output="false"}}
 #set ($discard = $xwiki.ssx.use('XWiki.InteractiveLinkVisualizer.Code.MainVisualisation'))
 {{/velocity}}{{include reference="Main.SolrSearchConfig" /}}{{include reference="Main.SolrSearchMacros" /}}{{velocity output="false"}}
@@ -30,33 +47,33 @@
 ## To return visualisation as search results
 #macro (displaySearchResults)
 {{html}}
-&lt;div id="sigma-container" data-results="$escapetool.xml($jsontool.serialize($searchResponse.results))">
-&lt;div id="top-bar">
-   &lt;div id="search">
-      &lt;i class="fa fa-search">&lt;/i>
+&lt;div id="sigma-container" data-results="$escapetool.xml($jsontool.serialize($searchResponse.results))"&gt;
+&lt;div id="top-bar"&gt;
+   &lt;div id="search"&gt;
+      &lt;i class="fa fa-search"&gt;&lt;/i&gt;
       &lt;input
          type="search"
          id="search-input"
          list="suggestions"
          placeholder="Find pages in graph…"
-         title="Find pages from the visualized graph">
-      &lt;/input>
-      &lt;datalist id="suggestions">&lt;/datalist>
-   &lt;/div>
-   &lt;div title="Displays information about graph" id="graph-info">
-      &lt;span id="node-count">&lt;/span>
-      &lt;span id="edge-count">&lt;/span>
-   &lt;/div>
-&lt;/div>
-  &lt;div class="buttonwrapper" id="graph-buttons">
-   &lt;button class="icon-button" title="Zoom In" id="zoom-in">$services.icon.renderHTML('search-plus')&lt;/button>
-   &lt;button class="icon-button" title="Zoom Out" id="zoom-out">$services.icon.renderHTML('search-minus')&lt;/button>
-   &lt;button class="icon-button" title="Increase Graph Iterations: If graph is not layouted properly &amp; need more iterations" id="iteration-button">$services.icon.renderHTML('refresh')&lt;/button>
-   &lt;button class="icon-button" title="Default Zoom" id="zoom-reset">$services.icon.renderHTML('world')&lt;/button>
-   &lt;button class="icon-button" title="Fullscreen" id="view-fullscreen">$services.icon.renderHTML('arrows')&lt;/button>
-   &lt;button class="icon-button hidden" title="Kill Graph" id="kill-graph-button">$services.icon.renderHTML('delete')&lt;/button>
-  &lt;/div>
-&lt;/div>
+         title="Find pages from the visualized graph"&gt;
+      &lt;/input&gt;
+      &lt;datalist id="suggestions"&gt;&lt;/datalist&gt;
+   &lt;/div&gt;
+   &lt;div title="Displays information about graph" id="graph-info"&gt;
+      &lt;span id="node-count"&gt;&lt;/span&gt;
+      &lt;span id="edge-count"&gt;&lt;/span&gt;
+   &lt;/div&gt;
+&lt;/div&gt;
+  &lt;div class="buttonwrapper" id="graph-buttons"&gt;
+   &lt;button class="icon-button" title="Zoom In" id="zoom-in"&gt;$services.icon.renderHTML('search-plus')&lt;/button&gt;
+   &lt;button class="icon-button" title="Zoom Out" id="zoom-out"&gt;$services.icon.renderHTML('search-minus')&lt;/button&gt;
+   &lt;button class="icon-button" title="Increase Graph Iterations: If graph is not layouted properly &amp; need more iterations" id="iteration-button"&gt;$services.icon.renderHTML('refresh')&lt;/button&gt;
+   &lt;button class="icon-button" title="Default Zoom" id="zoom-reset"&gt;$services.icon.renderHTML('world')&lt;/button&gt;
+   &lt;button class="icon-button" title="Fullscreen" id="view-fullscreen"&gt;$services.icon.renderHTML('arrows')&lt;/button&gt;
+   &lt;button class="icon-button hidden" title="Kill Graph" id="kill-graph-button"&gt;$services.icon.renderHTML('delete')&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
 {{/html}}
 #end
 
@@ -78,48 +95,48 @@
   ##
   #set($void = $services.progress.startStep('#displaySearchForm'))
   {{html clean="false"}}
-  &lt;form class="search-form row" action="$doc.getURL()" role="search">
-    &lt;div class="hidden">
-      &lt;input type="hidden" name="sort" value="$!escapetool.xml($sort)"/>
-      &lt;input type="hidden" name="sortOrder" value="$!escapetool.xml($sortOrder)"/>
-      &lt;input type="hidden" name="highlight" value="$highlightEnabled"/>
-      &lt;input type="hidden" name="facet" value="$facetEnabled"/>
+  &lt;form class="search-form row" action="$doc.getURL()" role="search"&gt;
+    &lt;div class="hidden"&gt;
+      &lt;input type="hidden" name="sort" value="$!escapetool.xml($sort)"/&gt;
+      &lt;input type="hidden" name="sortOrder" value="$!escapetool.xml($sortOrder)"/&gt;
+      &lt;input type="hidden" name="highlight" value="$highlightEnabled"/&gt;
+      &lt;input type="hidden" name="facet" value="$facetEnabled"/&gt;
       ## The parameter used to determine if the request has been redirected with default search filters.
-      &lt;input type="hidden" name="r" value="$!escapetool.xml($request.r)"/>
+      &lt;input type="hidden" name="r" value="$!escapetool.xml($request.r)"/&gt;
       #if ("$!request.debug" != '')
-        &lt;input type="hidden" name="debug" value="$escapetool.xml($request.debug)"/>
+        &lt;input type="hidden" name="debug" value="$escapetool.xml($request.debug)"/&gt;
       #end
       ## Preserve the current facet values when submitting a new search query.
       #foreach ($entry in $request.parameterMap.entrySet())
         #if ($entry.key.startsWith('f_') || $entry.key.startsWith('l_'))
           #foreach ($value in $entry.value)
-            &lt;input type="hidden" name="$escapetool.xml($entry.key)" value="$escapetool.xml($value)"/>
+            &lt;input type="hidden" name="$escapetool.xml($entry.key)" value="$escapetool.xml($value)"/&gt;
           #end
         #end
       #end
-    &lt;/div>
-    &lt;div class="col-xs-12 col-sm-6">
-      &lt;div class="input-group">
+    &lt;/div&gt;
+    &lt;div class="col-xs-12 col-sm-6"&gt;
+      &lt;div class="input-group"&gt;
         &lt;input type="search" name="text" class="form-control withTip useTitleAsTip"
-          title="$services.localization.render('search.page.bar.query.title')" value="$escapetool.xml($text)"/>
-        &lt;span class="input-group-btn">
-          &lt;button type="submit" class="btn btn-primary">
+          title="$services.localization.render('search.page.bar.query.title')" value="$escapetool.xml($text)"/&gt;
+        &lt;span class="input-group-btn"&gt;
+          &lt;button type="submit" class="btn btn-primary"&gt;
             $services.icon.renderHTML('search')
-            &lt;span class="sr-only">$services.localization.render('search.page.bar.submit')&lt;/span>
-          &lt;/button>
-        &lt;/span>
-      &lt;/div>
-      &lt;div class="" id="nb-results">
+            &lt;span class="sr-only"&gt;$services.localization.render('search.page.bar.submit')&lt;/span&gt;
+          &lt;/button&gt;
+        &lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class="" id="nb-results"&gt;
         &lt;input type="number" name="rows" title="Number of documents to display in graph"
-        placeholder="Max no. of pages" value="$!escapetool.xml($request.rows)" id="rows"/>
-        &lt;span id="nb-results">
-          &lt;button type="submit" id="refresh-button" class="btn btn-primary">
+        placeholder="Max no. of pages" value="$!escapetool.xml($request.rows)" id="rows"/&gt;
+        &lt;span id="nb-results"&gt;
+          &lt;button type="submit" id="refresh-button" class="btn btn-primary"&gt;
             $services.icon.renderHTML('refresh')
-          &lt;/button>
-        &lt;/span>
-      &lt;/div>
-  &lt;/div>
-  &lt;/form>
+          &lt;/button&gt;
+        &lt;/span&gt;
+      &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;/form&gt;
   {{/html}}
   #if ($text == '')
     #set ($text = "*")
@@ -140,7 +157,7 @@
   (% class="search-options" %)
   * {{translation key="solr.options"/}}
   #if($facetEnabled)#extendQueryString($url {'facet': [false]})#else#extendQueryString($url {'facet': [true]})#end
-  * [[{{translation key="solr.options.facet"/}}>>path:${url}||class="options-item#if($facetEnabled) active#end" title="$services.localization.render('solr.options.facet.title')"]]
+  * [[{{translation key="solr.options.facet"/}}&gt;&gt;path:${url}||class="options-item#if($facetEnabled) active#end" title="$services.localization.render('solr.options.facet.title')"]]
 
   (% class="search-results-sort" %)
   * {{translation key="solr.sortBy"/}}
@@ -155,7 +172,7 @@
       #set ($targetSortOrder = "#if ($sortOrder == 'asc')desc#{else}asc#end")
     #end
     #extendQueryString($url {'sort': [$entry.key], 'sortOrder': [$targetSortOrder]})
-    * [[{{translation key="solr.sortBy.$entry.key"/}}$!sortOrderIndicator>>path:${url}||class="$class"]]
+    * [[{{translation key="solr.sortBy.$entry.key"/}}$!sortOrderIndicator&gt;&gt;path:${url}||class="$class"]]
   #end
 #end
 {{/velocity}}{{velocity}}#handleSolrSearchRequest{{/velocity}}</content>
@@ -276,7 +293,7 @@
         });
         const edges = [];
         tempData.forEach(function(obj) {
-            if (obj.links &amp;&amp; obj.links.length > 0) {
+            if (obj.links &amp;&amp; obj.links.length &gt; 0) {
                 obj.links.forEach(function(link) {
                     var target = link.replace(/^entity:/, '');
                     var isValid = tempData.some(function(item) {
