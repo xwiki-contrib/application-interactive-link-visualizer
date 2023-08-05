@@ -100,7 +100,8 @@
 - [X] Add a button to increase the number of iterations in the graph
 - [X] Kill and clear the previous graph instance to release memory ([INTLV-20 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/96a6f8267d0ef1f59c5387b37b3e154d8ca2e001))
 - [X] Move the application to `XWiki` space & encapsulate code ([commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/faeb004ac22afb6161525711e3903bbcbf05f06a))
-- [X] Fixed JSX Editor gets console error of document returned as null & object not loading properly ([INTLV-21 commit]())
+- [X] Fixed: JSX Editor gets console error of document returned as null & object not loading properly ([INTLV-21 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/1e355b465492c230b2ac64a5ddfe189f9355579f))
+- [X] Fixed: Visualisation is initialised twice when there in another DOM updated event ([INTLV-22 commit]())
 
 ## Week 10 (07 August - 13 August 2023)
 
