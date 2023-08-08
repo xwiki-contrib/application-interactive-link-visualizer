@@ -28,7 +28,7 @@
     <version>14.10</version>
   </parent>
   <artifactId>application-interactive-link-visualizer</artifactId>
-  <version>1.4-SNAPSHOT</version>
+  <version>1.4</version>
   <name>Interactive Link Visualizer - Parent POM</name>
   <packaging>pom</packaging>
   <inceptionYear>2023</inceptionYear>
@@ -37,7 +37,7 @@
     <connection>scm:git:git://github.com/xwiki-contrib/application-interactive-link-visualizer.git</connection>
     <developerConnection>scm:git:git@github.com:xwiki-contrib/application-interactive-link-visualizer.git</developerConnection>
     <url>https://github.com/xwiki-contrib/application-interactive-link-visualizer/tree/main</url>
-    <tag>HEAD</tag>
+    <tag>application-interactive-link-visualizer-1.4</tag>
   </scm>
   <developers>
     <developer>
