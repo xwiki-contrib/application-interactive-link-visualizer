@@ -38,16 +38,20 @@
   <hidden>true</hidden>
   <content>{{velocity output="false"}}
 #set ($discard = $xwiki.ssx.use('XWiki.InteractiveLinkVisualizer.Code.MainVisualisation'))
-{{/velocity}}{{include reference="Main.SolrSearchConfig" /}}{{include reference="Main.SolrSearchMacros" /}}{{velocity output="false"}}
+#set ($discard = $xwiki.jsx.use('XWiki.InteractiveLinkVisualizer.Code.MainVisualisation'))
+{{/velocity}}
 
+{{include reference="Main.SolrSearchConfig" /}}
+
+{{include reference="Main.SolrSearchMacros" /}}
+
+{{velocity output="false"}}
 #set ($discard = $solrConfig.facetFields.remove('type'))
 #set ($discard = $solrConfig.filterQuery.add('type:DOCUMENT'))
 #set ($discard = $solrConfig.put('facetEnabled', false))
-
 ## To return visualisation as search results
 #macro (displaySearchResults)
 {{html}}
-&lt;div id="sigma-container" data-results="$escapetool.xml($jsontool.serialize($searchResponse.results))"&gt;
 &lt;div id="top-bar"&gt;
    &lt;div id="search"&gt;
       &lt;i class="fa fa-search"&gt;&lt;/i&gt;
@@ -65,7 +69,8 @@
       &lt;span id="edge-count"&gt;&lt;/span&gt;
    &lt;/div&gt;
 &lt;/div&gt;
-  &lt;div class="buttonwrapper" id="graph-buttons"&gt;
+&lt;div id="sigma-container" data-results="$escapetool.xml($jsontool.serialize($searchResponse.results))"&gt;
+&lt;div class="buttonwrapper" id="graph-buttons"&gt;
    &lt;button class="icon-button" title="Zoom In" id="zoom-in"&gt;$services.icon.renderHTML('search-plus')&lt;/button&gt;
    &lt;button class="icon-button" title="Zoom Out" id="zoom-out"&gt;$services.icon.renderHTML('search-minus')&lt;/button&gt;
    &lt;button class="icon-button" title="Increase Graph Iterations: If graph is not layouted properly &amp; need more iterations" id="iteration-button"&gt;$services.icon.renderHTML('refresh')&lt;/button&gt;
@@ -77,20 +82,17 @@
 {{/html}}
 #end
 
-
-## To get only the relevant field list (performance improvement)
+## To get only the relevant field list (ridiculous performance improvement)
 #macro(setHighlightQuery $query)
   #set ($discard = $query.bindValue('fl', 'title_, reference, links, wiki, name, spaces'))
 #end
+## For number of results input &amp; rows override
 
-
-## For number of results input &amp; number of rows
 #macro (displaySearchForm)
-
  ## Override default no. of rows
   #set ($rows = $numbertool.toNumber($request.rows).intValue())
   #if ("$!rows" == '')
-    #set ($rows = 100)
+    #set ($rows = 1000)
   #end
   ##
   #set($void = $services.progress.startStep('#displaySearchForm'))
@@ -114,35 +116,36 @@
           #end
         #end
       #end
-    &lt;/div&gt;
-    &lt;div class="col-xs-12 col-sm-6"&gt;
-      &lt;div class="input-group"&gt;
-        &lt;input type="search" name="text" class="form-control withTip useTitleAsTip"
-          title="$services.localization.render('search.page.bar.query.title')" value="$escapetool.xml($text)"/&gt;
-        &lt;span class="input-group-btn"&gt;
-          &lt;button type="submit" class="btn btn-primary"&gt;
-            $services.icon.renderHTML('search')
-            &lt;span class="sr-only"&gt;$services.localization.render('search.page.bar.submit')&lt;/span&gt;
-          &lt;/button&gt;
-        &lt;/span&gt;
-      &lt;/div&gt;
-      &lt;div class="" id="nb-results"&gt;
-        &lt;input type="number" name="rows" title="Number of documents to display in graph"
-        placeholder="Max no. of pages" value="$!escapetool.xml($request.rows)" id="rows"/&gt;
-        &lt;span id="nb-results"&gt;
-          &lt;button type="submit" id="refresh-button" class="btn btn-primary"&gt;
-            $services.icon.renderHTML('refresh')
-          &lt;/button&gt;
-        &lt;/span&gt;
-      &lt;/div&gt;
-  &lt;/div&gt;
-  &lt;/form&gt;
+&lt;/div&gt;
+&lt;div class="col-xs-12 col-sm-6"&gt;
+   &lt;div class="input-group"&gt;
+      &lt;input type="search" name="text" class="form-control withTip useTitleAsTip"
+       title="$services.localization.render('search.page.bar.query.title')" value="$escapetool.xml($text)"/&gt;
+      &lt;span class="input-group-btn"&gt;
+      &lt;button type="submit" class="btn btn-primary"&gt;
+      $services.icon.renderHTML('search')
+      &lt;span class="sr-only"&gt;$services.localization.render('search.page.bar.submit')&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;/span&gt;
+   &lt;/div&gt;
+   &lt;div&gt;
+      &lt;label for="rows" style="margin-right: 2%;"&gt;No. of pages to visualize:&lt;/label&gt;
+      &lt;input id="rows" type="number" name="rows" title="Number of documents to display in graph"
+         placeholder="1000" value="$!escapetool.xml($request.rows)"/&gt;
+      &lt;span&gt;
+      &lt;button type="submit" id="refresh-button" class="btn btn-primary"&gt;
+      $services.icon.renderHTML('refresh')
+      &lt;/button&gt;
+      &lt;/span&gt;
+   &lt;/div&gt;
+&lt;/div&gt;
+&lt;/form&gt;
+
   {{/html}}
   #if ($text == '')
     #set ($text = "*")
   #end
 #end
-
 
 ## To disable Highlighting Search Option
 #macro (displaySearchResultsSort)
@@ -175,191 +178,9 @@
     * [[{{translation key="solr.sortBy.$entry.key"/}}$!sortOrderIndicator&gt;&gt;path:${url}||class="$class"]]
   #end
 #end
-{{/velocity}}{{velocity}}#handleSolrSearchRequest{{/velocity}}</content>
-  <object>
-    <name>XWiki.InteractiveLinkVisualizer.WebHome</name>
-    <number>0</number>
-    <className>XWiki.JavaScriptExtension</className>
-    <guid>c1d49352-221a-4f45-b486-d69558824ad9</guid>
-    <class>
-      <name>XWiki.JavaScriptExtension</name>
-      <customClass/>
-      <customMapping/>
-      <defaultViewSheet/>
-      <defaultEditSheet/>
-      <defaultWeb/>
-      <nameField/>
-      <validationScript/>
-      <cache>
-        <cache>0</cache>
-        <defaultValue>long</defaultValue>
-        <disabled>0</disabled>
-        <displayType>select</displayType>
-        <freeText>forbidden</freeText>
-        <largeStorage>0</largeStorage>
-        <multiSelect>0</multiSelect>
-        <name>cache</name>
-        <number>5</number>
-        <prettyName>Caching policy</prettyName>
-        <relationalStorage>0</relationalStorage>
-        <separator> </separator>
-        <separators>|, </separators>
-        <size>1</size>
-        <unmodifiable>0</unmodifiable>
-        <values>long|short|default|forbid</values>
-        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
-      </cache>
-      <code>
-        <contenttype>PureText</contenttype>
-        <disabled>0</disabled>
-        <editor>PureText</editor>
-        <name>code</name>
-        <number>2</number>
-        <prettyName>Code</prettyName>
-        <restricted>0</restricted>
-        <rows>20</rows>
-        <size>50</size>
-        <unmodifiable>0</unmodifiable>
-        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
-      </code>
-      <name>
-        <disabled>0</disabled>
-        <name>name</name>
-        <number>1</number>
-        <prettyName>Name</prettyName>
-        <size>30</size>
-        <unmodifiable>0</unmodifiable>
-        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
-      </name>
-      <parse>
-        <disabled>0</disabled>
-        <displayFormType>select</displayFormType>
-        <displayType>yesno</displayType>
-        <name>parse</name>
-        <number>4</number>
-        <prettyName>Parse content</prettyName>
-        <unmodifiable>0</unmodifiable>
-        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
-      </parse>
-      <use>
-        <cache>0</cache>
-        <disabled>0</disabled>
-        <displayType>select</displayType>
-        <freeText>forbidden</freeText>
-        <largeStorage>0</largeStorage>
-        <multiSelect>0</multiSelect>
-        <name>use</name>
-        <number>3</number>
-        <prettyName>Use this extension</prettyName>
-        <relationalStorage>0</relationalStorage>
-        <separator> </separator>
-        <separators>|, </separators>
-        <size>1</size>
-        <unmodifiable>0</unmodifiable>
-        <values>currentPage|onDemand|always</values>
-        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
-      </use>
-    </class>
-    <property>
-      <cache>default</cache>
-    </property>
-    <property>
-      <code>require(['jquery', 'visualisationAPI'], function($, visualisationAPI) {
-    var tempData = null,
-        edgeKeyCounter = 1;
+{{/velocity}}
 
-    #template('colorThemeInit.vm')
-    var themeColors = $jsontool.serialize({
-        'nodeColor': $theme.linkColor,
-        'labelColor': $theme.textColor,
-        'fadeColor': $theme.highlightColor,
-        'labelContainerColor': $theme.pageContentBackgroundColor
-    });
-
-    var init = function() {
-    if ($('#sigma-container').attr('data-init-done') !== 'true') {
-        $("kill-graph-button").click();
-        tempData = JSON.parse(document.getElementById('sigma-container').dataset.results);
-        const nodes = tempData.map(function(obj) {
-            return {
-                key: obj.reference,
-                attributes: {
-                    label: obj.title_,
-                    color: themeColors.nodeColor,
-                    size: 5,
-                    pageURL: new XWiki.Document(XWiki.Model.resolve(obj.reference)).getURL()
-                }
-            };
-        });
-        const edges = [];
-        tempData.forEach(function(obj) {
-            if (obj.links &amp;&amp; obj.links.length &gt; 0) {
-                obj.links.forEach(function(link) {
-                    var target = link.replace(/^entity:/, '');
-                    var isValid = tempData.some(function(item) {
-                        return item.reference === target;
-                    });
-                    if (isValid) {
-                        edges.push({
-                            key: edgeKeyCounter.toString(),
-                            target: target,
-                            source: obj.reference
-                        });
-                        edgeKeyCounter++;
-                    }
-                });
-            }
-        });
-        var graphData = {
-            nodes: nodes,
-            edges: edges
-        };
-        let nb = nodes.length;
-        $('#node-count').text('Displaying ' + nb + ' documents &amp; ');
-        $('#edge-count').text(edges.length + ' links');
-        visualisationAPI.visualize(graphData, "sigma-container", themeColors, isPanel = false, nb);
-
-        const sigmaContainer = document.querySelector("#sigma-container");
-        $('#view-fullscreen').click(function() {
-            if (document.fullscreenElement) {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.mozCancelFullScreen) {
-                    document.mozCancelFullScreen();
-                } else if (document.webkitCancelFullScreen) {
-                    document.webkitCancelFullScreen();
-                } else if (document.msExitFullscreen) {
-                    document.msExitFullscreen();
-                }
-            } else {
-                if (!document.mozFullScreen &amp;&amp; !document.webkitFullScreen) {
-                    if (sigmaContainer.requestFullscreen) {
-                        sigmaContainer.requestFullscreen();
-                    } else if (sigmaContainer.mozRequestFullScreen) {
-                        sigmaContainer.mozRequestFullScreen();
-                    } else if (sigmaContainer.webkitRequestFullScreen) {
-                        sigmaContainer.webkitRequestFullScreen();
-                    } else if (sigmaContainer.msRequestFullscreen) {
-                        sigmaContainer.msRequestFullscreen();
-                    }
-                }
-            }
-        });
-        $('#sigma-container').attr('data-init-done', 'true');
-    }};
-    if ($('#sigma-container') &amp;&amp; $('#sigma-container').data('results')) {
-    $(init).on('xwiki:dom:updated', init);
-    }
-});</code>
-    </property>
-    <property>
-      <name>Visualisation API</name>
-    </property>
-    <property>
-      <parse>1</parse>
-    </property>
-    <property>
-      <use>currentPage</use>
-    </property>
-  </object>
+{{velocity}}
+#handleSolrSearchRequest
+{{/velocity}}</content>
 </xwikidoc>

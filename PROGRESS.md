@@ -101,15 +101,15 @@
 - [X] Kill and clear the previous graph instance to release memory ([INTLV-20 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/96a6f8267d0ef1f59c5387b37b3e154d8ca2e001))
 - [X] Move the application to `XWiki` space & encapsulate code ([commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/faeb004ac22afb6161525711e3903bbcbf05f06a))
 - [X] Fixed: JSX Editor gets console error of document returned as null & object not loading properly ([INTLV-21 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/1e355b465492c230b2ac64a5ddfe189f9355579f))
-- [X] Fixed: Visualisation is initialised twice when there in another DOM updated event ([INTLV-22 commit]())
+- [X] Fixed: Visualisation is initialised twice when there in another DOM updated event ([INTLV-22 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/eddf9c12f7744e040d99330b1c1039b01f002121))
 
 ## Week 10 (07 August - 13 August 2023)
 
-- [ ] ...
+- [X] Fixed: Add a label to the max number of pages to display element
 
 ## What is left
 
-- [ ] Translations: implement the `Localization Module` in order to generate key-value pairs that will allow the possibility of translation of the application pages
+- [ ] Translations: transalte the app pages (`Localisation Module`)
 
 <!--
 ## Week 11 (14 August - 20 August 2023)
