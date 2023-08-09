@@ -80,7 +80,7 @@
     - Label rendered size threshold setting
 - [X] Change the mouse cursor to a hand pointer when hovering over a node to give the indication of a link ([INTLV-8 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/ab74b94e762db7c6d4c7172f09f0971c6f434388))
 
-## Week 9 (31 July - 06 August 2023)
+## Week 9 (31 July - 06 August 2023) ✔
 
 - [X] Node size increases & color changes when hovering over it; for better visuals ([INTLV-9 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/0c674e75ae75ba4a2bf5828653df90761eebb21a))
 - [X] Create a mathematical formula to stop the graph layout after some time; that depends on `nb` ([INTLV-10 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/8c6806b8c52f2344f5d7759f526d7ca2ce455ef6))
@@ -105,11 +105,7 @@
 
 ## Week 10 (07 August - 13 August 2023)
 
-- [X] Fixed: Add a label to the max number of pages to display element
-
-## What is left
-
-- [ ] Translations: transalte the app pages (`Localisation Module`)
+- [X] Fixed: Add a label to the `max number of pages to display` element
 
 <!--
 ## Week 11 (14 August - 20 August 2023)
