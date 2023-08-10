@@ -4,6 +4,8 @@ Visualize & interact with pages present in a wiki in the form of a network-graph
 
 * Project Lead: [Rajat Khanduri](https://www.xwiki.org/xwiki/bin/view/XWiki/rajat)
 * [Documentation & Download](https://extensions.xwiki.org/xwiki/bin/view/Extension/InteractiveLinkVisualizer)
+* [Project Details](https://dev.xwiki.org/xwiki/bin/view/GoogleSummerOfCode/InteractiveLinkVisualization)
+* [Project Progress Report](https://github.com/xwiki-contrib/application-interactive-link-visualizer/blob/main/PROGRESS.md)
 * Issue Tracker: [JIRA](https://jira.xwiki.org/projects/INTLV)
 * Communication: [Mailing List](http://dev.xwiki.org/xwiki/bin/view/Community/MailingLists), [IRC](http://dev.xwiki.org/xwiki/bin/view/Community/IRC)
 * [Development Practices](http://dev.xwiki.org)
