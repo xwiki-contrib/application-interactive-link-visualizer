@@ -103,6 +103,7 @@
 - [X] Fixed: JSX Editor gets console error of document returned as null & object not loading properly ([INTLV-21 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/1e355b465492c230b2ac64a5ddfe189f9355579f))
 - [X] Fixed: Visualisation is initialised twice when there in another DOM updated event ([INTLV-22 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/eddf9c12f7744e040d99330b1c1039b01f002121))
 - [X] Fixed: Add a label to the `max number of pages to display` element
+- [X] Fixed: Added support for translations of application pages
 
 <!--
 ## Week 11 (14 August - 20 August 2023)

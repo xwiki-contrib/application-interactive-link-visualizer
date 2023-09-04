@@ -59,24 +59,29 @@
          type="search"
          id="search-input"
          list="suggestions"
-         placeholder="Find pages in graph…"
-         title="Find pages from the visualized graph"&gt;
+         placeholder="$services.localization.render('intlv.topbar.search.placeholder')"
+         title="$services.localization.render('intlv.topbar.search.title')"&gt;
       &lt;/input&gt;
       &lt;datalist id="suggestions"&gt;&lt;/datalist&gt;
    &lt;/div&gt;
-   &lt;div title="Displays information about graph" id="graph-info"&gt;
+   &lt;div title="$services.localization.render('intlv.topbar.graphinfo.hint')" id="graph-info"&gt;
       &lt;span id="node-count"&gt;&lt;/span&gt;
       &lt;span id="edge-count"&gt;&lt;/span&gt;
    &lt;/div&gt;
 &lt;/div&gt;
 &lt;div id="sigma-container" data-results="$escapetool.xml($jsontool.serialize($searchResponse.results))"&gt;
 &lt;div class="buttonwrapper" id="graph-buttons"&gt;
-   &lt;button class="icon-button" title="Zoom In" id="zoom-in"&gt;$services.icon.renderHTML('search-plus')&lt;/button&gt;
-   &lt;button class="icon-button" title="Zoom Out" id="zoom-out"&gt;$services.icon.renderHTML('search-minus')&lt;/button&gt;
-   &lt;button class="icon-button" title="Increase Graph Iterations: If graph is not layouted properly &amp; need more iterations" id="iteration-button"&gt;$services.icon.renderHTML('refresh')&lt;/button&gt;
-   &lt;button class="icon-button" title="Default Zoom" id="zoom-reset"&gt;$services.icon.renderHTML('world')&lt;/button&gt;
-   &lt;button class="icon-button" title="Fullscreen" id="view-fullscreen"&gt;$services.icon.renderHTML('arrows')&lt;/button&gt;
-   &lt;button class="icon-button hidden" title="Kill Graph" id="kill-graph-button"&gt;$services.icon.renderHTML('delete')&lt;/button&gt;
+   &lt;button class="icon-button" title="$services.localization.render('intlv.sigmacontainer.buttons.title.zoomin')
+" id="zoom-in"&gt;$services.icon.renderHTML('search-plus')&lt;/button&gt;
+   &lt;button class="icon-button" title="$services.localization.render('intlv.sigmacontainer.buttons.title.zoomout')
+" id="zoom-out"&gt;$services.icon.renderHTML('search-minus')&lt;/button&gt;
+   &lt;button class="icon-button" title="$services.localization.render('intlv.sigmacontainer.buttons.title.iterations')
+" id="iteration-button"&gt;$services.icon.renderHTML('refresh')&lt;/button&gt;
+   &lt;button class="icon-button" title="$services.localization.render('intlv.sigmacontainer.buttons.title.zoomdefault')
+" id="zoom-reset"&gt;$services.icon.renderHTML('world')&lt;/button&gt;
+   &lt;button class="icon-button" title="$services.localization.render('intlv.sigmacontainer.buttons.title.fullscreen')
+" id="view-fullscreen"&gt;$services.icon.renderHTML('arrows')&lt;/button&gt;
+   &lt;button class="icon-button hidden" title="$services.localization.render('intlv.sigmacontainer.buttons.title.killgraph')" id="kill-graph-button"&gt;$services.icon.renderHTML('delete')&lt;/button&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 {{/html}}
@@ -129,8 +134,9 @@
       &lt;/span&gt;
    &lt;/div&gt;
    &lt;div&gt;
-      &lt;label for="rows" style="margin-right: 2%;"&gt;No. of pages to visualize:&lt;/label&gt;
-      &lt;input id="rows" type="number" name="rows" title="Number of documents to display in graph"
+      &lt;label for="rows" style="margin-right: 2%;"&gt;$services.localization.render('intlv.sigmacontainer.form.label.documentfilter')
+&lt;/label&gt;
+      &lt;input id="rows" type="number" name="rows" title="$services.localization.render('intlv.sigmacontainer.form.title.documentfilter')"
          placeholder="1000" value="$!escapetool.xml($request.rows)"/&gt;
       &lt;span&gt;
       &lt;button type="submit" id="refresh-button" class="btn btn-primary"&gt;

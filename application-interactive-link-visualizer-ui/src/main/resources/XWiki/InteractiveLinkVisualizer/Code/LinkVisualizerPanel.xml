@@ -177,7 +177,7 @@
     </property>
     <property>
       <content>{{velocity}}
-#panelheader('Linked Pages Graph')
+#panelheader("$services.localization.render('intlv.panel.header')")
 #set ($discard = $xwiki.jsx.use('XWiki.InteractiveLinkVisualizer.Code.LinkVisualizerPanel'))
 {{html}}
 &lt;div id="sigma-container-panel"
