@@ -426,13 +426,22 @@ renderer.getMouseCaptor().on("mouseup", (event) => {
   }
 });
 
-// On click, we open the corresponding page URL
-renderer.on("clickNode", ({ node }) => {
-  if (!graph.getNodeAttribute(node, "hidden") && allowClick) {
-    window.open(graph.getNodeAttribute(node, "pageURL"), "_self");
-  }
-});
+/* On click, we open the corresponding page URL:
+   In panel the links will be opened in the current tab, elsewhere in the new tab
+*/
+if(isPanel) {
+  renderer.on("clickNode", ({ node }) => {
+    if (!graph.getNodeAttribute(node, "hidden") && allowClick) {
+        window.open(graph.getNodeAttribute(node, "pageURL"), "_self");
+      }
+      });
+    }
 if (!isPanel) {
+  renderer.on("clickNode", ({ node }) => {
+      if (!graph.getNodeAttribute(node, "hidden") && allowClick) {
+        window.open(graph.getNodeAttribute(node, "pageURL"), "_blank");
+        }
+      });
   const camera = renderer.getCamera();
   zoomInBtn.addEventListener("click", () => {
     camera.animatedZoom({ duration: 600 });
