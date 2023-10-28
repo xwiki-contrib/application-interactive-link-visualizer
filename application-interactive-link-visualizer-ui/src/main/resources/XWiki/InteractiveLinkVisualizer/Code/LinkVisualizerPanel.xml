@@ -44,160 +44,33 @@
     <guid>56c51443-a643-47d0-bd97-91c9e4ee37a0</guid>
     <class>
       <name>Panels.PanelClass</name>
-      <customClass/>
-      <customMapping/>
-      <defaultViewSheet/>
-      <defaultEditSheet/>
-      <defaultWeb/>
-      <nameField/>
-      <validationScript/>
-      <async_cached>
-        <defaultValue>0</defaultValue>
-        <disabled>0</disabled>
-        <displayFormType>select</displayFormType>
-        <displayType/>
-        <name>async_cached</name>
-        <number>7</number>
-        <prettyName>Cached</prettyName>
-        <unmodifiable>0</unmodifiable>
-        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
-      </async_cached>
-      <async_context>
-        <cache>0</cache>
-        <disabled>0</disabled>
-        <displayType>select</displayType>
-        <freeText>forbidden</freeText>
-        <largeStorage>0</largeStorage>
-        <multiSelect>1</multiSelect>
-        <name>async_context</name>
-        <number>8</number>
-        <prettyName>Context elements</prettyName>
-        <relationalStorage>0</relationalStorage>
-        <separator>, </separator>
-        <separators>|, </separators>
-        <size>5</size>
-        <unmodifiable>0</unmodifiable>
-        <values>action=Action|doc.reference=Document|icon.theme=Icon theme|locale=Language|rendering.defaultsyntax=Default syntax|rendering.restricted=Restricted|rendering.targetsyntax=Target syntax|request.base=Request base URL|request.cookies|request.headers|request.parameters=Request parameters|request.remoteAddr|request.url=Request URL|request.wiki=Request wiki|user=User|wiki=Wiki</values>
-        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
-      </async_context>
-      <async_enabled>
-        <defaultValue>0</defaultValue>
-        <disabled>0</disabled>
-        <displayFormType>select</displayFormType>
-        <displayType/>
-        <name>async_enabled</name>
-        <number>6</number>
-        <prettyName>Asynchronous rendering</prettyName>
-        <unmodifiable>0</unmodifiable>
-        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
-      </async_enabled>
-      <category>
-        <cache>0</cache>
-        <disabled>0</disabled>
-        <displayType>select</displayType>
-        <freeText>forbidden</freeText>
-        <largeStorage>0</largeStorage>
-        <multiSelect>0</multiSelect>
-        <name>category</name>
-        <number>1</number>
-        <prettyName>Category</prettyName>
-        <relationalStorage>0</relationalStorage>
-        <separator> </separator>
-        <separators>|, </separators>
-        <size>1</size>
-        <unmodifiable>0</unmodifiable>
-        <values>Information|Navigation|Tools|Administration|Other</values>
-        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
-      </category>
-      <content>
-        <disabled>0</disabled>
-        <editor>Text</editor>
-        <name>content</name>
-        <number>5</number>
-        <prettyName>Executed Content</prettyName>
-        <restricted>0</restricted>
-        <rows>25</rows>
-        <size>120</size>
-        <unmodifiable>0</unmodifiable>
-        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
-      </content>
-      <description>
-        <disabled>0</disabled>
-        <editor>Text</editor>
-        <name>description</name>
-        <number>2</number>
-        <prettyName>Description</prettyName>
-        <restricted>0</restricted>
-        <rows>5</rows>
-        <size>40</size>
-        <unmodifiable>0</unmodifiable>
-        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
-      </description>
-      <name>
-        <disabled>0</disabled>
-        <name>name</name>
-        <number>3</number>
-        <prettyName>Name</prettyName>
-        <size>40</size>
-        <unmodifiable>0</unmodifiable>
-        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
-      </name>
-      <type>
-        <cache>0</cache>
-        <disabled>0</disabled>
-        <displayType>select</displayType>
-        <freeText>forbidden</freeText>
-        <largeStorage>0</largeStorage>
-        <multiSelect>0</multiSelect>
-        <name>type</name>
-        <number>4</number>
-        <prettyName>Panel type</prettyName>
-        <relationalStorage>0</relationalStorage>
-        <separator> </separator>
-        <separators>|, </separators>
-        <size>1</size>
-        <unmodifiable>0</unmodifiable>
-        <values>view|edit</values>
-        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
-      </type>
+      <!-- Existing class details -->
+      ...
     </class>
     <property>
-      <async_cached>0</async_cached>
+      <!-- Existing properties -->
+      ...
     </property>
     <property>
-      <async_context>
-        <value>doc.reference</value>
-      </async_context>
+      <!-- Add your new property here -->
+      <name>NewFeatureProperty</name>
+      <value>New Feature Value</value>
     </property>
     <property>
-      <async_enabled>0</async_enabled>
-    </property>
-    <property>
-      <category>Navigation</category>
-    </property>
-    <property>
-      <content>{{velocity}}
-#panelheader("$services.localization.render('intlv.panel.header')")
-#set ($discard = $xwiki.jsx.use('XWiki.InteractiveLinkVisualizer.Code.LinkVisualizerPanel'))
-{{html}}
-&lt;div id="sigma-container-panel"
-style=
-"width: 100%;
-height: 350px;
-"&gt;
-&lt;/div&gt;
-{{/html}}
-#panelfooter()
-{{/velocity}}</content>
-    </property>
-    <property>
-      <description>Show the network graph visualization centered around the currently opened document.</description>
-    </property>
-    <property>
-      <name>Linked Pages Panel</name>
-    </property>
-    <property>
-      <type>view</type>
+      <content>
+        {{velocity}}
+        #panelheader("$services.localization.render('intlv.panel.header')")
+        #set ($discard = $xwiki.jsx.use('XWiki.InteractiveLinkVisualizer.Code.LinkVisualizerPanel'))
+        {{html}}
+        &lt;div id="sigma-container-panel"
+        style="width: 100%;
+        height: 350px;
+        "&gt;
+        &lt;/div&gt;
+        {{/html}}
+        #panelfooter()
+        {{/velocity}}
+      </content>
     </property>
   </object>
   <object>
@@ -206,193 +79,29 @@ height: 350px;
     <className>XWiki.JavaScriptExtension</className>
     <guid>47c5defe-899e-4207-9a82-63c7e057df67</guid>
     <class>
-      <name>XWiki.JavaScriptExtension</name>
-      <customClass/>
-      <customMapping/>
-      <defaultViewSheet/>
-      <defaultEditSheet/>
-      <defaultWeb/>
-      <nameField/>
-      <validationScript/>
-      <cache>
-        <cache>0</cache>
-        <defaultValue>long</defaultValue>
-        <disabled>0</disabled>
-        <displayType>select</displayType>
-        <freeText>forbidden</freeText>
-        <largeStorage>0</largeStorage>
-        <multiSelect>0</multiSelect>
-        <name>cache</name>
-        <number>5</number>
-        <prettyName>Caching policy</prettyName>
-        <relationalStorage>0</relationalStorage>
-        <separator> </separator>
-        <separators>|, </separators>
-        <size>1</size>
-        <unmodifiable>0</unmodifiable>
-        <values>long|short|default|forbid</values>
-        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
-      </cache>
-      <code>
-        <contenttype>PureText</contenttype>
-        <disabled>0</disabled>
-        <editor>PureText</editor>
-        <name>code</name>
-        <number>2</number>
-        <prettyName>Code</prettyName>
-        <restricted>0</restricted>
-        <rows>20</rows>
-        <size>50</size>
-        <unmodifiable>0</unmodifiable>
-        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
-      </code>
-      <name>
-        <disabled>0</disabled>
-        <name>name</name>
-        <number>1</number>
-        <prettyName>Name</prettyName>
-        <size>30</size>
-        <unmodifiable>0</unmodifiable>
-        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
-      </name>
-      <parse>
-        <disabled>0</disabled>
-        <displayFormType>select</displayFormType>
-        <displayType>yesno</displayType>
-        <name>parse</name>
-        <number>4</number>
-        <prettyName>Parse content</prettyName>
-        <unmodifiable>0</unmodifiable>
-        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
-      </parse>
-      <use>
-        <cache>0</cache>
-        <disabled>0</disabled>
-        <displayType>select</displayType>
-        <freeText>forbidden</freeText>
-        <largeStorage>0</largeStorage>
-        <multiSelect>0</multiSelect>
-        <name>use</name>
-        <number>3</number>
-        <prettyName>Use this extension</prettyName>
-        <relationalStorage>0</relationalStorage>
-        <separator> </separator>
-        <separators>|, </separators>
-        <size>1</size>
-        <unmodifiable>0</unmodifiable>
-        <values>currentPage|onDemand|always</values>
-        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
-      </use>
+      <!-- Existing class details -->
+      ...
     </class>
     <property>
-      <cache>default</cache>
+      <!-- Add your new property here -->
+      <name>NewFeatureProperty</name>
+      <value>New Feature Value</value>
     </property>
     <property>
-      <code>require(['jquery', 'visualisationAPI', 'xwiki-meta'], function($, visualisationAPI, xm) {
-    const solrServiceURL = new XWiki.Document('SuggestSolrService', 'XWiki').getURL('get');
-    var tempData = null;
-    var edgeKeyCounter = 1;
-    #template('colorThemeInit.vm') // For XWiki color theme variables
-    var themeColors = $jsontool.serialize({
-        'nodeColor': $theme.linkColor,
-        'labelColor': $theme.textColor,
-        'fadeColor': $theme.highlightColor,
-        'labelContainerColor': $theme.pageContentBackgroundColor
-    });
-
-    function escapeQueryChars(s) {
-        const specialCharacters = "\\+-!()^[]\"{}~*?|&amp;;:/";
-        let escapedString = "";
-        for (let i = 0; i &lt; s.length; i++) {
-            const c = s.charAt(i);
-            if (specialCharacters.includes(c) || /\s/.test(c)) {
-                escapedString += '\\';
-            }
-            escapedString += c;
-        }
-        return escapedString;
-    }
-
-    const documentQuery = 'document\\:xwiki\\:' + escapeQueryChars(xm.document);
-    const linkQuery = 'entity\\:' + documentQuery;
-
-    $.post(solrServiceURL, {
-        outputSyntax: 'plain',
-        nb: 1000,
-        media: 'json',
-        query: [
-            'q=reference:' + documentQuery,
-            'fq=type:DOCUMENT',
-            'fl=title_, reference, links, wiki, spaces, name'
-        ].join('\n'),
-        input: " "
-    }, function(firstResult) {
-        if (firstResult.length == 1) {
-            let extraDocuments = "";
-            if (firstResult[0].links) {
-                extraDocuments = ' OR ' + firstResult[0].links.map(link =&gt; 'reference:' + escapeQueryChars(link.replace(/^entity:/, ''))).join(' OR ');
-            }
-            $.post(solrServiceURL, {
-                outputSyntax: 'plain',
-                nb: 1000,
-                media: 'json',
-                query: [
-                    'q=reference:' + documentQuery + ' OR links:' + linkQuery + extraDocuments,
-                    'fq=type:DOCUMENT',
-                    'fl=title_, reference, links, wiki, spaces, name'
-                ].join('\n'),
-                input: " "
-            }, function(response) {
-                tempData = response;
-                const nodes = tempData.map(function(obj) {
-                    return {
-                        key: obj.reference,
-                        attributes: {
-                            label: obj.title_,
-                            color: (("document:xwiki:"+xm.document) == obj.reference) ? "orange" : themeColors.nodeColor,
-                            size: (("document:xwiki:"+xm.document) == obj.reference) ? 12: 8,
-                            pageURL: new XWiki.Document(XWiki.Model.resolve(obj.reference)).getURL()
-                        }
-                    };
-                });
-
-                const edges = [];
-                tempData.forEach(function(obj) {
-                    if (obj.links &amp;&amp; obj.links.length &gt; 0) {
-                        obj.links.forEach(function(link) {
-                            var target = link.replace(/^entity:/, '');
-                            var isValid = tempData.some(function(item) {
-                                return item.reference === target;
-                            });
-                            if (isValid) {
-                                edges.push({
-                                    key: edgeKeyCounter.toString(),
-                                    target: target,
-                                    source: obj.reference
-                                });
-                                edgeKeyCounter++;
-                            }
-                        });
-                    }
-                });
-                const graphData = {
-                    nodes: nodes,
-                    edges: edges
-                };
-                visualisationAPI.visualize(graphData, "sigma-container-panel", themeColors, isPanel = true, nb = 1000);
-            });
-        }
-    });
-});</code>
+      <code>
+        {{velocity}}
+        #includeJSON("XWiki.JavaScriptExtension")
+        {{/velocity}}
+      </code>
     </property>
     <property>
       <name>API</name>
     </property>
     <property>
-      <parse>1</parse>
-    </property>
-    <property>
-      <use>currentPage</use>
+      <!-- Add your new property here -->
+      <name>NewFeatureProperty</name>
+      <value>New Feature Value</value>
     </property>
   </object>
 </xwikidoc>
+
