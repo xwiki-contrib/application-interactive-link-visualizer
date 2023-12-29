@@ -1,1 +1,57 @@
+<?xml version="1.1" encoding="UTF-8"?>
 
+<!--
+ * See the NOTICE file distributed with this work for additional
+ * information regarding copyright ownership.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+-->
+
+<xwikidoc version="1.5" reference="XWiki.InteractiveLinkVisualizer.Code.Translations" locale="ko">
+  <web>XWiki.InteractiveLinkVisualizer.Code</web>
+  <name>Translations</name>
+  <language>ko</language>
+  <defaultLanguage>en</defaultLanguage>
+  <translation>1</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>XWiki.InteractiveLinkVisualizer.WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title>Translations</title>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>plain/1.0</syntaxId>
+  <hidden>true</hidden>
+  <content>## Top info bar
+intlv.topbar.search.placeholder=그래프에서 페이지 찾기…
+intlv.topbar.search.title=시각화된 그래프에서 페이지 찾기
+intlv.topbar.graphinfo.hint=그래프에 대한 정보를 표시합니다.
+
+## Main graph area
+intlv.sigmacontainer.buttons.title.zoomin=확대
+intlv.sigmacontainer.buttons.title.zoomout=축소
+intlv.sigmacontainer.buttons.title.iterations=그래프 반복 증가: 그래프의 레이아웃이 적절하지 않고 더 많은 반복이 필요한 경우
+intlv.sigmacontainer.buttons.title.zoomdefault=기본 줌
+intlv.sigmacontainer.buttons.title.fullscreen=전체 화면
+intlv.sigmacontainer.buttons.title.killgraph=그래프 인스턴스 종료
+intlv.sigmacontainer.form.title.documentfilter=그래프로 표시할 문서 수
+intlv.sigmacontainer.form.label.documentfilter=시각화할 페이지 수:
+
+## Local graph panel
+intlv.panel.header=연결된 페이지 그래프
+</content>
+  </xwikidoc>
