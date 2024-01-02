@@ -39,7 +39,7 @@
   <content>## Top info bar
 intlv.topbar.search.placeholder=그래프에서 페이지 찾기…
 intlv.topbar.search.title=시각화된 그래프에서 페이지 찾기
-intlv.topbar.graphinfo.hint=그래프에 대한 정보를 표시합니다.
+intlv.topbar.graphinfo.hint=그래프에 대한 정보를 표시합니다
 
 ## Main graph area
 intlv.sigmacontainer.buttons.title.zoomin=확대
