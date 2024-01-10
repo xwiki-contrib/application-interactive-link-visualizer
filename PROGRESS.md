@@ -104,6 +104,7 @@
 - [X] Fixed: Visualisation is initialised twice when there in another DOM updated event ([INTLV-22 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/eddf9c12f7744e040d99330b1c1039b01f002121))
 - [X] Fixed: Add a label to the `max number of pages to display` element
 - [X] Fixed: Added support for translations of application pages ([INTLV-28 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/ca49d996ba2e496ef77c3026e0922a944c2ec020))
+- [X] Fixed: Open links in new tab by default ([INTLV-24 commit](https://github.com/xwiki-contrib/application-interactive-link-visualizer/commit/cd0897616d25046142a0e5e1973ec1c3a493490a))
 
 <!--
 ## Week 11 (14 August - 20 August 2023)
