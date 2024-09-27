@@ -1,6 +1,3 @@
-# Meri ladki Diya is vvvv Pretty and she's a barbie :))
-(thicc girls, rule the world!)
-
 # Interactive Link Visualizer [![TypeScript](https://img.shields.io/badge/--3178C6?logo=typescript&logoColor=ffffff)](https://www.typescriptlang.org/) [![License: LGPL-2.1](https://img.shields.io/badge/license-LGPL_2.1-blue)](https://opensource.org/license/lgpl-2-1/) [![Docs](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](https://extensions.xwiki.org/xwiki/bin/view/Extension/InteractiveLinkVisualizer) [![Jira](https://badgen.net/badge/icon/jira?icon=jira&label)](https://jira.xwiki.org/projects/INTLV)
 
 Visualize & interact with pages present in a wiki in the form of a network-graph consisting of many nodes and edges
