@@ -48,6 +48,9 @@
 {{velocity output="false"}}
 #set ($discard = $solrConfig.facetFields.remove('type'))
 #set ($discard = $solrConfig.filterQuery.add('type:DOCUMENT'))
+#if (!$services.user.getProperties().displayHiddenDocuments())
+  #set ($discard = $solrConfig.filterQuery.add('hidden:false'))
+#end
 #set ($discard = $solrConfig.put('facetEnabled', false))
 ## To return visualisation as search results
 #macro (displaySearchResults)
