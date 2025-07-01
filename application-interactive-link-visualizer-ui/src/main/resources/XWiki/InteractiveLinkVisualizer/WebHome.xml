@@ -20,7 +20,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
 -->
 
-<xwikidoc version="1.5" reference="XWiki.InteractiveLinkVisualizer.WebHome" locale="">
+<xwikidoc version="1.6" reference="XWiki.InteractiveLinkVisualizer.WebHome" locale="">
   <web>XWiki.InteractiveLinkVisualizer</web>
   <name>WebHome</name>
   <language/>
@@ -46,12 +46,76 @@
 {{include reference="Main.SolrSearchMacros" /}}
 
 {{velocity output="false"}}
+## XXX this is a literal copy of the Panels.Navigation code.
+## It might be better to include the code from that page instead, but the "include" macro does not support including object content
+#macro(exclusionsLikeNavigationPanel)
+  #set ($config = $xwiki.getDocument('PanelsCode.NavigationConfiguration'))
+  #set ($exclusions = $collectiontool.set)
+  #set ($defaultDocumentName = $services.model.getEntityReference('DOCUMENT', 'default').name)
+  ## Exclude top level extension pages.
+  #if ($config.getValue('excludeTopLevelExtensionPages') == 1)
+    #set ($query = $services.query.hql('select space.name from XWikiSpace space where space.parent is null'))
+    #set ($discard = $query.addFilter('hidden/space'))
+    #foreach ($result in $query.execute())
+      #set ($documentReference = $services.model.createDocumentReference($NULL, $result, $defaultDocumentName))
+      #set ($installedExtensions = $services.extension.xar.getInstalledExtensions($documentReference))
+      #if ($installedExtensions &amp;&amp; $installedExtensions.size() &gt; 0
+          &amp;&amp; !$services.extension.xar.isEditAllowed($documentReference))
+        #set ($discard = $exclusions.add("$services.model.escape($result, 'SPACE')"))
+      #end
+    #end
+  #end
+  ## Exclude top level application pages.
+  #if ($config.getValue('excludeTopLevelApplicationPages') == 1)
+    #set ($statement = 'select space.name '
+      + 'from XWikiSpace as space, Document as doc, doc.object(AppWithinMinutes.LiveTableClass) as app '
+      + 'where space.parent is null and doc.space = space.reference')
+    #set ($query = $services.query.xwql($statement).addFilter('hidden/space'))
+    #foreach ($result in $query.execute())
+      #set ($discard = $exclusions.add("$services.model.escape($result, 'SPACE')"))
+    #end
+  #end
+  ## Inclusions are treated as exceptions to the dynamic exclusion filters.
+  #if ($config.getValue('excludeTopLevelExtensionPages') == 1 || $config.getValue('excludeTopLevelApplicationPages') == 1)
+    ## FIXME: This panel is cached and the cache is not invalidated by default when an extension is installed or
+    ## uninstalled and neither when an application is created, deleted or renamed. Ideally we should invalidate the cache
+    ## whenever a top level page is created or modified but we can't do this ATM so the next best thing is to invalidate
+    ## the cache whenever a page (anywhere in the page hierarchy) is modified.
+    #set ($discard = $services.async.useEntity("wiki:$xcontext.database"))
+    #foreach ($inclusion in $config.getValue('inclusions'))
+      #set ($documentReference = $services.model.resolveDocument($inclusion))
+      ## Dynamic exclusion filters target only top level pages and thus inclusions, which are treated as exceptions to
+      ## those filters, should target also top level pages.
+      #set ($discard = $exclusions.remove("$services.model.serialize($documentReference.lastSpaceReference,
+        'local')"))
+    #end
+  #end
+  ## Other page exclusions.
+  #foreach ($exclusion in $config.getValue('exclusions'))
+    #set ($exclusionReference = $services.model.resolveDocument($exclusion))
+    #if ($exclusionReference.name == $defaultDocumentName)
+      #set ($exclusionReference = $exclusionReference.lastSpaceReference)
+    #end
+    #set ($discard = $exclusions.add($services.model.serialize($exclusionReference, 'local')))
+  #end
+#end
+## end literal copy of the Panels.Navigation code
 #set ($discard = $solrConfig.facetFields.remove('type'))
 #set ($discard = $solrConfig.filterQuery.add('type:DOCUMENT'))
+#set ($discard = $solrConfig.put('facetEnabled', false))
 #if (!$services.user.getProperties().displayHiddenDocuments())
   #set ($discard = $solrConfig.filterQuery.add('hidden:false'))
 #end
-#set ($discard = $solrConfig.put('facetEnabled', false))
+#set ($allPagesEnabled = ("$!request.getParameter('allPages')" == 'true'))
+#if (!$allPagesEnabled)
+  #exclusionsLikeNavigationPanel
+  #foreach($exclusion in $exclusions)
+    ## XXX: here assume that we always have top level spaces, like 0:Sandbox.
+    #set ($spaceName = $exclusion)
+    #set ($solrFacet = "-space_facet:(${escapetool.getQ()}0/${spaceName}.${escapetool.getQ()})")
+    #set ($discard = $solrConfig.filterQuery.add($solrFacet))
+  #end
+#end
 ## To return visualisation as search results
 #macro (displaySearchResults)
 {{html}}
@@ -157,6 +221,7 @@
 #end
 
 ## To disable Highlighting Search Option
+## and also include an "all pages" toggle
 #macro (displaySearchResultsSort)
   #set ($defaultSortOrder = $solrConfig.sortFields.get($type))
   #if (!$defaultSortOrder)
@@ -170,6 +235,8 @@
   * {{translation key="solr.options"/}}
   #if($facetEnabled)#extendQueryString($url {'facet': [false]})#else#extendQueryString($url {'facet': [true]})#end
   * [[{{translation key="solr.options.facet"/}}&gt;&gt;path:${url}||class="options-item#if($facetEnabled) active#end" title="$services.localization.render('solr.options.facet.title')"]]
+  #if($allPagesEnabled)#extendQueryString($url {'allPages': [false]})#else#extendQueryString($url {'allPages': [true]})#end
+  * [[{{translation key="intlv.topbar.search.options.allPages"/}}&gt;&gt;path:${url}||class="options-item#if($allPagesEnabled) active#end" title="$services.localization.render('intlv.topbar.search.options.allPages.title')"]]
 
   (% class="search-results-sort" %)
   * {{translation key="solr.sortBy"/}}

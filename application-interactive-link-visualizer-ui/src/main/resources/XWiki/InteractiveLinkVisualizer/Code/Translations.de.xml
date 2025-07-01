@@ -20,7 +20,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
 -->
 
-<xwikidoc version="1.5" reference="XWiki.InteractiveLinkVisualizer.Code.Translations" locale="de">
+<xwikidoc version="1.6" reference="XWiki.InteractiveLinkVisualizer.Code.Translations" locale="de">
   <web>XWiki.InteractiveLinkVisualizer.Code</web>
   <name>Translations</name>
   <language>de</language>
@@ -40,6 +40,8 @@
 intlv.topbar.search.placeholder=Seiten im Diagramm finden…
 intlv.topbar.search.title=Seiten aus dem visualisierten Diagramm finden
 intlv.topbar.graphinfo.hint=Zeigt Informationen zum Diagramm an
+intlv.topbar.search.options.allPages=Alle Seiten
+intlv.topbar.search.options.allPages.title=Zeigt alle Seiten, auch wenn sie aus der Navigation ausgeschlossen werden
 
 ## Main graph area
 intlv.sigmacontainer.buttons.title.zoomin=Vergrößern
