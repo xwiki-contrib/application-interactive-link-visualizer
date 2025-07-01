@@ -179,7 +179,7 @@
       <content>{{velocity}}
 #panelheader("$services.localization.render('intlv.panel.header')")
 #set ($discard = $xwiki.jsx.use('XWiki.InteractiveLinkVisualizer.Code.LinkVisualizerPanel'))
-{{html}}
+{{html wiki="false"}}
 &lt;div id="sigma-container-panel"
 style=
 "width: 100%;
@@ -313,7 +313,7 @@ height: 350px;
         return escapedString;
     }
 
-    const documentQuery = 'document\\:xwiki\\:' + escapeQueryChars(xm.document);
+    const documentQuery = 'document\\:' + escapeQueryChars(xm.wiki) + '\\:' + escapeQueryChars(xm.document);
     const linkQuery = 'entity\\:' + documentQuery;
 
     $.post(solrServiceURL, {
