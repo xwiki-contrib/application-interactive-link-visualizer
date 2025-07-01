@@ -106,6 +106,9 @@
 #if (!$services.user.getProperties().displayHiddenDocuments())
   #set ($discard = $solrConfig.filterQuery.add('hidden:false'))
 #end
+#if (! $xcontext.isMainWiki())
+  #set ($discard = $solrConfig.filterQuery.add("wiki:(${escapetool.Q}${services.wiki.getCurrentWikiId()}${escapetool.Q})"))
+#end
 #set ($allPagesEnabled = ("$!request.getParameter('allPages')" == 'true'))
 #if (!$allPagesEnabled)
   #exclusionsLikeNavigationPanel
