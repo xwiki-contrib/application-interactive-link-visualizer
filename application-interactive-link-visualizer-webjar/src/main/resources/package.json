@@ -15,10 +15,10 @@
     "sigma": "2.4.0"
   },
   "devDependencies": {
+    "kotatsu": "0.23.1",
     "ts-loader": "9.4.4",
     "typescript": "5.1.6",
-    "webpack": "5.88.2",
-    "webpack-cli": "5.1.4",
-    "kotatsu": "0.23.1"
+    "webpack": "^5.99.9",
+    "webpack-cli": "5.1.4"
   }
 }
