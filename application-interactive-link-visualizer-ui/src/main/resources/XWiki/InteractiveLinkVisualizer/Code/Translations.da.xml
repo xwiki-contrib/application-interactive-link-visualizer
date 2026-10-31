@@ -37,23 +37,23 @@
   <syntaxId>plain/1.0</syntaxId>
   <hidden>true</hidden>
   <content>## Top info bar
-### Missing: intlv.topbar.search.placeholder=
-### Missing: intlv.topbar.search.title=
-### Missing: intlv.topbar.graphinfo.hint=
-### Missing: intlv.topbar.search.options.allPages=
-### Missing: intlv.topbar.search.options.allPages.title=
+intlv.topbar.search.placeholder=Find sider i grafen…
+intlv.topbar.search.title=Find sider i den viste graf
+intlv.topbar.graphinfo.hint=Viser oplysninger om grafen
+### Missing: intlv.topbar.search.options.allPages=All Pages
+### Missing: intlv.topbar.search.options.allPages.title=Show all pages, even if excluded from the navigation
 
 ## Main graph area
-### Missing: intlv.sigmacontainer.buttons.title.zoomin=
-### Missing: intlv.sigmacontainer.buttons.title.zoomout=
-### Missing: intlv.sigmacontainer.buttons.title.iterations=
-### Missing: intlv.sigmacontainer.buttons.title.zoomdefault=
-### Missing: intlv.sigmacontainer.buttons.title.fullscreen=
-### Missing: intlv.sigmacontainer.buttons.title.killgraph=
-### Missing: intlv.sigmacontainer.form.title.documentfilter=
-### Missing: intlv.sigmacontainer.form.label.documentfilter=
+intlv.sigmacontainer.buttons.title.zoomin=Zoom ind
+intlv.sigmacontainer.buttons.title.zoomout=Zoom ud
+intlv.sigmacontainer.buttons.title.iterations=Flere iterationer: hvis grafen ikke er lagt pænt ud og har brug for flere gennemløb
+intlv.sigmacontainer.buttons.title.zoomdefault=Standardzoom
+intlv.sigmacontainer.buttons.title.fullscreen=Fuld skærm
+intlv.sigmacontainer.buttons.title.killgraph=Afslut grafen
+intlv.sigmacontainer.form.title.documentfilter=Antal dokumenter, der skal vises i grafen
+### Missing: intlv.sigmacontainer.form.label.documentfilter=No. of pages to visualize:
 
 ## Local graph panel
-### Missing: intlv.panel.header=
+### Missing: intlv.panel.header=Linked Pages Graph
 </content>
 </xwikidoc>
