@@ -40,8 +40,8 @@
 intlv.topbar.search.placeholder=Find sider i grafen…
 intlv.topbar.search.title=Find sider i den viste graf
 intlv.topbar.graphinfo.hint=Viser oplysninger om grafen
-### Missing: intlv.topbar.search.options.allPages=All Pages
-### Missing: intlv.topbar.search.options.allPages.title=Show all pages, even if excluded from the navigation
+intlv.topbar.search.options.allPages=Alle sider
+intlv.topbar.search.options.allPages.title=Vis alle sider, også dem, der er udeladt fra navigationen
 
 ## Main graph area
 intlv.sigmacontainer.buttons.title.zoomin=Zoom ind
@@ -51,9 +51,9 @@ intlv.sigmacontainer.buttons.title.zoomdefault=Standardzoom
 intlv.sigmacontainer.buttons.title.fullscreen=Fuld skærm
 intlv.sigmacontainer.buttons.title.killgraph=Afslut grafen
 intlv.sigmacontainer.form.title.documentfilter=Antal dokumenter, der skal vises i grafen
-### Missing: intlv.sigmacontainer.form.label.documentfilter=No. of pages to visualize:
+intlv.sigmacontainer.form.label.documentfilter=Antal sider, der skal vises:
 
 ## Local graph panel
-### Missing: intlv.panel.header=Linked Pages Graph
+intlv.panel.header=Graf over linkede sider
 </content>
 </xwikidoc>
